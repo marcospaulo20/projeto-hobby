@@ -1,0 +1,21 @@
+<div class="col-md-12">
+    <h1>{{titulo.titulo}}</h1>
+    
+    <div class="col-md-8">
+		<input type="text" class="form-control" placeholder="Search for..." ng-model="searchFish2">
+		<table class="table">
+			<thead>
+	        <tr>
+	            <th>Nome</th>
+	            <th></th>            
+	        </tr>
+	        </thead>
+	        <tbody>
+		        <tr ng-repeat="volume in volumes | filter:searchFish2">
+		            <td>{{ volume.nome }}</td>
+		            <td><a ng-href="#/manga/{{manga.id}}/{{titulo.id}}/{{volume.id}}"><ng-md-icon icon="edit" size="20px"></ng-md-icon></a></td>
+		        </tr>
+	        </tbody>
+	    </table>
+	</div>
+</div>

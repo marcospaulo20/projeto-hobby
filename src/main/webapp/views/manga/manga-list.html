@@ -1,0 +1,28 @@
+<div class="col-sm-12">
+	<a ng-href="#/manga-create"><ng-md-icon icon="add_circle" size="35px"></ng-md-icon></a>	
+	
+	<div class="col-sm-10">
+		<div class="col-lg-8 col-lg-offset-1">
+			<div class="input-group">
+	 			<span class="input-group-addon">
+	   				<span class="glyphicon glyphicon-search"></span>
+	 			</span>
+	 			<input class="form-control" placeholder="Search for.." ng-model="filterOptions.filterText" ng-change="doFilter(like)">  			
+			</div>
+		</div>
+	</div>	
+		
+	<div class="md-col-12">
+		<div class="grid">
+			<!-- Binds the grid component to be displayed. -->
+		    <div class="gridStyle" ng-grid="gridOptions"></div>
+		 
+		    <!--  Bind the pagination component to be displayed. -->
+		    <pagination direction-links="true" boundary-links="true"
+		                total-items="mangas.totalResults" items-per-page="mangas.pageSize"
+		                ng-model="mangas.currentPage" class="pagination-sm" previous-text="&lsaquo;" 
+		                next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="refreshGrid()">
+		    </pagination>		    
+	    </div>
+	</div>
+</div>

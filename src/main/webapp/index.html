@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="projetoHobbyApp">
+<head>
+	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Projeto Hobby</title>
+	<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="resources/css/app.css" />
+	
+	<link rel="stylesheet" type="text/css" href="resources/css/simple-sidebar.css">
+	
+	<link rel="stylesheet" href="resources/css/ng-grid.css" />
+</head>
+<body>
+	<div id="wrapper">
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+				<li class="sidebar-brand">
+					<a href="#">
+						Projeto de controle
+					</a>
+				</li>
+				<li>
+					<a ng-href="#/manga-list">Mangas</a>
+				</li>
+			</ul>
+		</div>
+		
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+				<div id="row">
+					<div ng-view></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="webjars/angularjs/1.5.6/angular.js"></script>
+	<script src="webjars/angularjs/1.5.6/angular-route.js"></script>
+	<script src="webjars/angularjs/1.5.6/angular-resource.js"></script>
+
+	<script src="webjars/jquery/3.0.0/jquery.min.js"></script>
+		
+	<script src="resources/js/lib/angular-material-icons.min.js"></script>
+
+	<script src="webjars/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.js"></script>
+	
+	<script src="resources/js/lib/ng-grid.min.js"></script>
+	
+	<script src="resources/js/app.js"></script>
+	<script src="resources/js/services/mangaService.js"></script>	
+	<script src="resources/js/controllers/mangaCtrl.js"></script>
+	<script src="resources/js/directives/directive.js"></script>
+	<script>
+	    $("#menu-toggle").click(function(e) {
+	        e.preventDefault();
+	        $("#wrapper").toggleClass("toggled");
+	    });
+    </script>	
+</body>
+</html>
