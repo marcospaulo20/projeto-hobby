@@ -1,18 +1,24 @@
 <div class="col-md-12">
     <h1>{{titulo.titulo}}</h1>
     
-    <div class="col-md-8">
-		<input type="text" class="form-control" placeholder="Search for..." ng-model="searchFish2">
+    <div class="col-md-8" ng-show="volumes.length > 0">
+		<input type="text" class="form-control" placeholder="Search for..." ng-model="search.nome">
 		<table class="table">
 			<thead>
 	        <tr>
 	            <th>Nome</th>
-	            <th></th>            
+	            <th></th>
+	            <th></th>
+	            <th></th>
 	        </tr>
 	        </thead>
 	        <tbody>
-		        <tr ng-repeat="volume in volumes | filter:searchFish2">
+		        <tr ng-repeat="volume in volumes | filter:search">
 		            <td>{{ volume.nome }}</td>
+		            <td><img data-ng-src="data:image/(png|jpg);base64,{{volume.imagem}}"></td>
+		            <td ng-repeat="capitulo in volume.capitulos">
+		            	{{capitulo.nome}}
+		            </td>		            
 		            <td><a ng-href="#/manga/{{manga.id}}/{{titulo.id}}/{{volume.id}}"><ng-md-icon icon="edit" size="20px"></ng-md-icon></a></td>
 		        </tr>
 	        </tbody>

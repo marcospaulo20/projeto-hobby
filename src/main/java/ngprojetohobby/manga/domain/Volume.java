@@ -44,6 +44,7 @@ public class Volume implements Serializable {
 	private Pessoa roteirista;
 	@JoinColumn(name = "desenhista_id", referencedColumnName = "id")
 	private Pessoa desenhista;
+	
 	private byte[] imagem;
 
 	@Column(name = "titulo_id", nullable = false)

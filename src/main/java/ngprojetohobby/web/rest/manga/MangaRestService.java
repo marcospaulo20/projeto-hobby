@@ -43,7 +43,7 @@ public class MangaRestService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public PaginatedListWrapper listMangas(@DefaultValue("1") @QueryParam("page") int page,
-			@DefaultValue("id") @QueryParam("sortFields") String sortFields) {
+			@DefaultValue("titulo") @QueryParam("sortFields") String sortFields) {
 		PaginatedListWrapper paginatedListWrapper = new PaginatedListWrapper();
 		paginatedListWrapper.setCurrentPage(page);
 		paginatedListWrapper.setSortFields(sortFields);

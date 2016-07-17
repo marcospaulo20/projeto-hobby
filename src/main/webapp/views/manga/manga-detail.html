@@ -12,7 +12,7 @@
 			</div>
 			<div class="form-group" show-errors>
 				<div class="col-sm-10">
-					<select class="form-control" name="categoria" ng-model="titulo.categoria">
+					<select class="form-control" name="categoria" ng-model="titulo.categoria" required>
 						<option value="original">Original</option>
 				      	<option value="spin-off">Spin-Off</option>
 					</select>
@@ -26,7 +26,7 @@
 		</form>
 	</div>
 	<div class="col-md-8">
-		<input type="text" class="form-control" placeholder="Search for..." ng-model="searchFish2">
+		<input type="text" class="form-control" placeholder="Search for..." ng-model="search.titulo">
 		<table class="table">
 			<thead>
 	        <tr>
@@ -35,7 +35,7 @@
 	        </tr>
 	        </thead>
 	        <tbody>
-		        <tr ng-repeat="titulo in titulos | filter:searchFish2">
+		        <tr ng-repeat="titulo in titulos | filter:search | orderBy: 'titulo'">
 		            <td>{{ titulo.titulo }}</td>
 		            <td><a ng-href="#/manga/{{manga.id}}/{{titulo.id}}"><ng-md-icon icon="edit" size="20px"></ng-md-icon></a></td>
 		        </tr>

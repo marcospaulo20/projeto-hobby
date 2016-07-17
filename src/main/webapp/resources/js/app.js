@@ -1,12 +1,12 @@
 'use strict';
 
-var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngMdIcons', 'ngGrid', 'ui.bootstrap', 'projetoHobbyApp.manga.services', 'projetoHobbyApp.directive', 'projetoHobbyApp.manga.controllers']); 
+var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'angular-table', 'ngMdIcons', 'ui.bootstrap', 'projetoHobbyApp.manga.services', 'projetoHobbyApp.directive', 'projetoHobbyApp.manga.controllers']); 
 
 	app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/', {templateUrl: 'views/show.html', controller: 'ShowCtrl'});
 		$routeProvider.when('/manga-list', {
 			templateUrl: 'views/manga/manga-list.html',
-			controller: 'MangaPageListCtrl'
+			controller: 'MangaListCtrl'
 		});
 		$routeProvider.when('/manga-detail/:id', {
 			templateUrl: 'views/manga/manga-detail.html',

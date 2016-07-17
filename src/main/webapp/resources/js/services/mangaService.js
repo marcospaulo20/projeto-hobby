@@ -50,7 +50,7 @@ services.factory('VolumesFactory', function VolumesFactory($resource) {
 
 services.factory('CapitulosFactory', function CapitulosFactory($resource) {
 	return $resource('rest/manga/:id/titulo/:idTitulo/volume/:idVolume/capitulos', {}, {
-		query: { method: 'GET', isArray: true },
+		query: { method: 'GET', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@volume.id'} },
 		create: { method: 'POST' }
 	})
 });

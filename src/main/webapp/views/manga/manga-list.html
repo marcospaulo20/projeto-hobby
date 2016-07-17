@@ -1,28 +1,20 @@
 <div class="col-sm-12">
 	<a ng-href="#/manga-create"><ng-md-icon icon="add_circle" size="35px"></ng-md-icon></a>	
 	
-	<div class="col-sm-10">
-		<div class="col-lg-8 col-lg-offset-1">
-			<div class="input-group">
-	 			<span class="input-group-addon">
-	   				<span class="glyphicon glyphicon-search"></span>
-	 			</span>
-	 			<input class="form-control" placeholder="Search for.." ng-model="filterOptions.filterText" ng-change="doFilter(like)">  			
-			</div>
-		</div>
-	</div>	
+	<div class="col-md-12">
+		<input type="text" class="form-control ng-valid ng-dirty" placeholder="Search for.." ng-model="query" ng-change="updateFilteredList()">
 		
-	<div class="md-col-12">
-		<div class="grid">
-			<!-- Binds the grid component to be displayed. -->
-		    <div class="gridStyle" ng-grid="gridOptions"></div>
-		 
-		    <!--  Bind the pagination component to be displayed. -->
-		    <pagination direction-links="true" boundary-links="true"
-		                total-items="mangas.totalResults" items-per-page="mangas.pageSize"
-		                ng-model="mangas.currentPage" class="pagination-sm" previous-text="&lsaquo;" 
-		                next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="refreshGrid()">
-		    </pagination>		    
-	    </div>
+		<table class="table table-striped" at-table at-paginated at-list="list" at-config="config">
+		  <thead></thead>
+		  <tbody>
+		    <tr>
+		      <td at-implicit at-sortable at-attribute="id" width="150" at-initial-sorting="asc"></td>
+		      <td at-implicit at-sortable at-attribute="titulo"  width="250"></td>
+		      <td><a ng-href="#/manga-detail/{{item.id}}"><ng-md-icon icon="edit" size="20px"></ng-md-icon></a></td>
+		    </tr>
+		  </tbody>
+		</table>
+		
+		<at-pagination at-list="list" at-config="config"></at-pagination>
 	</div>
 </div>
