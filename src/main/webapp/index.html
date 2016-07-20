@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="projetoHobbyApp">
 <head>
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Projeto Hobby</title>
 	<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" />
@@ -9,6 +10,8 @@
 	<link rel="stylesheet" type="text/css" href="resources/css/app.css" />
 	
 	<link rel="stylesheet" type="text/css" href="resources/css/simple-sidebar.css">
+	
+	<link rel="stylesheet" type="text/css" href="resources/css/image-crop-styles.css">
 </head>
 <body>
 	<div id="wrapper">
@@ -27,9 +30,7 @@
 		
 		<div id="page-content-wrapper">
 			<div class="container-fluid">
-				<div id="row">
-					<div ng-view></div>
-				</div>
+				<div ng-view></div>
 			</div>
 		</div>
 	</div>
@@ -44,7 +45,12 @@
 	<script src="resources/js/lib/angular-table.js"></script>
 		
 	<script src="resources/js/lib/angular-material-icons.min.js"></script>
-
+	
+	<script src="resources/js/lib/image-crop.js"></script>
+	
+	<script src="resources/js/lib/ng-file-upload-shim.min.js"></script>
+	<script src="resources/js/lib/ng-file-upload.min.js"></script>	
+	
 	<script src="webjars/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.js"></script>
 	
 	<script src="resources/js/app.js"></script>

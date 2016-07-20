@@ -41,10 +41,22 @@ services.factory('TituloFactory', function TituloFactory($resource) {
 	})
 });
 
+
 services.factory('VolumesFactory', function VolumesFactory($resource) {
 	return $resource('rest/manga/:id/titulo/:idTitulo/volumes', {}, {
-		query: { method: 'GET', params: {id: '@manga.id', idTitulo: '@id'}, isArray: true },
+		query: { method: 'GET', params: {id: '@manga.id', idTitulo: '@id'}, isArray: true }
+	})
+});
+
+services.factory('VolumeCreateFactory', function VolumeFactory($resource) {
+	return $resource('rest/manga/titulo/volumes', {}, {
 		create: { method: 'POST' }
+	})
+});
+
+services.factory('VolumeFactory', function VolumeFactory($resource) {
+	return $resource('rest/manga/:id/titulo/:idTitulo/volumes/:idVolume', {}, {
+		show: { method: 'GET', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@id'} }
 	})
 });
 

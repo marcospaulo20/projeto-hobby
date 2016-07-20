@@ -1,0 +1,12 @@
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+  		<div class="navbar-header">
+  			<a class="navbar-brand" href="#/manga-detail/{{manga.id}}">{{manga.titulo}}</a>
+  			<a class="navbar-brand" href="#/manga/{{manga.id}}/{{titulo.id}}">/ {{titulo.titulo}}</a>
+  			<a class="navbar-brand" href="#/manga/{{manga.id}}/{{titulo.id}}/{{volume.id}}">/ {{volume.nome}}</a>
+  		</div>
+  	</div>
+</nav>
+<div class="row">
+	<img data-ng-src="data:image/(png|jpg);base64,{{volume.imagem}}" style="width: 250px;"/>
+</div>

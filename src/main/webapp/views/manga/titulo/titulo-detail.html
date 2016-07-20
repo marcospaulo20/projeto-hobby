@@ -1,27 +1,120 @@
-<div class="col-md-12">
-    <h1>{{titulo.titulo}}</h1>
-    
-    <div class="col-md-8" ng-show="volumes.length > 0">
-		<input type="text" class="form-control" placeholder="Search for..." ng-model="search.nome">
-		<table class="table">
-			<thead>
-	        <tr>
-	            <th>Nome</th>
-	            <th></th>
-	            <th></th>
-	            <th></th>
-	        </tr>
-	        </thead>
-	        <tbody>
-		        <tr ng-repeat="volume in volumes | filter:search">
-		            <td>{{ volume.nome }}</td>
-		            <td><img data-ng-src="data:image/(png|jpg);base64,{{volume.imagem}}"></td>
-		            <td ng-repeat="capitulo in volume.capitulos">
-		            	{{capitulo.nome}}
-		            </td>		            
-		            <td><a ng-href="#/manga/{{manga.id}}/{{titulo.id}}/{{volume.id}}"><ng-md-icon icon="edit" size="20px"></ng-md-icon></a></td>
-		        </tr>
-	        </tbody>
-	    </table>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+  		<div class="navbar-header">
+  			<a class="navbar-brand" href="#/manga-detail/{{manga.id}}">{{manga.titulo}}</a><a class="navbar-brand">/ {{titulo.titulo}}</a>
+  		</div>
+  	</div>
+</nav>
+<div class="col-sm-12">
+    <div class="col-md-12">
+    	<div id="volume" class="bs-form">
+		    <form class="form-horizontal" name="volumeForm">		    	
+				<div class="col-sm-4">
+			    	<div ng-show="imageCropStep == 1">		
+						<div ngf-drop ngf-select ng-model="files" class="drop-box" 
+       							ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
+       							accept="image/*" ngf-pattern="'image/*'">Drop images here or click to upload
+       							<span ng-show="dropAvailable"> or Drop File</span>
+       					</div>							 
+			            <div class="preview">
+				            <img ngf-src="!files[0].$error && files[0]">
+				         </div>
+					</div>
+					<div ng-show="imageCropStep == 2">
+				    	 <image-crop			 
+							 data-height="270"
+							 data-width="220"
+							 data-shape="square"
+							 data-step="imageCropStep"
+							 src="imgSrc"
+							 data-result="result"
+							 data-result-blob="resultBlob"
+							 crop="initCrop"
+							 padding="10"
+							 max-size="300">
+						</image-crop>
+			    	</div>
+			    	<div ng-show="imageCropStep == 2">	
+						<div class="col-sm-6">
+					   		<button class="btn btn-default" ng-click="initCrop = true">Crop</button>		
+				   		</div>
+					</div>
+					<div ng-show="imageCropStep == 3">
+					 	<img ng-src="{{result}}"></img>
+				  	</div>
+				</div>
+				<div class="col-sm-8">
+					<div class="form-group" show-errors>
+						<div class="col-sm-12">
+							<input type="hidden" name="titulo" value="{{titulo.id}}" ng-model="volume.titulo">
+							<input type="text" class="form-control" name="nome" ng-model="volume.nome" placeholder="Nome" required>
+						</div>
+					</div>				
+					<div class="form-group" show-errors>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="anoPublicacao" ng-model="volume.anoPublicacao" placeholder="Ano publicacao">
+						</div>
+						<div class="col-sm-6">
+							<select class="form-control" name="status" ng-model="volume.status" required>
+								<option value="concluido">Concluido</option>
+						      	<option value="andamento">Andamento</option>
+						      	<option value="parado">Parado</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group" show-errors>
+						<div class="col-sm-4">
+							<select class="form-control" name="pais" ng-model="volume.pais">
+								<option value="en">U.S.</option>
+						      	<option value="br">Brasil</option>
+						      	<option value="jp">Japão</option>
+							</select>
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" name="preco" ng-model="volume.preco" placeholder="Preco">
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" name="revista" ng-model="volume.revista" placeholder="Revista">
+						</div>
+					</div>
+					<div class="form-group" show-errors>					
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="roteirista" ng-model="volume.roteirista" placeholder="Roteirista">
+						</div>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="desenhista" ng-model="volume.desenhista" placeholder="Desenhista">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">					
+		    		<div class="col-sm-10">
+						<button type="submit" ng-disabled="volumeForm.$invalid" ng-click="add()" ng-model="volume" class="btn btn-default">Create</button>						
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<div class="col-md-12">
+		<input type="text" class="form-control ng-valid ng-dirty" placeholder="Search for.." ng-model="query" ng-change="updateFilteredList()">
+		<table class="table table-striped" at-table at-paginated at-list="list" at-config="config">
+			<thead></thead>
+			<tbody>
+				<tr>
+					<td>
+						<div class="row">
+							<div class="col-xs-6 col-md-3">
+								 <img data-ng-src="data:image/(png|jpg);base64,{{item.imagem}}"/>
+		  					</div>
+	  					</div>
+	  				</td>
+		      		<td at-implicit at-attribute="nome" width="200" at-initial-sorting="asc"></td>
+		      		<td at-implicit at-attribute="status" width="50"></td>	      		
+		      		<td><a ng-href="#/manga/{{manga.id}}/{{item.titulo}}/{{item.id}}"><ng-md-icon icon="edit" size="20px"></ng-md-icon></a></td>
+		    	</tr>
+			</tbody>
+		</table>
+		
+		<at-pagination at-list="list" at-config="config"></at-pagination>
 	</div>
 </div>

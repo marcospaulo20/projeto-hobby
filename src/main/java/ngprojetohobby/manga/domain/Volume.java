@@ -13,10 +13,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
 
 import ngprojetohobby.util.domain.Pessoa;
 
@@ -44,7 +47,9 @@ public class Volume implements Serializable {
 	private Pessoa roteirista;
 	@JoinColumn(name = "desenhista_id", referencedColumnName = "id")
 	private Pessoa desenhista;
-	
+
+	@Lob
+	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] imagem;
 
 	@Column(name = "titulo_id", nullable = false)
