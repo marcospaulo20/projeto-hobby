@@ -18,25 +18,25 @@ public class Titulo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(length=255, nullable = false)
+
+	@Column(length = 255, nullable = false)
 	private String titulo;
-	
-	@Column(length=20, nullable = false)
+
+	@Column(length = 20, nullable = false)
 	private String categoria;
-	
-	@Column(name="manga_id", nullable=false)
+
+	@Column(name = "manga_id")
 	private Long manga;
-	
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)	
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Volume.class)
 	private List<Volume> volumes;
 
 	public Titulo() {
 		super();
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -72,5 +72,5 @@ public class Titulo implements Serializable {
 	public void setVolumes(List<Volume> volumes) {
 		this.volumes = volumes;
 	}
-	
+
 }

@@ -10,9 +10,9 @@ public interface MangaService {
 
 	Manga getById(Long id);
 
-	Manga createNewManga(Manga Manga);
+	Manga createOrUpdateManga(Manga manga);
 
-	Manga update(Manga Manga);
+	Manga update(Manga manga);
 
 	void remove(Long id);
 

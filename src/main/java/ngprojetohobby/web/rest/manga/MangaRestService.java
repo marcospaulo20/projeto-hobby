@@ -61,8 +61,8 @@ public class MangaRestService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Manga create(Manga manga) {
-		return mangaService.createNewManga(manga);
+	public Manga createOrUpdateManga(Manga manga) {		
+		return mangaService.createOrUpdateManga(manga);
 	}
 
 	@PUT

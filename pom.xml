@@ -13,8 +13,9 @@
 
 		<bootstrap.version>3.3.6</bootstrap.version>
 		<jquery.version>3.0.0</jquery.version>
-		<angularjs.version>1.5.6</angularjs.version>
-		<angular-ui-bootstrap.version>0.12.1</angular-ui-bootstrap.version>
+		<angularjs.version>1.5.0</angularjs.version>
+		<angular-ui-bootstrap.version>0.14.3</angular-ui-bootstrap.version>
+		<angular-material.version>1.0.9</angular-material.version>
 	</properties>
 
 	<dependencies>
@@ -23,6 +24,11 @@
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-servlet-2.x</artifactId>
+			<version>1.1</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
@@ -54,11 +60,28 @@
 			<artifactId>angular-ui-bootstrap</artifactId>
 			<version>${angular-ui-bootstrap.version}</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.webjars/angular-material -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>angular-material</artifactId>
+			<version>${angular-material.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
-
+		<resources>
+			<resource>
+				<directory>src/main/webapp</directory>
+				<filtering>true</filtering>
+				<targetPath>${project.basedir}/target/m2e-wtp/web-resources</targetPath>
+				<includes>
+					<include>index.html</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.wildfly.plugins</groupId>
@@ -91,6 +114,16 @@
 				<configuration>
 					<attachClasses>true</attachClasses>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<webResources>
+						<resource>
+							<directory>src/main/webapp</directory>
+							<filtering>true</filtering>
+							<includes>
+								<include>app.js</include>
+								<include>index.html</include>
+							</includes>
+						</resource>
+					</webResources>
 				</configuration>
 			</plugin>
 		</plugins>

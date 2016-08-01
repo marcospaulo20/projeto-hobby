@@ -1,0 +1,17 @@
+<md-dialog aria-label="Manga">
+	<md-content class="md-padding">
+		<form name="mangaForm">
+			<div layout layout-sm="column">
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Titulo</label> 
+					<input ng-model="manga.titulo">
+				</md-input-container>		
+			</div>	
+		</form>
+	</md-content>
+	<div class="md-actions" layout="row">
+		<span flex></span>
+		<md-button ng-click="answer('not useful')"> Cancel </md-button>
+		<md-button type="submit" ng-click="add" ng-model="manga" class="md-primary">Save</md-button>
+	</div>
+</md-dialog>

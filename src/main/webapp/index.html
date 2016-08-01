@@ -1,67 +1,58 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="projetoHobbyApp">
-<head>
+<head>	
 	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Projeto Hobby</title>
-	<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css" />
-	<link rel="stylesheet" type="text/css" href="resources/css/app.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Projeto Hobby</title>	
 	
-	<link rel="stylesheet" type="text/css" href="resources/css/simple-sidebar.css">
+	<link rel="stylesheet" href="webjars/angular-material/${angular-material.version}/angular-material.min.css" />
+	<link rel="stylesheet" href="webjars/angular-material/${angular-material.version}/layouts/angular-material.layouts.min.css" />	
 	
-	<link rel="stylesheet" type="text/css" href="resources/css/image-crop-styles.css">
+	<link rel="stylesheet" href="resources/css/app.css?version=${project.version}" />	
 </head>
-<body>
-	<div id="wrapper">
-		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav">
-				<li class="sidebar-brand">
-					<a href="#">
-						Projeto de controle
-					</a>
-				</li>
-				<li>
-					<a ng-href="#/manga-list">Mangas</a>
-				</li>
-			</ul>
-		</div>
-		
-		<div id="page-content-wrapper">
-			<div class="container-fluid">
-				<div ng-view></div>
-			</div>
-		</div>
-	</div>
-	
-	<script src="webjars/angularjs/1.5.6/angular.js"></script>
-	<script src="webjars/angularjs/1.5.6/angular-route.js"></script>
-	<script src="webjars/angularjs/1.5.6/angular-resource.js"></script>
-	<script src="webjars/angularjs/1.5.6/angular-animate.js"></script>
+<body layout="row" ng-controller="AppCtrl">
+	<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2"
+		md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+		<md-toolbar class="md-tall md-hue-2">
+			<span flex></span>
+		</md-toolbar>
+		<md-list class="hobby-list">		
+			<md-item ng-repeat="it in hobbys">
+				<a ng-href="{{it.link}}">			
+					<md-item-content>
+						<md-button ng-click="selectHobby(it)" ng-class="{'selected' : it === selected}">
+							<img ng-src="{{it.icon}}" class="face" alt="">
+							{{it.title}}
+						</md-button>
+					</md-item-content>
+				</a>
+			</md-item>
+		</md-list>
+	</md-sidenav>
 
-	<script src="webjars/jquery/3.0.0/jquery.min.js"></script>
-		
-	<script src="resources/js/lib/angular-table.js"></script>
-		
+	<div layout="column" class="relative" layout-fill role="main" ng-view></div>
+	
+	<script src="webjars/jquery/${jquery.version}/jquery.js"></script>
+	
+	<script src="webjars/angularjs/${angularjs.version}/angular.js"></script>
+	<script src="webjars/angularjs/${angularjs.version}/angular-route.js"></script>	
+	<script src="webjars/angularjs/${angularjs.version}/angular-animate.js"></script>
+	<script src="webjars/angularjs/${angularjs.version}/angular-aria.js"></script>
+	<script src="webjars/angularjs/${angularjs.version}/angular-messages.js"></script>
+	<script src="webjars/angularjs/${angularjs.version}/angular-resource.js"></script>
+
 	<script src="resources/js/lib/angular-material-icons.min.js"></script>
+	
+	<script src="webjars/angular-material/${angular-material.version}/angular-material.min.js"></script>
 	
 	<script src="resources/js/lib/image-crop.js"></script>
 	
 	<script src="resources/js/lib/ng-file-upload-shim.min.js"></script>
 	<script src="resources/js/lib/ng-file-upload.min.js"></script>	
 	
-	<script src="webjars/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.js"></script>
-	
-	<script src="resources/js/app.js"></script>
-	<script src="resources/js/services/mangaService.js"></script>	
-	<script src="resources/js/controllers/mangaCtrl.js"></script>
-	<script src="resources/js/directives/directive.js"></script>
-	<script>
-	    $("#menu-toggle").click(function(e) {
-	        e.preventDefault();
-	        $("#wrapper").toggleClass("toggled");
-	    });
-    </script>	
+	<script src="resources/js/app.js?version=${project.version}"></script>
+	<script src="resources/js/directives/directive.js?version=${project.version}"></script>
+	<script src="resources/js/services/mangaService.js?version=${project.version}"></script>
+	<script src="resources/js/controllers/mangaCtrl.js?version=${project.version}"></script>	
 </body>
 </html>

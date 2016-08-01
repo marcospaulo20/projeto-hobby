@@ -2,11 +2,64 @@
 	<div class="container-fluid">
   		<div class="navbar-header">
   			<a class="navbar-brand" href="#/manga-detail/{{manga.id}}">{{manga.titulo}}</a>
-  			<a class="navbar-brand" href="#/manga/{{manga.id}}/{{titulo.id}}">/ {{titulo.titulo}}</a>
-  			<a class="navbar-brand" href="#/manga/{{manga.id}}/{{titulo.id}}/{{volume.id}}">/ {{volume.nome}}</a>
+  			<a class="navbar-brand" href="#/manga/{{manga.id}}/{{titulo.id}}">/ {{titulo.titulo}}</a><a class="navbar-brand"> / {{volume.nome}}</a>
   		</div>
   	</div>
 </nav>
-<div class="row">
-	<img data-ng-src="data:image/(png|jpg);base64,{{volume.imagem}}" style="width: 250px;"/>
+
+<div class="col-sm-12">
+	<div class="col-sm-3">
+	    	<img style="height: 210px;width: 160px;" class="img-responsive img-rounded" data-ng-src="data:image/(png|jpg);base64,{{volume.imagem}}"/>
+		</div>
+    <div class="col-sm-9">
+    	<div id="capitulo" class="bs-form">
+		    <form class="form-horizontal" name="capituloForm">		    					
+				<div class="col-sm-12">
+					<div class="form-group" show-errors>
+						<div class="col-sm-3">
+							<input type="number" class="form-control" id="numero" name="numero" ng-model="capitulo.numero" placeholder="Numero" required>							
+						</div>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="nome" name="nome" ng-model="capitulo.nome" placeholder="Nome" required>
+						</div>
+					</div>
+					<div class="form-group" show-errors>
+						<div class="col-sm-6">
+							<select class="form-control" id="status" name="status" ng-model="capitulo.status" required>
+								<option value="">-- Selecione uma opcao --</option>
+								<option value="J&aacute; Li">J&aacute; li</option>
+						      	<option value="Lendo">Lendo</option>
+						      	<option value="N&atilde;o li">N&atilde;o li</option>
+						      	<option value="Relendo">Relendo</option>
+						      	<option value="Vou ler">Vou ler</option>
+						      	<option value="N&atilde;o Vou ler">N&atilde;o Vou ler</option>
+						      	<option value="Desistir">Desistir</option>
+							</select>
+						</div>					
+					</div>
+				</div>
+				<div class="form-group">
+		    		<div class="col-sm-10">
+						<button type="submit" ng-click="add()" ng-model="capitulo" class="btn btn-primary">Salvar</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<div class="col-md-12">
+		<input type="text" class="form-control ng-valid ng-dirty" placeholder="Search for.." ng-model="query" ng-change="updateFilteredList()">
+		<table class="table table-striped" at-table at-paginated at-list="list" at-config="config">
+			<thead></thead>
+			<tbody>
+				<tr ng-click="test(item)">
+					<td at-implicit at-attribute="numero" width="50" at-initial-sorting="asc"></td>
+		      		<td at-implicit at-attribute="nome" width="200"></td>
+		      		<td at-implicit at-attribute="status" width="50"></td>	      		
+		    	</tr>
+			</tbody>
+		</table>
+		
+		<at-pagination at-list="list" at-config="config"></at-pagination>
+	</div>
 </div>

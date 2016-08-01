@@ -9,21 +9,21 @@
     <div class="col-md-12">
     	<div id="volume" class="bs-form">
 		    <form class="form-horizontal" name="volumeForm">		    	
-				<div class="col-sm-4">
+				<div class="col-sm-5">
 			    	<div ng-show="imageCropStep == 1">		
 						<div ngf-drop ngf-select ng-model="files" class="drop-box" 
-       							ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
-       							accept="image/*" ngf-pattern="'image/*'">Drop images here or click to upload
-       							<span ng-show="dropAvailable"> or Drop File</span>
+       						ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
+       						accept="image/*" ngf-pattern="'image/*'">Largue as imagens aqui ou clique para fazer upload
+       						<span ng-show="dropAvailable"> ou soltar de arquivo</span>
        					</div>							 
-			            <div class="preview">
-				            <img ngf-src="!files[0].$error && files[0]">
-				         </div>
+						<div class="preview">
+							<img ngf-src="!files[0].$error && files[0]">
+				        </div>
 					</div>
-					<div ng-show="imageCropStep == 2">
+					<div ng-show="imageCropStep == 2" class="img-responsive" >
 				    	 <image-crop			 
 							 data-height="270"
-							 data-width="220"
+							 data-width="200"
 							 data-shape="square"
 							 data-step="imageCropStep"
 							 src="imgSrc"
@@ -33,45 +33,50 @@
 							 padding="10"
 							 max-size="300">
 						</image-crop>
-			    	</div>
-			    	<div ng-show="imageCropStep == 2">	
-						<div class="col-sm-6">
-					   		<button class="btn btn-default" ng-click="initCrop = true">Crop</button>		
+						<div class="row">
+							<div class="col-xs-4 col-md-4">
+								<button class="btn btn-primary" ng-click="initCrop = true">OK</button>
+							</div>
+							<div class="col-xs-6 col-md-6">
+								<button class="btn btn-danger" ng-click="clear()">Cancelar</button>					   			
+					   		</div>
 				   		</div>
-					</div>
+			    	</div>
 					<div ng-show="imageCropStep == 3">
-					 	<img ng-src="{{result}}"></img>
+					 	<img ng-src="{{result}}" class="img-responsive img-rounded"></img>
 				  	</div>
 				</div>
-				<div class="col-sm-8">
+				<div class="col-sm-7">
 					<div class="form-group" show-errors>
 						<div class="col-sm-12">
 							<input type="hidden" name="titulo" value="{{titulo.id}}" ng-model="volume.titulo">
 							<input type="text" class="form-control" name="nome" ng-model="volume.nome" placeholder="Nome" required>
 						</div>
-					</div>				
+					</div>
 					<div class="form-group" show-errors>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" name="anoPublicacao" ng-model="volume.anoPublicacao" placeholder="Ano publicacao">
+							<input type="date" class="form-control" name="anoPublicacao" ng-model="volume.anoPublicacao" placeholder="dd-MM-yyyy" min="1920-01-01" max="2017-12-31">
 						</div>
 						<div class="col-sm-6">
 							<select class="form-control" name="status" ng-model="volume.status" required>
-								<option value="concluido">Concluido</option>
-						      	<option value="andamento">Andamento</option>
-						      	<option value="parado">Parado</option>
+								<option value="">-- Selecione uma opcao --</option>
+								<option value="Conclu&iacute;do">Conclu&iacute;do</option>
+						      	<option value="Andamento">Andamento</option>
+						      	<option value="Parado">Parado</option>
 							</select>
 						</div>
 					</div>
 					<div class="form-group" show-errors>
 						<div class="col-sm-4">
 							<select class="form-control" name="pais" ng-model="volume.pais">
-								<option value="en">U.S.</option>
-						      	<option value="br">Brasil</option>
-						      	<option value="jp">Japão</option>
+								<option value="">-- Selecione uma opcao --</option>
+								<option value="U.S">U.S.</option>
+						      	<option value="Brasil">Brasil</option>
+						      	<option value="Jap&atilde;o">Jap&atilde;o</option>
 							</select>
 						</div>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" name="preco" ng-model="volume.preco" placeholder="Preco">
+							<input type="number" class="form-control" name="preco" ng-model="volume.preco" placeholder="R$">
 						</div>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" name="revista" ng-model="volume.revista" placeholder="Revista">
@@ -85,17 +90,18 @@
 							<input type="text" class="form-control" name="desenhista" ng-model="volume.desenhista" placeholder="Desenhista">
 						</div>
 					</div>
-				</div>
-				<div class="form-group">					
-		    		<div class="col-sm-10">
-						<button type="submit" ng-disabled="volumeForm.$invalid" ng-click="add()" ng-model="volume" class="btn btn-default">Create</button>						
+					<div class="form-group">
+		    			<div class="col-sm-10">
+							<button type="submit" ng-click="add()" ng-model="volume" class="btn btn-primary">Salvar</button>						
+						</div>
 					</div>
 				</div>
+				<div class="form-group"></div>
 			</form>
 		</div>
 	</div>
 	
-	<div class="col-md-12">
+	<div class="col-md-12 table-responsive">
 		<input type="text" class="form-control ng-valid ng-dirty" placeholder="Search for.." ng-model="query" ng-change="updateFilteredList()">
 		<table class="table table-striped" at-table at-paginated at-list="list" at-config="config">
 			<thead></thead>
@@ -103,14 +109,26 @@
 				<tr>
 					<td>
 						<div class="row">
-							<div class="col-xs-6 col-md-3">
-								 <img data-ng-src="data:image/(png|jpg);base64,{{item.imagem}}"/>
+							<div class="col-xs-3 col-md-3">
+								 <a ng-href="#/manga/{{manga.id}}/{{item.titulo}}/{{item.id}}">
+								 	<img class="img-responsive img-thumbnail" data-ng-src="data:image/(png|jpg);base64,{{item.imagem}}"/>
+								 </a>								 
 		  					</div>
+		  					<div class="col-xs-9 col-md-9">
+								 <div class="row" ng-repeat="cap in item.capitulos | orderBy: 'id'">
+								 	<div class="col-xs-1 col-md-1">
+								 		<h5>{{cap.numero}}</h5>
+								 	</div>
+								 	<div class="col-xs-9 col-md-9">
+								 		<h5>{{cap.nome}}</h5>
+								 	</div>
+								 	<div class="col-xs-2 col-md-2">
+								 		<h5>{{cap.status}}</h5>
+								 	</div>
+								 </div>
+		  					</div>		
 	  					</div>
 	  				</td>
-		      		<td at-implicit at-attribute="nome" width="200" at-initial-sorting="asc"></td>
-		      		<td at-implicit at-attribute="status" width="50"></td>	      		
-		      		<td><a ng-href="#/manga/{{manga.id}}/{{item.titulo}}/{{item.id}}"><ng-md-icon icon="edit" size="20px"></ng-md-icon></a></td>
 		    	</tr>
 			</tbody>
 		</table>

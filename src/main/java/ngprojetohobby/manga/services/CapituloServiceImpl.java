@@ -1,17 +1,23 @@
 package ngprojetohobby.manga.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import ngprojetohobby.manga.domain.Capitulo;
+import ngprojetohobby.manga.domain.Volume;
 import ngprojetohobby.manga.repositories.CapituloRepository;
+import ngprojetohobby.manga.repositories.VolumeRepository;
 
 @javax.enterprise.context.RequestScoped
 public class CapituloServiceImpl implements CapituloService {
 
 	@Inject
 	private CapituloRepository capituloRepository;
+	
+	@Inject
+	private VolumeRepository volumeRepository;
 
 	@Override
 	public List<Capitulo> getAllCapitulos(Long id) {
@@ -24,8 +30,25 @@ public class CapituloServiceImpl implements CapituloService {
 	}
 
 	@Override
-	public Capitulo createNewCapitulo(Capitulo capitulo) {
-		return this.capituloRepository.create(capitulo);
+	public Capitulo createOrUpdateCapitulo(Capitulo capitulo) {
+		if(capitulo.getId() == null) {
+			capitulo = this.capituloRepository.create(capitulo); 
+			
+			Volume volume = volumeRepository.getById(capitulo.getVolume());
+			
+			List<Capitulo> cList = new ArrayList<Capitulo>();
+			cList.add(capitulo);
+			
+			for(Capitulo capitulo_ : volume.getCapitulos()) {
+				cList.add(capitulo_);
+			}
+			
+			volume.setCapitulos(cList);
+			volumeRepository.update(volume);
+		} else {
+			capitulo = this.capituloRepository.update(capitulo);
+		}
+		return capitulo;
 	}
 
 	@Override

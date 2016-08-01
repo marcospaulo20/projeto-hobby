@@ -47,16 +47,16 @@ public class VolumeRestService {
 	@Path("titulo/volumes")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Volume create(Volume titulo) {
-		return volumeService.createNewVolume(titulo);
+	public Volume create(Volume volume) {
+		return volumeService.createOrUpdateVolume(volume);
 	}
 
 	@PUT
 	@Path("{id}/titulo/{idTitulo}/volumes/{idVolume}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Volume uptade(Volume titulo) {
-		return volumeService.update(titulo);
+	public Volume uptade(Volume volume) {
+		return volumeService.update(volume);
 	}
 
 	@DELETE

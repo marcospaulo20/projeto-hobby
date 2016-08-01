@@ -40,7 +40,7 @@ public abstract class RepositoryImpl<T> {
 		return entity;
 	}
 
-	public T update(T entity) {
+	public T update(T entity) {		
 		return (T) em.merge(entity);
 	}
 

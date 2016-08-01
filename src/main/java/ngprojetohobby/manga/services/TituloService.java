@@ -10,7 +10,7 @@ public interface TituloService {
 
     Titulo getById(Long id);
 
-    Titulo createNewTitulo(Titulo titulo);
+    Titulo createOrUpdateTitulo(Titulo titulo);
 
     Titulo update(Titulo titulo);
 

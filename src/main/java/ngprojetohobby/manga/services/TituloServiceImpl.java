@@ -1,10 +1,13 @@
 package ngprojetohobby.manga.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import ngprojetohobby.manga.domain.Manga;
 import ngprojetohobby.manga.domain.Titulo;
+import ngprojetohobby.manga.repositories.MangaRepository;
 import ngprojetohobby.manga.repositories.TituloRepository;
 
 @javax.enterprise.context.RequestScoped
@@ -12,6 +15,9 @@ public class TituloServiceImpl implements TituloService {
 
 	@Inject
 	private TituloRepository tituloRepository;
+	
+	@Inject
+	private MangaRepository mangaRepository;
 
 	@Override
 	public List<Titulo> getAllTitulos(Long id) {
@@ -24,8 +30,25 @@ public class TituloServiceImpl implements TituloService {
 	}
 
 	@Override
-	public Titulo createNewTitulo(Titulo titulo) {
-		return this.tituloRepository.create(titulo);
+	public Titulo createOrUpdateTitulo(Titulo titulo) {
+		if(titulo.getId() == null) {
+			titulo = this.tituloRepository.create(titulo); 
+			
+			Manga manga = mangaRepository.getById(titulo.getManga());
+			
+			List<Titulo> tList = new ArrayList<Titulo>();
+			tList.add(titulo);
+			
+			for(Titulo titulo_ : manga.getTitulos()) {
+				tList.add(titulo_);
+			}
+			
+			manga.setTitulos(tList);
+			mangaRepository.update(manga);
+		} else {
+			titulo = tituloRepository.update(titulo);
+		}
+		return titulo;
 	}
 
 	@Override

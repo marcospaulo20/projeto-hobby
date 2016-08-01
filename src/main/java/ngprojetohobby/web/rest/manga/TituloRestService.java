@@ -21,7 +21,7 @@ public class TituloRestService {
 
 	@Inject
 	private TituloService tituloService;
-
+	
 	@GET
 	@Path("{manga}/titulos/numberOfTitulos")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -48,7 +48,7 @@ public class TituloRestService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Titulo create(Titulo titulo) {
-		return tituloService.createNewTitulo(titulo);
+		return tituloService.createOrUpdateTitulo(titulo);
 	}
 
 	@PUT

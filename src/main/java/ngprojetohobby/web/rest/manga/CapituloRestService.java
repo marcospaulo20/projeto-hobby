@@ -38,7 +38,7 @@ public class CapituloRestService {
 
 	@GET
 	@Path("{id}/titulo/{idTitulo}/volumes/{idVolume}/capitulos/{idCapitulo}")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)	
 	public Capitulo getCapituloById(@PathParam("idCapitulo") Long id) {
 		return capituloService.getById(id);
 	}
@@ -47,16 +47,16 @@ public class CapituloRestService {
 	@Path("titulo/volume/capitulos")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Capitulo create(Capitulo titulo) {
-		return capituloService.createNewCapitulo(titulo);
+	public Capitulo create(Capitulo capitulo) {
+		return capituloService.createOrUpdateCapitulo(capitulo);
 	}
 
 	@PUT
 	@Path("{id}/titulo/{idTitulo}/volume/{idVolume}/capitulos/{idCapitulo}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Capitulo uptade(Capitulo titulo) {
-		return capituloService.update(titulo);
+	public Capitulo uptade(Capitulo capitulo) {
+		return capituloService.update(capitulo);
 	}
 
 	@DELETE

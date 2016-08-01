@@ -23,13 +23,11 @@ public class Capitulo implements Serializable {
 	private String nome;
 	@NotNull
 	private Integer numero;
-	@Column(name = "status_acompanhamento")
-	private Boolean statusAcompanhamento;
-	@Column(name = "status_verificado")
-	private Boolean statusVerificado;
+	@Column(name = "status")
+	private String status;
 
-	@Column(name = "volume_id", nullable = false)
-	private Long titulo;
+	@Column(name = "volume_id")
+	private Long volume;
 
 	public Capitulo() {
 		super();
@@ -55,28 +53,20 @@ public class Capitulo implements Serializable {
 		this.numero = numero;
 	}
 
-	public Boolean getStatusAcompanhamento() {
-		return statusAcompanhamento;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setStatusAcompanhamento(Boolean statusAcompanhamento) {
-		this.statusAcompanhamento = statusAcompanhamento;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
-	public Boolean getStatusVerificado() {
-		return statusVerificado;
+	public Long getVolume() {
+		return volume;
 	}
 
-	public void setStatusVerificado(Boolean statusVerificado) {
-		this.statusVerificado = statusVerificado;
-	}
-
-	public Long getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(Long titulo) {
-		this.titulo = titulo;
+	public void setVolume(Long volume) {
+		this.volume = volume;
 	}
 
 }

@@ -10,7 +10,7 @@ public interface CapituloService {
 
 	Capitulo getById(Long id);
 
-	Capitulo createNewCapitulo(Capitulo capitulo);
+	Capitulo createOrUpdateCapitulo(Capitulo capitulo);
 
 	Capitulo update(Capitulo capitulo);
 

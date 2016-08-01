@@ -24,8 +24,11 @@ public class MangaServiceImpl implements MangaService {
 	}
 
 	@Override
-	public Manga createNewManga(Manga Manga) {
-		return this.mangaRepository.create(Manga);
+	public Manga createOrUpdateManga(Manga manga) {
+		if(manga.getId() == null) {
+			return this.mangaRepository.create(manga);
+		}
+		return this.mangaRepository.update(manga);
 	}
 
 	@Override

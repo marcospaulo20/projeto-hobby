@@ -2,7 +2,7 @@ package ngprojetohobby.manga.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,10 +12,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -35,7 +35,7 @@ public class Volume implements Serializable {
 	@Size(min = 1, max = 255)
 	private String nome;
 	@Column(name = "ano_publicacao")
-	@Temporal(javax.persistence.TemporalType.DATE)
+	@Temporal(value = TemporalType.DATE)
 	private Date anoPublicacao;
 	@Column(length = 20)
 	private String status;
@@ -52,14 +52,11 @@ public class Volume implements Serializable {
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] imagem;
 
-	@Column(name = "titulo_id", nullable = false)
+	@Column(name = "titulo_id")
 	private Long titulo;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "volume_capitulo", joinColumns = {
-			@JoinColumn(name = "volume_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "capitulo_id", referencedColumnName = "id") })
-	private Set<Capitulo> capitulos;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Capitulo.class)
+	private List<Capitulo> capitulos;
 
 	public Volume() {
 		super();
@@ -149,11 +146,11 @@ public class Volume implements Serializable {
 		this.titulo = titulo;
 	}
 
-	public Set<Capitulo> getCapitulos() {
+	public List<Capitulo> getCapitulos() {
 		return capitulos;
 	}
 
-	public void setCapitulos(Set<Capitulo> capitulos) {
+	public void setCapitulos(List<Capitulo> capitulos) {
 		this.capitulos = capitulos;
 	}
 
