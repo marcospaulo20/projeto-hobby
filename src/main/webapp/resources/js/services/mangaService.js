@@ -33,7 +33,7 @@ services.factory('TituloFactory', function TituloFactory($resource) {
 	return $resource('rest/manga/:id/titulos/:idTitulo', {}, {
 		show: { method: 'GET', params: {id: '@manga.id', idTitulo: '@id'}  },
 		update: { method: 'PUT', params: {id: '@manga.id', idTitulo: '@id'} },
-		delete: { method: 'DELETE', params: {id: '@manga', idTitulo: '@id'} }
+		delete: { method: 'DELETE', params: {id: '@manga.id', idTitulo: '@id'} }
 	})
 });
 
@@ -52,19 +52,19 @@ services.factory('VolumeCreateFactory', function VolumeFactory($resource) {
 services.factory('VolumeFactory', function VolumeFactory($resource) {
 	return $resource('rest/manga/:id/titulo/:idTitulo/volumes/:idVolume', {}, {
 		show: { method: 'GET', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@id'} },
-		update: { method: 'PUT', params: {id: '@manga.id', idTitulo: '@tituo.id', idVolume: '@volume.id'} },
-	})
-});
-
-
-services.factory('CapituloCreateFactory', function CapituloFactory($resource) {
-	return $resource('rest/manga/titulo/volume/capitulos', {}, {
-		create: { method: 'POST' }
+		update: { method: 'PUT', params: {id: '@manga.id', idTitulo: '@tituo.id', idVolume: '@id'} },
+		delete: { method: 'DELETE', params: {id: '@manga.id', idTitulo: '@tituo.id', idVolume: '@id'} },
 	})
 });
 
 services.factory('CapitulosFactory', function CapitulosFactory($resource) {
 	return $resource('rest/manga/:id/titulo/:idTitulo/volume/:idVolume/capitulos', {}, {
 		query: { method: 'GET', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@id'}, isArray: true }
+	})
+});
+
+services.factory('CapituloCreateFactory', function CapituloFactory($resource) {
+	return $resource('rest/manga/titulo/volume/capitulos', {}, {
+		create: { method: 'POST' }
 	})
 });

@@ -1,65 +1,3 @@
-.grid {
-    float: left;
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
-.grid .edit {
-    margin-top: 6px;
-    margin-left: 7px;
-}
-
-.gridStyle {
-    border: 1px solid rgb(212, 212, 212);
-    height: 335px;
-}
-
-@media(min-width: 768px)
-.bs-form {
-	margin-right: 0;
-    margin-left: 0;
-    background-color: #fff;
-    border-color: #ddd;
-    border-width: 1px;
-    border-radius: 4px 4px 0 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
-.bs-form {
-    position: relative;
-    padding: 45px 15px 15px;
-    margin: 0 -15px 15px;
-    border-color: #e5e5e5 #eee #eee;
-    border-style: solid;
-    border-width: 1px 0;
-    -webkit-box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
-    box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
-}
-
-.bs-form:after {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #959595;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-#manga.bs-form:after {
-	content: "Formulario Manga";
-}
-#titulo.bs-form:after {
-	content: "Formulario Titulo";
-}
-#volume.bs-form:after {
-	content: "Formulario Volume";
-}
-#capitulo.bs-form:after {
-	content: "Formulario Capitulo";
-}
-
 .drop-box {
     background: #F8F8F8;
     border: 5px dashed #DDD;
@@ -68,7 +6,37 @@
     padding: 50px 10px;
 }
 
-/** Material angular **/
+.hobby-list .md-button {
+  color: black;
+  text-align: left;
+  width: 95%;
+}
+
+.hobby-list .selected {
+  color: #03a9f4;
+}
+
+.face {
+  border-radius: 30px;
+  border: 1px solid #ddd;
+  display: inline-block;
+  margin: 4px 16px; 
+  vertical-align: middle;
+  width: 60px;
+}
+
+.full-heigth {
+    height: -moz-calc(100% - 64px); 
+    height: -webkit-calc(100% - 64px);
+    height: calc(100% - 64px);
+}
+
+.dialog-95 {
+    width: 95%;
+    height: auto;
+}
+
+/** Material angular **/	
 $gray: #eee;
 
 md-content.md-default-theme {
@@ -101,6 +69,14 @@ md-toolbar:not(.md-hue-1),
   background-color: rgb(63,81,181);  
 }
 
+md-sidenav {
+  fill: #737373;
+  ng-md-icon {
+    position: relative;
+    top: 5px; /* adjust for svg viewbox */
+  }
+}
+
 md-toolbar.md-hue-1:not(.md-menu-toolbar) {
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
 }
@@ -112,38 +88,9 @@ md-toolbar.md-hue-1:not(.md-menu-toolbar) {
 	line-height: 0;
 }
 
-md-sidenav {
-  fill: #737373;
-  ng-md-icon {
-    position: relative;
-    top: 5px; /* adjust for svg viewbox */
-  }
+md-input-container {
+	display: flex;	
 }
 
-.hobby-list .md-button {
-  color: black;
-  text-align: left;
-  width: 95%;
-}
-.hobby-list .selected {
-  color: #03a9f4;
-}
-.face {
-  border-radius: 30px;
-  border: 1px solid #ddd;
-  display: inline-block;
-  margin: 4px 16px; 
-  vertical-align: middle;
-  width: 60px;
-}
-
-.full-heigth {
-    height: -moz-calc(100% - 64px); 
-    height: -webkit-calc(100% - 64px);
-    height: calc(100% - 64px);
-}
-
-.dialog-95 {
-    width: 95%;
-    height: auto;
-}
+ .md-datepicker-button {
+  width: 36px; }

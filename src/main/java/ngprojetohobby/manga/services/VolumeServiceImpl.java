@@ -30,7 +30,7 @@ public class VolumeServiceImpl implements VolumeService {
 	}
 
 	@Override
-	public Volume createOrUpdateVolume(Volume volume) {
+	public Volume create(Volume volume) {
 		if(volume.getId() == null) {
 			volume = this.volumeRepository.create(volume);
 	

@@ -48,7 +48,7 @@ public class CapituloRestService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Capitulo create(Capitulo capitulo) {
-		return capituloService.createOrUpdateCapitulo(capitulo);
+		return capituloService.create(capitulo);
 	}
 
 	@PUT

@@ -30,7 +30,7 @@ public class CapituloServiceImpl implements CapituloService {
 	}
 
 	@Override
-	public Capitulo createOrUpdateCapitulo(Capitulo capitulo) {
+	public Capitulo create(Capitulo capitulo) {
 		if(capitulo.getId() == null) {
 			capitulo = this.capituloRepository.create(capitulo); 
 			

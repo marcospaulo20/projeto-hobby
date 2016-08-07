@@ -30,24 +30,26 @@ public class TituloServiceImpl implements TituloService {
 	}
 
 	@Override
-	public Titulo createOrUpdateTitulo(Titulo titulo) {
-		if(titulo.getId() == null) {
-			titulo = this.tituloRepository.create(titulo); 
-			
-			Manga manga = mangaRepository.getById(titulo.getManga());
-			
-			List<Titulo> tList = new ArrayList<Titulo>();
-			tList.add(titulo);
-			
-			for(Titulo titulo_ : manga.getTitulos()) {
-				tList.add(titulo_);
-			}
-			
-			manga.setTitulos(tList);
-			mangaRepository.update(manga);
-		} else {
-			titulo = tituloRepository.update(titulo);
+	public Titulo create(Titulo titulo) {
+		List<String> categorias = new ArrayList<String>();
+		for(String c : titulo.getCategorias()) {
+			categorias.add(c);
 		}
+		
+		titulo.setCategorias(categorias);
+		titulo = this.tituloRepository.create(titulo);
+	
+		Manga manga = mangaRepository.getById(titulo.getManga());
+		
+		List<Titulo> titulos = new ArrayList<>();
+		for(Titulo t : manga.getTitulos()) {
+			titulos.add(t);
+		}
+		
+		titulos.add(titulo);
+		manga.setTitulos(titulos);
+		mangaRepository.update(manga);
+		
 		return titulo;
 	}
 

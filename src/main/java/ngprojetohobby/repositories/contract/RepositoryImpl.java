@@ -32,7 +32,7 @@ public abstract class RepositoryImpl<T> {
 	public T getById(Long id) {
 		return em.find(clazz, id);
 	}
-
+	
 	public T create(T entity) {
 		em.persist(entity);
 		em.flush();

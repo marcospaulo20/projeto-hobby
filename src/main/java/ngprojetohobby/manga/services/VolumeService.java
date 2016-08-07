@@ -10,7 +10,7 @@ public interface VolumeService {
 
     Volume getById(Long id);
 
-    Volume createOrUpdateVolume(Volume volume);
+    Volume create(Volume volume);
 
     Volume update(Volume volume);
 

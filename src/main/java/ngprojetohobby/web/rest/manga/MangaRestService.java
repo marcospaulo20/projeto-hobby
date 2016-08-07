@@ -62,7 +62,7 @@ public class MangaRestService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Manga createOrUpdateManga(Manga manga) {		
-		return mangaService.createOrUpdateManga(manga);
+		return mangaService.create(manga);
 	}
 
 	@PUT

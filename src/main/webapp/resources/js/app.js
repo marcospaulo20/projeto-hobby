@@ -1,24 +1,24 @@
 'use strict';
 
-var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ngMdIcons', 'ImageCropper', 'ngFileUpload', 'projetoHobbyApp.directive', 'projetoHobbyApp.manga.services', 'projetoHobbyApp.manga.controllers']); 
+var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ngMdIcons', 'ImageCropper', 'ngFileUpload', 'projetoHobbyApp.directive', 'projetoHobbyApp.manga.services', 'projetoHobbyApp.manga.controllers', 'projetoHobbyApp.titulo.controllers']); 
 
 	app.config(['$routeProvider', function($routeProvider) {
 		var version = '?nocache=${project.version}';
 		
-		$routeProvider.when('/manga-list', {
-			templateUrl: 'views/manga/manga-list.html',
-			controller: 'MangaListCtrl'
+		$routeProvider.when('/mangas', {
+			templateUrl: 'views/manga/index.html',
+			controller: 'MangaCtrl'
 		});
-		$routeProvider.when('/manga-detail/:id', {
-			templateUrl: 'views/manga/manga-detail.html',
-			controller: 'MangaDetailCtrl'
+		$routeProvider.when('/manga/:id', {
+			templateUrl: 'views/manga/titulo.html',
+			controller: 'TituloCtrl'
 		});
 		$routeProvider.when('/manga/:id/:idTitulo', {
-			templateUrl: 'views/manga/titulo/titulo-detail.html', 
+			templateUrl: 'views/manga/volume.html', 
 			controller: 'TituloDetailCtrl'
 		});
 		$routeProvider.when('/manga/:id/:idTitulo/:idVolume', {
-			templateUrl: 'views/manga/volume/volume-detail.html', 
+			templateUrl: 'views/manga/capitulo.html', 
 			controller: 'VolumeDetailCtrl'
 		});
 	}]);
@@ -37,7 +37,7 @@ var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', '
 	  	
 	  	$scope.hobbys = [
 	  	  {
-	  		link: projectUrl + '/manga-list',
+	  		link: projectUrl + '/mangas',
 	  		title: 'Mangás',
 	  		icon: 'img/manga-icon.png'	  		
 	  	  }	  	  

@@ -8,7 +8,10 @@
 	<link rel="stylesheet" href="webjars/angular-material/${angular-material.version}/angular-material.min.css" />
 	<link rel="stylesheet" href="webjars/angular-material/${angular-material.version}/layouts/angular-material.layouts.min.css" />	
 	
-	<link rel="stylesheet" href="resources/css/app.css?version=${project.version}" />	
+	<link rel="stylesheet" href="resources/css/image-crop-styles.css?version=${project.version}" />
+	
+	<link rel="stylesheet" href="resources/css/app.css?version=${project.version}" />
+		
 </head>
 <body layout="row" ng-controller="AppCtrl">
 	<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2"
@@ -16,7 +19,7 @@
 		<md-toolbar class="md-tall md-hue-2">
 			<span flex></span>
 		</md-toolbar>
-		<md-list class="hobby-list">		
+		<md-list class="hobby-list">
 			<md-item ng-repeat="it in hobbys">
 				<a ng-href="{{it.link}}">			
 					<md-item-content>
@@ -29,7 +32,7 @@
 			</md-item>
 		</md-list>
 	</md-sidenav>
-
+		
 	<div layout="column" class="relative" layout-fill role="main" ng-view></div>
 	
 	<script src="webjars/jquery/${jquery.version}/jquery.js"></script>
@@ -53,6 +56,8 @@
 	<script src="resources/js/app.js?version=${project.version}"></script>
 	<script src="resources/js/directives/directive.js?version=${project.version}"></script>
 	<script src="resources/js/services/mangaService.js?version=${project.version}"></script>
-	<script src="resources/js/controllers/mangaCtrl.js?version=${project.version}"></script>	
+	<!-- Mangas -->
+	<script src="resources/js/controllers/manga/mangaCtrl.js?version=${project.version}"></script>
+	<script src="resources/js/controllers/manga/tituloCtrl.js?version=${project.version}"></script>	
 </body>
 </html>

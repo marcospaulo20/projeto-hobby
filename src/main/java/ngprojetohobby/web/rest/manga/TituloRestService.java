@@ -48,7 +48,7 @@ public class TituloRestService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Titulo create(Titulo titulo) {
-		return tituloService.createOrUpdateTitulo(titulo);
+		return tituloService.create(titulo);
 	}
 
 	@PUT

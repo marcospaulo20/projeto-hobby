@@ -24,7 +24,7 @@ public class MangaServiceImpl implements MangaService {
 	}
 
 	@Override
-	public Manga createOrUpdateManga(Manga manga) {
+	public Manga create(Manga manga) {
 		if(manga.getId() == null) {
 			return this.mangaRepository.create(manga);
 		}
@@ -50,4 +50,5 @@ public class MangaServiceImpl implements MangaService {
 	public List<Manga> findAllPage(int startPosition, int maxResults, String sortFields) {
 		return mangaRepository.findAll(Manga.class, startPosition, maxResults, sortFields);
 	}
+	
 }

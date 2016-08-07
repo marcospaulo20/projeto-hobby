@@ -48,7 +48,7 @@ public class VolumeRestService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Volume create(Volume volume) {
-		return volumeService.createOrUpdateVolume(volume);
+		return volumeService.create(volume);
 	}
 
 	@PUT
