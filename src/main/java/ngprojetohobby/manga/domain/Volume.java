@@ -17,8 +17,6 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -35,12 +33,9 @@ public class Volume implements Serializable {
 
 	@Column(length = 200, nullable = false)
 	private String nome;
-	@Column(length = 20)
+	@Column(length = 100)
 	private String arco;
-	@Column(nullable = false)
-	private Integer numero;
-	@Min(1)
-	@Max(4)
+
 	private Integer paginas;
 	@Column(name = "ano_publicacao_jp")
 	@Temporal(value = TemporalType.DATE)
@@ -86,14 +81,6 @@ public class Volume implements Serializable {
 
 	public void setArco(String arco) {
 		this.arco = arco;
-	}
-
-	public Integer getNumero() {
-		return numero;
-	}
-
-	public void setNumero(Integer numero) {
-		this.numero = numero;
 	}
 
 	public Integer getPaginas() {

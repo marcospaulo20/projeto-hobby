@@ -40,14 +40,7 @@ public class TituloServiceImpl implements TituloService {
 		titulo = this.tituloRepository.create(titulo);
 	
 		Manga manga = mangaRepository.getById(titulo.getManga());
-		
-		List<Titulo> titulos = new ArrayList<>();
-		for(Titulo t : manga.getTitulos()) {
-			titulos.add(t);
-		}
-		
-		titulos.add(titulo);
-		manga.setTitulos(titulos);
+		manga.getTitulos().add(titulo);
 		mangaRepository.update(manga);
 		
 		return titulo;

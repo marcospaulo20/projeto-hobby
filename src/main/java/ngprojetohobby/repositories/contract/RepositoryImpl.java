@@ -1,11 +1,13 @@
 package ngprojetohobby.repositories.contract;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -32,7 +34,7 @@ public abstract class RepositoryImpl<T> {
 	public T getById(Long id) {
 		return em.find(clazz, id);
 	}
-	
+
 	public T create(T entity) {
 		em.persist(entity);
 		em.flush();
@@ -44,11 +46,15 @@ public abstract class RepositoryImpl<T> {
 		return (T) em.merge(entity);
 	}
 
-	public void remove(Class<T> entityClass, Long primaryKey) {
-		T ref = em.getReference(entityClass, primaryKey);
-		em.remove(ref);
+	public <T> void remove(Class<T> entityClass, Serializable primaryKey) {
+		try {
+			T ref = em.getReference(entityClass, primaryKey);
+			em.remove(ref);
+		} catch(EntityNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
 	}
-
+	
 	public Integer countAll(Class<T> entityClass) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<Long> query = builder.createQuery(Long.class);

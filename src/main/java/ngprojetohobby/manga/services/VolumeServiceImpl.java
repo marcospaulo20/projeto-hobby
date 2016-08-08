@@ -1,6 +1,5 @@
 package ngprojetohobby.manga.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,24 +30,12 @@ public class VolumeServiceImpl implements VolumeService {
 
 	@Override
 	public Volume create(Volume volume) {
-		if(volume.getId() == null) {
-			volume = this.volumeRepository.create(volume);
-	
-			Titulo titulo = tituloRepository.getById(volume.getTitulo());
-	
-			List<Volume> vList = new ArrayList<Volume>();
-			vList.add(volume);
-	
-			for (Volume volume_ : titulo.getVolumes()) {
-				vList.add(volume_);
-			}
-	
-			titulo.setVolumes(vList);
-	
-			tituloRepository.update(titulo);
-		} else {
-			volume = this.volumeRepository.update(volume);
-		}
+		volume = this.volumeRepository.create(volume);
+
+		Titulo titulo = tituloRepository.getById(volume.getTitulo());
+		titulo.getVolumes().add(volume);
+		tituloRepository.update(titulo);
+
 		return volume;
 	}
 

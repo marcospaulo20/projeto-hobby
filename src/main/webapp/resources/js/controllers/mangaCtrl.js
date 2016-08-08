@@ -7,7 +7,7 @@ app.controller('MangaListCtrl', ['$scope', '$rootScope', 'MangasFactory', 'Manga
 	
 	$scope.mangas = MangasFactory.query();
 	
-	$scope.mangaDetail = mangaDetail;
+	$scope.tituloPage = tituloPage;
 	$scope.mostrarDialog = mostrarDialog;	
 	
 	function simpleToastBase(message, position, delay, action) {
@@ -53,7 +53,7 @@ app.controller('MangaListCtrl', ['$scope', '$rootScope', 'MangasFactory', 'Manga
 		});
 	}
 	
-	function mangaDetail(element) {
+	function tituloPage(element) {
 		return $location.path("manga/" + element.id);
 	}
 	

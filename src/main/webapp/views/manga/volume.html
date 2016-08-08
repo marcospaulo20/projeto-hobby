@@ -1,138 +1,174 @@
-<nav class="navbar navbar-default">
-	<div class="container-fluid">
-  		<div class="navbar-header">
-  			<a class="navbar-brand" href="#/manga-detail/{{manga.id}}">{{manga.titulo}}</a><a class="navbar-brand">/ {{titulo.titulo}}</a>
-  		</div>
-  	</div>
-</nav>
-<div class="col-sm-12">
-    <div class="col-md-12">
-    	<div id="volume" class="bs-form">
-		    <form class="form-horizontal" name="volumeForm">		    	
-				<div class="col-sm-5">
-			    	<div ng-show="imageCropStep == 1">		
-						<div ngf-drop ngf-select ng-model="files" class="drop-box" 
-       						ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
-       						accept="image/*" ngf-pattern="'image/*'">Largue as imagens aqui ou clique para fazer upload
-       						<span ng-show="dropAvailable"> ou soltar de arquivo</span>
-       					</div>							 
-						<div class="preview">
-							<img ngf-src="!files[0].$error && files[0]">
-				        </div>
-					</div>
-					<div ng-show="imageCropStep == 2" class="img-responsive" >
-				    	 <image-crop			 
-							 data-height="270"
-							 data-width="200"
-							 data-shape="square"
-							 data-step="imageCropStep"
-							 src="imgSrc"
-							 data-result="result"
-							 data-result-blob="resultBlob"
-							 crop="initCrop"
-							 padding="10"
-							 max-size="300">
-						</image-crop>
-						<div class="row">
-							<div class="col-xs-4 col-md-4">
-								<button class="btn btn-primary" ng-click="initCrop = true">OK</button>
-							</div>
-							<div class="col-xs-6 col-md-6">
-								<button class="btn btn-danger" ng-click="clear()">Cancelar</button>					   			
-					   		</div>
-				   		</div>
-			    	</div>
-					<div ng-show="imageCropStep == 3">
-					 	<img ng-src="{{result}}" class="img-responsive img-rounded"></img>
-				  	</div>
-				</div>
-				<div class="col-sm-7">
-					<div class="form-group" show-errors>
-						<div class="col-sm-12">
-							<input type="hidden" name="titulo" value="{{titulo.id}}" ng-model="volume.titulo">
-							<input type="text" class="form-control" name="nome" ng-model="volume.nome" placeholder="Nome" required>
-						</div>
-					</div>
-					<div class="form-group" show-errors>
-						<div class="col-sm-6">
-							<input type="date" class="form-control" name="anoPublicacao" ng-model="volume.anoPublicacao" placeholder="dd-MM-yyyy" min="1920-01-01" max="2017-12-31">
-						</div>
-						<div class="col-sm-6">
-							<select class="form-control" name="status" ng-model="volume.status" required>
-								<option value="">-- Selecione uma opcao --</option>
-								<option value="Conclu&iacute;do">Conclu&iacute;do</option>
-						      	<option value="Andamento">Andamento</option>
-						      	<option value="Parado">Parado</option>
-							</select>
-						</div>
-					</div>
-					<div class="form-group" show-errors>
-						<div class="col-sm-4">
-							<select class="form-control" name="pais" ng-model="volume.pais">
-								<option value="">-- Selecione uma opcao --</option>
-								<option value="U.S">U.S.</option>
-						      	<option value="Brasil">Brasil</option>
-						      	<option value="Jap&atilde;o">Jap&atilde;o</option>
-							</select>
-						</div>
-						<div class="col-sm-4">
-							<input type="number" class="form-control" name="preco" ng-model="volume.preco" placeholder="R$">
-						</div>
-						<div class="col-sm-4">
-							<input type="text" class="form-control" name="revista" ng-model="volume.revista" placeholder="Revista">
-						</div>
-					</div>
-					<div class="form-group" show-errors>					
-						<div class="col-sm-6">
-							<input type="text" class="form-control" name="roteirista" ng-model="volume.roteirista" placeholder="Roteirista">
-						</div>
-						<div class="col-sm-6">
-							<input type="text" class="form-control" name="desenhista" ng-model="volume.desenhista" placeholder="Desenhista">
-						</div>
-					</div>
-					<div class="form-group">
-		    			<div class="col-sm-10">
-							<button type="submit" ng-click="add()" ng-model="volume" class="btn btn-primary">Salvar</button>						
-						</div>
-					</div>
-				</div>
-				<div class="form-group"></div>
-			</form>
+<md-toolbar ng-show="!showSearch">
+	<div class="md-toolbar-tools">
+		<md-button ng-click="toggleSidenav('left')" hide-gt-md arial-label="Menu">
+			<ng-md-icon icon="menu"></ng-md-icon>
+		</md-button>
+		<h3>
+			<a ng-href="#/mangas">Mang&aacute;s</a>
+		</h3>
+		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon> 
+		<h3>
+			<a ng-href="#/manga/{{titulo.id}}">{{manga.titulo}}</a>
+		</h3>
+		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon>
+		<h3>
+			{{titulo.titulo}}
+		</h3>	
+		<span flex></span>
+		<md-button arial-label="Search" ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="search" fill="none"></ng-md-icon>
+		</md-button>
+	</div>
+</md-toolbar>
+<md-toolbar class="md-hue-1" ng-show="showSearch">
+	<div class="md-toolbar-tools">
+		<md-button ng-click="showSearch = !showSearch" arial-label="Back">
+			<ng-md-icon icon="arrow_back"></ng-md-icon>
+		</md-button>
+		<md-input-container md-no-float flex>
+			<input ng-model="search.nome" placeholder="enter search">
+		</md-input-container>
+		<md-button arial-label="Search" ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="search" fill="none"></ng-md-icon>
+		</md-button>				
+	</div>
+</md-toolbar>
+
+<md-button class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="mostrarDialog('C', undefined, $event)">
+	<ng-md-icon icon="add" fill="none"></ng-md-icon>
+</md-button>
+
+<md-content md-scroll-y layout="column" flex>
+	<div layout-padding flex="noshrink">
+		<div class="doc-content">
+			<md-card ng-repeat="element in volumes | orderBy: 'nome' | filter:search">				
+				<md-card-title>
+					<md-card-title-text>
+						<span class="md-headline">{{element.nome}}</span>
+	          			<span class="md-subhead">{{titulo.categorias.join(", ")}}</span>
+	          			<div ng-repeat="c in element.capitulos">
+	          				<span class="md-subhead">{{c.numero +' - '+ c.nome}}</span>	
+	          			</div>
+					</md-card-title-text>
+					<md-card-title-media>
+						<img data-ng-src="data:image/(png|jpg);base64,{{element.imagem}}" class="image-relative-volume" ng-click="mostrarDialog('UD', element, $event)"/>
+					</md-card-title-media>
+				</md-card-title>				
+				<md-card-actions layout="row" layout-align="end center">
+					<md-button class="md-icon-button">
+	           			<ng-md-icon class="md-secondary md-hue-3" icon="send" ng-click="capituloPage(element)" fill="none"></ng-md-icon>
+	         		</md-button>
+				</md-card-actions>						
+			</md-card>
 		</div>
 	</div>
-	
-	<div class="col-md-12 table-responsive">
-		<input type="text" class="form-control ng-valid ng-dirty" placeholder="Search for.." ng-model="query" ng-change="updateFilteredList()">
-		<table class="table table-striped" at-table at-paginated at-list="list" at-config="config">
-			<thead></thead>
-			<tbody>
-				<tr>
-					<td>
-						<div class="row">
-							<div class="col-xs-3 col-md-3">
-								 <a ng-href="#/manga/{{manga.id}}/{{item.titulo}}/{{item.id}}">
-								 	<img class="img-responsive img-thumbnail" data-ng-src="data:image/(png|jpg);base64,{{item.imagem}}"/>
-								 </a>								 
-		  					</div>
-		  					<div class="col-xs-9 col-md-9">
-								 <div class="row" ng-repeat="cap in item.capitulos | orderBy: 'id'">
-								 	<div class="col-xs-1 col-md-1">
-								 		<h5>{{cap.numero}}</h5>
-								 	</div>
-								 	<div class="col-xs-9 col-md-9">
-								 		<h5>{{cap.nome}}</h5>
-								 	</div>
-								 	<div class="col-xs-2 col-md-2">
-								 		<h5>{{cap.status}}</h5>
-								 	</div>
-								 </div>
-		  					</div>		
-	  					</div>
-	  				</td>
-		    	</tr>
-			</tbody>
-		</table>
-		
-		<at-pagination at-list="list" at-config="config"></at-pagination>
-	</div>
-</div>
+</md-content>
+
+<script type="text/ng-template" id="editor.html">
+	<md-dialog arial-label="Editar" class="dialog-95">
+		<form name="inputForm" novalidate>
+			<md-toolbar>
+				<div class="md-toolbar-tools">
+					<md-button class="md-icon-button" ng-click="retorno()">
+						<ng-md-icon icon="arrow_back" fill="none" arial-label="Retorno"></ng-md-icon>
+						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
+					</md-button>					
+					<h2>{{view.operaction}}</h2>
+					<span flex></span>					
+					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
+						<ng-md-icon icon="save" fill="none" arial-label="Salvar"></ng-md-icon>
+						<md-tooltip md-delay="1500" md-autohide="true">Salvar</md-tooltip>
+					</md-button>
+				</div>
+			</md-toolbar>
+			<md-dialog-content>
+				<div layout="row" layout-xs="column">
+					<div class="md-dialog-content" flex>
+						<div ng-show="view.operaction === 'Modificar'">
+				 			<img data-ng-src="data:image/(png|jpg);base64,{{view.selectedItem.imagem}}"/>
+						</div>
+						<div ng-show="view.operaction === 'Adicionar'">
+							<div ng-show="imageCropStep == 1">		
+								<div ngf-drop ngf-select ng-model="files" class="drop-box" 
+       								ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
+       								accept="image/*" ngf-pattern="'image/*'">Largue as imagens aqui ou clique para fazer upload
+       								<span ng-show="dropAvailable"> ou soltar de arquivo</span>
+       							</div>							 
+								<div class="preview">
+									<img ngf-src="!files[0].$error && files[0]">
+				        		</div>
+							</div>
+							<div ng-show="imageCropStep == 2">
+								<image-crop			 
+									data-height="370"
+									data-width="300"
+							 		data-shape="square"
+							 		data-step="imageCropStep"
+							 		src="imgSrc"
+							 		data-result="result"
+							 		data-result-blob="resultBlob"
+							 		crop="initCrop"
+							 		padding="10"
+							 		max-size="400">
+								</image-crop>
+								<div layout="row" layout-align="center center" layout-wrap>
+									<md-button class="md-primary" ng-click="initCrop = true">OK</md-button>
+									<md-button class="md-primary" ng-click="clear()">Cancelar</md-button>
+								</div>							
+							</div>
+							<div ng-show="imageCropStep == 3">
+					 			<img ng-src="{{result}}" class="img-responsive img-rounded"></img>
+				  			</div>
+						</div>
+					</div>
+					<div class="md-dialog-content" flex>
+						<md-content layout-padding ng-cloak>							
+															
+								<md-input-container class="md-block">
+									<label>Nome</label>
+									<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
+									<ng-messages for="inputForm.nome.$error">
+										<ng-message when="required">O campo e obrigatorio</ng-message>
+										<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
+                           			</ng-messages>
+								</md-input-container>								
+								
+							
+								<md-input-container class="md-block">
+        							<label>Arco</label>
+        							<input name="arco" required md-maxlength="100" ng-model="view.selectedItem.arco">
+									<ng-messages for="inputForm.arco.$error">
+										<ng-message when="required">O campo e obrigatorio</ng-message>
+										<ng-message when="md-maxlength">Use 100 caracteres ou menos para o arco</ng-message>
+                           			</ng-messages>
+      							</md-input-container>
+							
+							<div layout-gt-sm="row">
+								<md-datepicker ng-model="view.selectedItem.anoPublicacaoJP" md-placeholder="Publica&#231;&#227;o jap"></md-datepicker>
+								<md-datepicker ng-model="view.selectedItem.anoPublicacaoBR" md-placeholder="Publica&#231;&#227;o br"></md-datepicker>	
+							</div>
+							<div layout-gt-sm="row">
+								<md-input-container>
+        							<label>Paginas</label>
+        							<input type="number" ng-model="view.selectedItem.paginas">									
+      							</md-input-container>
+								<md-input-container>
+        							<label>Pre&#231;o</label>
+        							<input type="number" ng-model="view.selectedItem.preco" step="0.01">
+      							</md-input-container>	
+							</div>
+							<md-input-container class="md-block" flex-gt-xs>
+        						<label>Status</label>
+        						<md-select ng-model="view.selectedItem.status">
+          							<md-option ng-repeat="status in listStatus" value="{{status.category}}">
+            							{{status.name}}
+          							</md-option>
+        						</md-select>
+      						</md-input-container>							
+						</md-content>
+					</div>
+				</div>
+			</md-dialog-content>
+		</form>
+	</md-dialog>
+</script>

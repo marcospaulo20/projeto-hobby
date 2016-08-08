@@ -60,7 +60,7 @@ public class CapituloRestService {
 	}
 
 	@DELETE
-	@Path("{id}/titulo/{idTitulo}/volumes/{idVolume}/capitulos/{idCapitulo}")
+	@Path("{id}/titulo/{idTitulo}/volume/{idVolume}/capitulos/{idCapitulo}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public void remove(@PathParam("idCapitulo") Long id) {
 		capituloService.remove(id);

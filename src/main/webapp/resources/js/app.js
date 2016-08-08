@@ -1,6 +1,7 @@
 'use strict';
 
-var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ngMdIcons', 'ImageCropper', 'ngFileUpload', 'projetoHobbyApp.directive', 'projetoHobbyApp.manga.services', 'projetoHobbyApp.manga.controllers', 'projetoHobbyApp.titulo.controllers']); 
+var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ngMdIcons', 'ImageCropper', 'ngFileUpload', 'projetoHobbyApp.directive', 
+                                             'projetoHobbyApp.manga.services', 'projetoHobbyApp.manga.controllers', 'projetoHobbyApp.titulo.controllers', 'projetoHobbyApp.volume.controllers', 'projetoHobbyApp.capitulo.controllers']); 
 
 	app.config(['$routeProvider', function($routeProvider) {
 		var version = '?nocache=${project.version}';
@@ -15,11 +16,11 @@ var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', '
 		});
 		$routeProvider.when('/manga/:id/:idTitulo', {
 			templateUrl: 'views/manga/volume.html', 
-			controller: 'TituloDetailCtrl'
+			controller: 'VolumeCtrl'
 		});
 		$routeProvider.when('/manga/:id/:idTitulo/:idVolume', {
 			templateUrl: 'views/manga/capitulo.html', 
-			controller: 'VolumeDetailCtrl'
+			controller: 'CapituloCtrl'
 		});
 	}]);
 	

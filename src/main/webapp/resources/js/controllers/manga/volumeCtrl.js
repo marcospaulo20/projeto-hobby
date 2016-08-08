@@ -1,14 +1,18 @@
 'use strict';
 
-var app = angular.module('projetoHobbyApp.titulo.controllers', []);
+var app = angular.module('projetoHobbyApp.volume.controllers', []);
 
-app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFactory', 'TitulosFactory', 'TituloFactory','TituloCreateFactory', '$mdToast', '$mdDialog', '$location', '$filter',
-  	function($scope, $rootScope, $routeParams, MangaFactory, TitulosFactory, TituloFactory, TituloCreateFactory, $mdToast, $mdDialog, $location, $filter) {
+app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFactory', 'TituloFactory', 'VolumesFactory', 'VolumeCreateFactory', 'VolumeFactory', '$mdToast', '$mdDialog', '$location', '$filter',
+  	 function($scope, $rootScope, $routeParams, MangaFactory, TituloFactory, VolumesFactory, VolumeCreateFactory, VolumeFactory, $mdToast, $mdDialog, $location, $filter) {
+    
+	$scope.manga = MangaFactory.show({id: $routeParams.id});
 	
-  	$scope.manga = MangaFactory.show({id: $routeParams.id});
-  	$scope.titulos = TitulosFactory.query({id: $routeParams.id});
-  	
-  	$scope.volumePage = volumePage;
+	$scope.titulo = TituloFactory.show({id: $routeParams.id, idTitulo: $routeParams.idTitulo});
+	
+	$scope.volumes = VolumesFactory.query({id: $routeParams.id , idTitulo: $routeParams.idTitulo});
+	
+	
+	$scope.capituloPage = capituloPage;
   	$scope.mostrarDialog = mostrarDialog;
   	
   	function simpleToastBase(message, position, delay, action) {
@@ -34,14 +38,14 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		} else {
   			tempData = {
   				id: data.id,							
-  				titulo: data.titulo,
-  				autor: data.autor,
-  				desenhista: data.desenhista,
+  				nome: data.nome,
+  				arco: data.arco,
+  				paginas: data.paginas,
+  				anoPublicacaoJP: new Date(data.anoPublicacaoJP),
+  				anoPublicacaoBR: new Date(data.anoPublicacaoBR),
   				status: data.status,
-  				termo: data.termo,
-  				ano: new Date(data.ano),  				
-  				categorias: data.categorias,
-  				volumes: data.volumes,
+  				preco: data.preco,
+  				capitulos: data.capitulos,
   				imagem: data.imagem
   			};
   		}
@@ -50,7 +54,7 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			targetEvent: event,
   			locals: {
   				selectedItem: tempData,
-  				dataTable: $scope.titulos,
+  				dataTable: $scope.volumes,
   				operaction: operaction
   			},
   			bindToController: true,
@@ -62,13 +66,13 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		});
   	}
   	
-  	function volumePage(element) {
-		return $location.path("manga/" + element.manga + "/" + element.id);
+  	function capituloPage(element) {
+		return $location.path("manga/" + $scope.manga.id + "/" + $scope.titulo.id + "/" + element.id);
 	}
   	
   	// Controller de dialog
   	function DialogController($scope, $mdDialog, operaction, selectedItem, dataTable) {
-  		$scope.manga = MangaFactory.show({id: $routeParams.id});
+  		$scope.titulo = TituloFactory.show({id: $routeParams.id, idTitulo: $routeParams.idTitulo});
   		$scope.view = {
   			dataTable: dataTable,
   			selectedItem: selectedItem,
@@ -91,19 +95,17 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				break;
   		}
   		
-  		// Categorias		
-  		$scope.listCategorias = [{name: 'Kodomo'}, {name: 'Shonen'}, {name: 'Shoujo'}, {name: 'Seinen'}, {name: 'Josei'}];
-  		
   		// Status
   		$scope.status = '';
-  		$scope.listStatus = ('Ativo Completo Parado').split(' ').map(function (status) { return { name: status }; });
-  		// Termos
-  		$scope.termo = '';
-  		$scope.termos = ('Gaiden').split(' ').map(function (termo) { return { name: termo}; });
+  		$scope.listStatus = [
+  		   { category: 'JL', name: 'Já li' },
+  		   { category: 'EL', name: 'Estou lendo' }         
+         ];
+  		//$scope.listStatus = ('Já li,Estou lendo').split(',').map(function (status) { return { name: status }; });  		
   		
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  
-  		$scope.salvar = salvar;  		
+  		$scope.salvar = salvar;
   		
   		// Retorna a janela principal sem realizar nenhuma ação
   		function retorno() {
@@ -118,13 +120,13 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		
   		// Permite adicionar um novo elemento
   		function adicionar() {
-  			$scope.view.selectedItem.manga = $scope.manga.id;
+  			$scope.view.selectedItem.titulo = $scope.titulo.id;
   			$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length); 
-  	    	TituloCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {    		
+  	    	VolumeCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {    		
   	    		$scope.view.dataTable.push(data);
-  				$mdDialog.hide('O titulo adicionado com sucesso.');
+  				$mdDialog.hide('O volume adicionado com sucesso.');
   	    	}, function() {
-  	    		$mdDialog.hide('O titulo já foi gravado.');
+  	    		$mdDialog.hide('O volume já foi gravado ou ocorreu algum erro.');
   	    	});	    	
   		}
   		
@@ -132,12 +134,12 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			$scope.view.selectedItem.manga = $scope.manga.id;
-  			TituloFactory.update({id: $scope.manga.id, idTitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
-  				$scope.view.dataTable[indexArr].titulo = $scope.view.selectedItem.titulo;
-  				$mdDialog.hide('O titulo alterado com sucesso.');
+  			$scope.view.selectedItem.titulo = $scope.titulo.id;
+  			VolumeFactory.update({id: $scope.titulo.manga, idTitulo: $scope.titulo.id, idVolume: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
+  				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
+  				$mdDialog.hide('O volume alterado com sucesso.');
   			}, function() {
-  				$mdDialog.hide('Ocorreu algum error, ao alterar o titulo.');
+  				$mdDialog.hide('Ocorreu algum error, ao alterar o volume.');
   		  	});
   		}  		
   		
@@ -160,5 +162,5 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			 delete $scope.result;
   			 delete $scope.resultBlob;
   		};
-  	}  	 
+  	}	
 }]);

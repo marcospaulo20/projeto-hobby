@@ -68,3 +68,11 @@ services.factory('CapituloCreateFactory', function CapituloFactory($resource) {
 		create: { method: 'POST' }
 	})
 });
+
+services.factory('CapituloFactory', function CapituloFactory($resource) {
+	return $resource('rest/manga/:id/titulo/:idTitulo/volume/:idVolume/capitulos/:idCapitulo', {}, {
+		show: { method: 'GET', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@volume.id', idCapitulo: '@id'} },
+		update: { method: 'PUT', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@volume.id', idCapitulo: '@id'} },
+		delete: { method: 'DELETE', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@volume.id', idCapitulo: '@id'} },
+	})
+});

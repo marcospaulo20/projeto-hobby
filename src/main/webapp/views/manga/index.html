@@ -30,16 +30,21 @@
 	</div>
 </md-toolbar>
 
-<md-card flex-gt-sm="90" flex-gt-md="80">
-	<md-content>
-		<md-list-item ng-repeat="element in mangas | orderBy: 'titulo' | filter:search" ng-click="mostrarDialog('UD', element, $event)">
-			<img data-ng-src="data:image/(png|jpg);base64,{{element.titulos[0].imagem}}" class="md-avatar" />
-			<p>{{element.titulo}}</p>
-			<ng-md-icon class="md-secondary md-hue-3" icon="send" ng-click="mangaDetail(element)" fill="none" arial-label="Detalhe"></ng-md-icon>
-			<md-divider></md-divider>
-		</md-list-item>
-	</md-content>
-</md-card>
+<md-content md-scroll-y layout="column" flex>
+	<div layout-padding flex="noshrink">
+		<div class="doc-content">
+			<md-content>
+				<md-list-item ng-repeat="element in mangas | orderBy: 'titulo' | filter:search" ng-click="mostrarDialog('UD', element, $event)">
+					<img data-ng-src="data:image/(png|jpg);base64,{{element.titulos[0].imagem}}"/>
+					<p>{{element.titulo}}</p>
+					<ng-md-icon class="md-secondary md-hue-3" icon="send" ng-click="tituloPage(element)" fill="none" arial-label="Detalhe"></ng-md-icon>
+					<md-divider></md-divider>
+				</md-list-item>
+			</md-content>
+		</div>
+	</div>
+</md-content>
+
 
 <script type="text/ng-template" id="editor.html">
 	<md-dialog arial-label="Editar" class="dialog-95">
@@ -51,11 +56,7 @@
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>					
 					<h2>{{view.operaction}}</h2>
-					<span flex></span>
-					<md-button class="md-icon-button" ng-click="excluir()" ng-show="view.operaction === 'Modificar'" ng-disabled="true">
-						<ng-md-icon icon="delete" fill="none" arial-label="Excluir"></ng-md-icon>
-						<md-tooltip md-delay="1500" md-autohide="true">Excluir</md-tooltip>	
-					</md-button>
+					<span flex></span>					
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
 						<ng-md-icon icon="save" fill="none" arial-label="Salvar"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Salvar</md-tooltip>

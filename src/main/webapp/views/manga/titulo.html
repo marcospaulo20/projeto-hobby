@@ -32,27 +32,35 @@
 	<ng-md-icon icon="add" fill="none"></ng-md-icon>
 </md-button>
 
-<md-content class="md-padding" layout-xs="column" layout="row">
-	<div flex-xs layout="row">
-	<md-card ng-repeat="element in titulos | orderBy: 'titulo' | filter:search">
-		<md-card-title>
-			<md-card-title-text>
-				<span class="md-headline">{{element.titulo}}</span>
-            	<span class="md-subhead">{{element.categorias.join(", ")}}</span>
-			</md-card-title-text>
-		</md-card-title>
-		<md-card-content layout="row" layout-align="space-between">
-			<img data-ng-src="data:image/(png|jpg);base64,{{element.imagem}}" ng-click="mostrarDialog('UD', element, $event)"/>
-			<md-card-actions layout="column">
-				<md-button class="md-icon-button">
-              		<ng-md-icon class="md-secondary md-hue-3" icon="send" ng-click="mangaDetail(element)" fill="none"></ng-md-icon>
-            	</md-button>
-			</md-card-actions>			
-		</md-card-content>
-	</md-card>
+<md-content md-scroll-y layout="column" flex>
+	<div layout-padding flex="noshrink">
+		<div class="doc-content">
+			<md-content class="md-padding" layout-xs="column" layout="row">
+				<div flex-xs layout="row">
+					<md-card ng-repeat="element in titulos | orderBy: 'titulo' | filter:search">
+						<md-card-title>
+							<md-card-title-text>
+								<span class="md-headline">{{element.titulo}}</span>
+	            				<span class="md-subhead">{{element.categorias.join(", ")}}</span>
+							</md-card-title-text>
+						</md-card-title>
+						<md-card-content layout="row" layout-align="space-between">
+							<img data-ng-src="data:image/(png|jpg);base64,{{element.imagem}}" class="image-relative" ng-click="mostrarDialog('UD', element, $event)"/>							
+							<md-card-actions layout="column">
+								<md-button class="md-icon-button">
+	              					<ng-md-icon class="md-secondary md-hue-3" icon="send" ng-click="volumePage(element)" fill="none"></ng-md-icon>
+	            				</md-button>
+	            				<md-button class="md-icon-button">
+	              					<ng-md-icon class="md-secondary md-hue-3" icon="visibility" fill="none"></ng-md-icon>
+	            				</md-button>
+							</md-card-actions>							
+						</md-card-content>											
+					</md-card>
+				</div>
+			</md-content>
+		</div>
 	</div>
 </md-content>
-
 <script type="text/ng-template" id="editor.html">
 	<md-dialog arial-label="Editar" class="dialog-95">
 		<form name="inputForm" novalidate>
@@ -63,11 +71,7 @@
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>					
 					<h2>{{view.operaction}}</h2>
-					<span flex></span>
-					<md-button class="md-icon-button" ng-click="excluir()" ng-show="view.operaction === 'Modificar'" ng-disabled="true">
-						<ng-md-icon icon="delete" fill="none" arial-label="Excluir"></ng-md-icon>
-						<md-tooltip md-delay="1500" md-autohide="true">Excluir</md-tooltip>	
-					</md-button>
+					<span flex></span>					
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
 						<ng-md-icon icon="save" fill="none" arial-label="Salvar"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Salvar</md-tooltip>
@@ -105,8 +109,8 @@
 							 		max-size="400">
 								</image-crop>
 								<div layout="row" layout-align="center center" layout-wrap>
-									<md-button md-no-ink class="md-primary" ng-click="initCrop = true">OK</md-button>
-									<md-button class="md-warn" ng-click="clear()">Cancelar</md-button>
+									<md-button class="md-primary" ng-click="initCrop = true">OK</md-button>
+									<md-button class="md-primary" ng-click="clear()">Cancelar</md-button>
 								</div>							
 							</div>
 							<div ng-show="imageCropStep == 3">
@@ -125,13 +129,21 @@
                            		</ng-messages>
 							</md-input-container>							
 							<div layout-gt-sm="row">
-								<md-input-container>
+								<md-input-container class="md-block">
         							<label>Autor</label>
-        							<input ng-model="view.selectedItem.autor">
+        							<input name="autor" ng-model="view.selectedItem.autor" required md-maxlength="100">
+									<ng-messages for="inputForm.autor.$error">
+										<ng-message when="required">O campo e obrigatorio</ng-message>
+										<ng-message when="md-maxlength">Use 100 caracteres ou menos para o autor</ng-message>
+                           			</ng-messages>
       							</md-input-container>
-      							<md-input-container>
+      							<md-input-container class="md-block">
         							<label>Desenhista (Art)</label>
-        							<input ng-model="view.selectedItem.desenhista">
+        							<input name="desenhista" ng-model="view.selectedItem.desenhista" required md-maxlength="100">
+									<ng-messages for="inputForm.desenhista.$error">
+										<ng-message when="required">O campo e obrigatorio</ng-message>
+										<ng-message when="md-maxlength">Use 100 caracteres ou menos para o desenhista</ng-message>
+                           			</ng-messages>
       							</md-input-container>
 							</div>
 							<div layout-gt-sm="row">
@@ -152,6 +164,7 @@
         							</md-select>
       							</md-input-container>
 							</div>
+							
 							<md-datepicker ng-model="view.selectedItem.ano" md-placeholder="Enter date"></md-datepicker>
 
 							<md-input-container class="md-block" flex-gt-sm>

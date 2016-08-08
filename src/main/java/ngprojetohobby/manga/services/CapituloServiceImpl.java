@@ -1,6 +1,5 @@
 package ngprojetohobby.manga.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,24 +29,13 @@ public class CapituloServiceImpl implements CapituloService {
 	}
 
 	@Override
-	public Capitulo create(Capitulo capitulo) {
-		if(capitulo.getId() == null) {
-			capitulo = this.capituloRepository.create(capitulo); 
+	public Capitulo create(Capitulo capitulo) {		
+		capitulo = this.capituloRepository.create(capitulo); 
 			
-			Volume volume = volumeRepository.getById(capitulo.getVolume());
-			
-			List<Capitulo> cList = new ArrayList<Capitulo>();
-			cList.add(capitulo);
-			
-			for(Capitulo capitulo_ : volume.getCapitulos()) {
-				cList.add(capitulo_);
-			}
-			
-			volume.setCapitulos(cList);
-			volumeRepository.update(volume);
-		} else {
-			capitulo = this.capituloRepository.update(capitulo);
-		}
+		Volume volume = volumeRepository.getById(capitulo.getVolume());
+		volume.getCapitulos().add(capitulo);
+		volumeRepository.update(volume);
+		
 		return capitulo;
 	}
 
@@ -58,7 +46,18 @@ public class CapituloServiceImpl implements CapituloService {
 
 	@Override
 	public void remove(Long id) {
-		this.capituloRepository.remove(Capitulo.class, id);
+		Capitulo capitulo = capituloRepository.getById(id);
+		Volume volume = volumeRepository.getById(capitulo.getVolume());
+		
+		for(int i = 0; i < volume.getCapitulos().size(); i++) {
+			Capitulo c = volume.getCapitulos().get(i);
+			if(c.getId().equals(capitulo.getId())) {
+				volume.getCapitulos().remove(c);
+				volumeRepository.update(volume);
+				break;
+			}
+		}			
+		capituloRepository.remove(Capitulo.class, id);
 	}
 
 	@Override
