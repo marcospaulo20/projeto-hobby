@@ -38,12 +38,20 @@
 
 .image-relative {
 	width: 250px;
-    height: 330px;
+    height: 330px;    
 }
 
 .image-relative-volume {
     width: 160px;
     height: 190px;
+}
+
+.card-titulo {
+	width: 345px;
+}
+
+.red {
+    color: red;
 }
 
 /** Material angular **/	
@@ -113,3 +121,19 @@ md-input-container {
     margin: 10px;
     box-sizing: border-box;
 }
+
+
+md-grid-list {
+  margin: 8px; }
+md-grid-tile {
+  transition: all 400ms ease-out 50ms; }
+  
+md-grid-list md-grid-tile md-grid-tile-footer {
+  background: rgba(0, 0, 0, 0.68);
+  height: 36px;
+}
+md-grid-tile-footer h3 {
+  margin: 0;
+  font-weight: 700;
+  width: 100%;
+  text-align: center; }

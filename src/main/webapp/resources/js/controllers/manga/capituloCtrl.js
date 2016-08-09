@@ -40,7 +40,7 @@ app.controller('CapituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFa
   				id: data.id,
   				nome: data.nome,
   				numero: data.numero,
-  				anoPublicacaoJP: data.anoPublicacaoJP
+  				status: data.status
   			};
   		}
   		$mdDialog.show({

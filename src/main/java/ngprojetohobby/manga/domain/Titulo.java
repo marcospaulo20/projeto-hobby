@@ -15,14 +15,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Type;
 
 @Entity
 public class Titulo implements Serializable {
@@ -34,11 +32,9 @@ public class Titulo implements Serializable {
 	private Long id;
 
 	@Column(length = 255, nullable = false)
-	private String titulo;
+	private String nome;
 	@Column(length = 30, nullable = false)
 	private String status;
-	@Column(length = 30)
-	private String termo;
 	@Column(name = "ano")
 	@Temporal(value = TemporalType.DATE)
 	private Date ano;
@@ -47,18 +43,14 @@ public class Titulo implements Serializable {
 	@Column(length = 100, nullable = false)
 	private String desenhista;
 
-	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name="categoria", 
-		joinColumns = @JoinColumn(name="id")
-	)
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "categoria", joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "tipo")
 	private List<String> categorias;
-	@Lob
-	@Type(type = "org.hibernate.type.BinaryType")
-	private byte[] imagem;
+
 	@Column(name = "manga_id")
 	private Long manga;
-	
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Volume.class)
 	@JoinTable(name = "titulo_volume", joinColumns = {
 			@JoinColumn(name = "titulo_id", referencedColumnName = "id") }, inverseJoinColumns = {
@@ -74,12 +66,12 @@ public class Titulo implements Serializable {
 		return id;
 	}
 
-	public String getTitulo() {
-		return titulo;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getStatus() {
@@ -88,14 +80,6 @@ public class Titulo implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public String getTermo() {
-		return termo;
-	}
-
-	public void setTermo(String termo) {
-		this.termo = termo;
 	}
 
 	public Date getAno() {
@@ -128,14 +112,6 @@ public class Titulo implements Serializable {
 
 	public void setCategorias(List<String> categorias) {
 		this.categorias = categorias;
-	}
-
-	public byte[] getImagem() {
-		return imagem;
-	}
-
-	public void setImagem(byte[] imagem) {
-		this.imagem = imagem;
 	}
 
 	public Long getManga() {

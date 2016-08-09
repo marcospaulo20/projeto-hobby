@@ -22,7 +22,7 @@
 			<ng-md-icon icon="arrow_back"></ng-md-icon>
 		</md-button>
 		<md-input-container md-no-float flex>
-			<input ng-model="search.titulo" placeholder="enter search">
+			<input ng-model="search.nome" placeholder="enter search">
 		</md-input-container>
 		<md-button arial-label="Search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search" fill="none"></ng-md-icon>
@@ -31,20 +31,25 @@
 </md-toolbar>
 
 <md-content md-scroll-y layout="column" flex>
-	<div layout-padding flex="noshrink">
-		<div class="doc-content">
-			<md-content>
-				<md-list-item ng-repeat="element in mangas | orderBy: 'titulo' | filter:search" ng-click="mostrarDialog('UD', element, $event)">
-					<img data-ng-src="data:image/(png|jpg);base64,{{element.titulos[0].imagem}}"/>
-					<p>{{element.titulo}}</p>
-					<ng-md-icon class="md-secondary md-hue-3" icon="send" ng-click="tituloPage(element)" fill="none" arial-label="Detalhe"></ng-md-icon>
-					<md-divider></md-divider>
-				</md-list-item>
-			</md-content>
-		</div>
-	</div>
+	
+	<md-grid-list
+        md-cols-xs="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="6"
+        md-row-height-gt-md="1:1" md-row-height="4:3"
+        md-gutter="8px" md-gutter-gt-sm="4px" >
+    <md-grid-tile ng-repeat="element in mangas | orderBy: 'nome' | filter:search"
+        md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
+        <div ng-show="{{element.titulos == ''}}">
+        	<img data-ng-src="img/image-default.png" class="image-relative" />
+        </div>
+        <div ng-show="{{element.titulos[0].volumes[0].imagem != null}}">
+        	<img data-ng-src="data:image/(png|jpg);base64,{{element.titulos[0].volumes[element.titulos[0].volumes.length-1].imagem}}" class="image-relative" ng-click="mostrarDialog('UD', element, $event)" />
+        </div>
+      <md-grid-tile-footer ng-click="tituloPage(element)">
+        <h3>{{element.nome}}</h3>
+      </md-grid-tile-footer>
+    </md-grid-tile>
+	
 </md-content>
-
 
 <script type="text/ng-template" id="editor.html">
 	<md-dialog arial-label="Editar" class="dialog-95">
@@ -64,17 +69,25 @@
 				</div>
 			</md-toolbar>
 			<md-dialog-content>
-				<md-content layout-padding ng-cloak>					
+				<md-content layout-padding ng-cloak>
 					<md-input-container class="md-block">
 						<label>Titulo</label>
-						<input type="text" name="titulo" required md-maxlength="255" ng-model="view.selectedItem.titulo" />
-						<ng-messages for="inputForm.titulo.$error">
+						<input type="text" name="nome" required md-maxlength="255" ng-model="view.selectedItem.nome" />
+						<ng-messages for="inputForm.nome.$error">
 							<ng-message when="required">O campo e obrigatorio</ng-message>
-								<ng-message when="md-maxlength">Use 255 caracteres ou menos para o titulo</ng-message>
+								<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
                             </ng-messages>
-					</md-input-container>					
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-xs>
+						<label>Classificacao</label>
+        				<md-select ng-model="view.selectedItem.classificacao">
+          					<md-option ng-repeat="classificacao in listClassificacao" value="{{classificacao.category}}">
+            					{{classificacao.name}}
+          					</md-option>
+        				</md-select>
+      				</md-input-container>
 				</md-content>
-			</md-dialog-content>
+			</md-dialog-content>			
 		</form>
 	</md-dialog>
 </script>

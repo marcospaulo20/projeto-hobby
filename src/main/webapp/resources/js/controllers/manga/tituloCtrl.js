@@ -34,15 +34,13 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		} else {
   			tempData = {
   				id: data.id,							
-  				titulo: data.titulo,
+  				nome: data.nome,
   				autor: data.autor,
   				desenhista: data.desenhista,
   				status: data.status,
-  				termo: data.termo,
-  				ano: new Date(data.ano),  				
+  				ano: data.ano,  				
   				categorias: data.categorias,
   				volumes: data.volumes,
-  				imagem: data.imagem
   			};
   		}
   		$mdDialog.show({
@@ -73,7 +71,7 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			dataTable: dataTable,
   			selectedItem: selectedItem,
   			operaction: 'Adicionar'
-  		};
+  		};  		  
   		
   		// Determinado tipo de operação
   		switch(operaction) {
@@ -91,15 +89,49 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				break;
   		}
   		
-  		// Categorias		
-  		$scope.listCategorias = [{name: 'Kodomo'}, {name: 'Shonen'}, {name: 'Shoujo'}, {name: 'Seinen'}, {name: 'Josei'}];
+  		// Categorias
+  		$scope.listCategorias = [
+         { category: 'catg', name: 'Komodo' },
+         { category: 'catg', name: 'Shonen' },
+         { category: 'catg', name: 'Shoujo' },
+         { category: 'catg', name: 'Seinen' },
+         { category: 'catg', name: 'Josei' },
+         { category: 'genr', name: 'Ação' },
+         { category: 'genr', name: 'Adulto' },
+         { category: 'genr', name: 'Artes Marciais' },
+         { category: 'genr', name: 'Aventura' },
+         { category: 'genr', name: 'Comédia' },
+         { category: 'genr', name: 'Demônios' },
+         { category: 'genr', name: 'Drama' },
+         { category: 'genr', name: 'Ecchi' },
+         { category: 'genr', name: 'Escolar' },
+         { category: 'genr', name: 'Espaço' },
+         { category: 'genr', name: 'Esportes' },
+         { category: 'genr', name: 'Fantasia' },
+         { category: 'genr', name: 'Ficção' },
+         { category: 'genr', name: 'Harem' },
+         { category: 'genr', name: 'Histórico' },
+         { category: 'genr', name: 'Horror' },
+         { category: 'genr', name: 'Jogo' },
+         { category: 'genr', name: 'Mistério' },
+         { category: 'genr', name: 'Paródia' },
+         { category: 'genr', name: 'Policial' },
+         { category: 'genr', name: 'Psicológico' },
+         { category: 'genr', name: 'Romance' },
+         { category: 'genr', name: 'Samurai' },
+         { category: 'genr', name: 'Sobrenatural' },
+         { category: 'genr', name: 'Slice of Life' },
+         { category: 'genr', name: 'Thriler' },
+         { category: 'genr', name: 'Vampiros' }
+        ];  		
   		
   		// Status
   		$scope.status = '';
-  		$scope.listStatus = ('Ativo Completo Parado').split(' ').map(function (status) { return { name: status }; });
-  		// Termos
-  		$scope.termo = '';
-  		$scope.termos = ('Gaiden').split(' ').map(function (termo) { return { name: termo}; });
+  		$scope.listStatus = [
+  		 {category: 'ATV', name: 'Ativo' },
+  		 {category: 'COM', name: 'Completo' },
+  		 {category: 'PAR', name: 'Parado' }
+  		];
   		
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  
@@ -118,8 +150,7 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		
   		// Permite adicionar um novo elemento
   		function adicionar() {
-  			$scope.view.selectedItem.manga = $scope.manga.id;
-  			$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length); 
+  			$scope.view.selectedItem.manga = $scope.manga.id;  			
   	    	TituloCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {    		
   	    		$scope.view.dataTable.push(data);
   				$mdDialog.hide('O titulo adicionado com sucesso.');
@@ -134,31 +165,12 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
   			$scope.view.selectedItem.manga = $scope.manga.id;
   			TituloFactory.update({id: $scope.manga.id, idTitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
-  				$scope.view.dataTable[indexArr].titulo = $scope.view.selectedItem.titulo;
+  				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
+  				$scope.view.dataTable[indexArr].categorias = $scope.view.selectedItem.categorias;
   				$mdDialog.hide('O titulo alterado com sucesso.');
   			}, function() {
   				$mdDialog.hide('Ocorreu algum error, ao alterar o titulo.');
   		  	});
-  		}  		
-  		
-  		$scope.$watch('files', function () {
-  	        var files = $scope.files;		
-
-  			var fileReader = new FileReader();
-  			if(files != null)
-  				fileReader.readAsDataURL(files);		
-  		
-  			fileReader.onload = function(e) {
-  				$scope.imgSrc = this.result;
-  				$scope.$apply();
-  			};
-  	    });
-  		
-  		$scope.clear = function() {
-  			 $scope.imageCropStep = 1;
-  			 delete $scope.imgSrc;
-  			 delete $scope.result;
-  			 delete $scope.resultBlob;
-  		};
+  		}  		  		  	
   	}  	 
 }]);

@@ -2,17 +2,13 @@
 	<div class="md-toolbar-tools">
 		<md-button ng-click="toggleSidenav('left')" hide-gt-md arial-label="Menu">
 			<ng-md-icon icon="menu"></ng-md-icon>
-		</md-button>
+		</md-button>		
 		<h3>
-			<a ng-href="#/mangas">Mang&aacute;s</a>
-		</h3>
-		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon> 
-		<h3>
-			<a ng-href="#/manga/{{titulo.id}}">{{manga.titulo}}</a>
+			<a ng-href="#/manga/{{manga.id}}">{{manga.nome}}</a>
 		</h3>
 		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon>
 		<h3>
-			{{titulo.titulo}}
+			<a ng-href="#/manga/{{manga.id}}/{{volume.id}}">{{titulo.nome}}</a>
 		</h3>	
 		<span flex></span>
 		<md-button arial-label="Search" ng-click="showSearch = !showSearch">
@@ -45,9 +41,9 @@
 				<md-card-title>
 					<md-card-title-text>
 						<span class="md-headline">{{element.nome}}</span>
-	          			<span class="md-subhead">{{titulo.categorias.join(", ")}}</span>
-	          			<div ng-repeat="c in element.capitulos">
-	          				<span class="md-subhead">{{c.numero +' - '+ c.nome}}</span>	
+	          			<span class="md-subhead">{{element.arco}}</span>
+	          			<div ng-repeat="c in element.capitulos | orderBy: 'numero'">
+	          				<span ng-class="{{ c.status ? 'red' : 'md-subhead' }}">{{c.numero +' - '+ c.nome}}</span>	
 	          			</div>
 					</md-card-title-text>
 					<md-card-title-media>
@@ -58,7 +54,7 @@
 					<md-button class="md-icon-button">
 	           			<ng-md-icon class="md-secondary md-hue-3" icon="send" ng-click="capituloPage(element)" fill="none"></ng-md-icon>
 	         		</md-button>
-				</md-card-actions>						
+				</md-card-actions>				
 			</md-card>
 		</div>
 	</div>
@@ -84,10 +80,6 @@
 			<md-dialog-content>
 				<div layout="row" layout-xs="column">
 					<div class="md-dialog-content" flex>
-						<div ng-show="view.operaction === 'Modificar'">
-				 			<img data-ng-src="data:image/(png|jpg);base64,{{view.selectedItem.imagem}}"/>
-						</div>
-						<div ng-show="view.operaction === 'Adicionar'">
 							<div ng-show="imageCropStep == 1">		
 								<div ngf-drop ngf-select ng-model="files" class="drop-box" 
        								ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
@@ -100,7 +92,7 @@
 							</div>
 							<div ng-show="imageCropStep == 2">
 								<image-crop			 
-									data-height="370"
+									data-height="380"
 									data-width="300"
 							 		data-shape="square"
 							 		data-step="imageCropStep"
@@ -111,15 +103,14 @@
 							 		padding="10"
 							 		max-size="400">
 								</image-crop>
-								<div layout="row" layout-align="center center" layout-wrap>
-									<md-button class="md-primary" ng-click="initCrop = true">OK</md-button>
+								<div layout="row" layout-align="center center" layout-wrap>									
 									<md-button class="md-primary" ng-click="clear()">Cancelar</md-button>
+									<md-button class="md-primary" ng-click="initCrop = true">OK</md-button>
 								</div>							
 							</div>
 							<div ng-show="imageCropStep == 3">
 					 			<img ng-src="{{result}}" class="img-responsive img-rounded"></img>
-				  			</div>
-						</div>
+				  			</div>						
 					</div>
 					<div class="md-dialog-content" flex>
 						<md-content layout-padding ng-cloak>							

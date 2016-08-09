@@ -33,7 +33,9 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 		} else {
 			tempData = {
 				id: data.id,
-				titulo: data.titulo
+				nome: data.nome,
+				classificacao: data.classificacao,
+				titulos: data.titulos
 			};
 		}
 		$mdDialog.show({
@@ -81,6 +83,17 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 				break;
 		}
 		
+		// Classificacao
+  		$scope.classificacao = '';
+  		$scope.listClassificacao = [
+  		 {category: 'LIVRE', name: 'Livre' },
+  		 {category: 'S_10', name: '10 anos' },
+  		 {category: 'S_12', name: '12 anos' },
+  		 {category: 'S_14', name: '14 anos' },
+  		 {category: 'S_16', name: '16 anos' },
+  		 {category: 'S_18', name: '18 anos' }
+  		];
+		
 		// Metodos do controller de dialog
 		$scope.retorno = retorno;  
 		$scope.salvar = salvar;
@@ -99,17 +112,12 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 		// Permite adicionar um novo elemento
 		function adicionar() {
 			// Determinado existe um elemento titulo especifico
-			var temp = undefined;//find($scope.view.dataTable, function(x) { return x.titulo === $scope.mangas.titulo; });
-			if(temp === undefined) {
-				MangasFactory.create($scope.view.selectedItem).$promise.then(function(data) {
-					$scope.view.dataTable.push(data);
-					$mdDialog.hide('O mangá adicionado com sucesso.');
-				}, function() {
-					$mdDialog.hide('O mangá já foi gravado.');
-			  	});
-			} else {
+			MangasFactory.create($scope.view.selectedItem).$promise.then(function(data) {
+				$scope.view.dataTable.push(data);
+				$mdDialog.hide('O mangá adicionado com sucesso.');
+			}, function() {
 				$mdDialog.hide('O mangá já foi gravado ou ocorreu algum error interno.');
-			}
+		  	});
 		}
 		
 		// Permite modificar um registro
@@ -117,7 +125,7 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 			var indexArr;
 			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
 			MangaFactory.update({id: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
-				$scope.view.dataTable[indexArr].titulo = $scope.view.selectedItem.titulo;
+				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
 				$mdDialog.hide('O mangá alterado com sucesso.');
 			}, function() {
 				$mdDialog.hide('Ocorreu algum error, ao alterar o mangá.');

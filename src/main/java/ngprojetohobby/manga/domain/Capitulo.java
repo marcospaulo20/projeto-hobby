@@ -1,15 +1,12 @@
 package ngprojetohobby.manga.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 public class Capitulo implements Serializable {
@@ -24,9 +21,6 @@ public class Capitulo implements Serializable {
 	private String nome;
 	@Column(nullable = false)
 	private Integer numero;
-	@Column(name = "ano_publicacao_jp")
-	@Temporal(value = TemporalType.DATE)
-	private Date anoPublicacaoJP;
 
 	private Boolean status;
 
@@ -55,14 +49,6 @@ public class Capitulo implements Serializable {
 
 	public void setNumero(Integer numero) {
 		this.numero = numero;
-	}
-
-	public Date getAnoPublicacaoJP() {
-		return anoPublicacaoJP;
-	}
-
-	public void setAnoPublicacaoJP(Date anoPublicacaoJP) {
-		this.anoPublicacaoJP = anoPublicacaoJP;
 	}
 
 	public Boolean getStatus() {

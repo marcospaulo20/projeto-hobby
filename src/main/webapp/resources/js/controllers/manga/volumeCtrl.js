@@ -121,7 +121,7 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		// Permite adicionar um novo elemento
   		function adicionar() {
   			$scope.view.selectedItem.titulo = $scope.titulo.id;
-  			$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length); 
+  			$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
   	    	VolumeCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {    		
   	    		$scope.view.dataTable.push(data);
   				$mdDialog.hide('O volume adicionado com sucesso.');
@@ -135,8 +135,12 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
   			$scope.view.selectedItem.titulo = $scope.titulo.id;
+  			if($scope.result != null)
+  				$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
   			VolumeFactory.update({id: $scope.titulo.manga, idTitulo: $scope.titulo.id, idVolume: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
+  				$scope.view.dataTable[indexArr].imagem = $scope.view.selectedItem.imagem;
+  				$scope.view.dataTable[indexArr].arco = $scope.view.selectedItem.arco;
   				$mdDialog.hide('O volume alterado com sucesso.');
   			}, function() {
   				$mdDialog.hide('Ocorreu algum error, ao alterar o volume.');

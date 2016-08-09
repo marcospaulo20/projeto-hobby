@@ -2,12 +2,8 @@
 	<div class="md-toolbar-tools">
 		<md-button ng-click="toggleSidenav('left')" hide-gt-md arial-label="Menu">
 			<ng-md-icon icon="menu"></ng-md-icon>
-		</md-button>
-		<h3>
-			<a ng-href="#/mangas">Mang&aacute;s</a>
-		</h3>
-		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon> 
-		<h3>{{manga.titulo}}</h3>
+		</md-button>		
+		<h3>{{manga.nome}}</h3>
 		<span flex></span>
 		<md-button arial-label="Search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search" fill="none"></ng-md-icon>
@@ -20,7 +16,7 @@
 			<ng-md-icon icon="arrow_back"></ng-md-icon>
 		</md-button>
 		<md-input-container md-no-float flex>
-			<input ng-model="search.titulo" placeholder="enter search">
+			<input ng-model="search.nome" placeholder="enter search">
 		</md-input-container>
 		<md-button arial-label="Search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search" fill="none"></ng-md-icon>
@@ -37,16 +33,24 @@
 		<div class="doc-content">
 			<md-content class="md-padding" layout-xs="column" layout="row">
 				<div flex-xs layout="row">
-					<md-card ng-repeat="element in titulos | orderBy: 'titulo' | filter:search">
+					<md-card ng-repeat="element in titulos | orderBy: 'titulo' | filter:search" class="card-titulo">
 						<md-card-title>
 							<md-card-title-text>
-								<span class="md-headline">{{element.titulo}}</span>
+								<span class="md-headline">{{element.nome}}</span>
 	            				<span class="md-subhead">{{element.categorias.join(", ")}}</span>
 							</md-card-title-text>
 						</md-card-title>
 						<md-card-content layout="row" layout-align="space-between">
-							<img data-ng-src="data:image/(png|jpg);base64,{{element.imagem}}" class="image-relative" ng-click="mostrarDialog('UD', element, $event)"/>							
+							<div ng-show="{{element.volumes == ''}}">
+								<img data-ng-src="img/image-default.png" class="image-relative"/>
+							</div>
+							<div ng-show="{{element.volumes[0].imagem != null}}">
+								<img data-ng-src="data:image/(png|jpg);base64,{{element.volumes[0].imagem}}" class="image-relative" ng-click="mostrarDialog('UD', element, $event)"/>
+							</div>
 							<md-card-actions layout="column">
+								<div>
+									<img data-ng-src="img/classificacao_indicativa/{{manga.classificacao}}.svg" style="width: 35px; margin: 0 6px;">
+								</div>
 								<md-button class="md-icon-button">
 	              					<ng-md-icon class="md-secondary md-hue-3" icon="send" ng-click="volumePage(element)" fill="none"></ng-md-icon>
 	            				</md-button>
@@ -79,53 +83,14 @@
 				</div>
 			</md-toolbar>
 			<md-dialog-content>
-				<div layout="row" layout-xs="column">
-					<div class="md-dialog-content" flex>
-						<div ng-show="view.operaction === 'Modificar'">
-				 			<img data-ng-src="data:image/(png|jpg);base64,{{view.selectedItem.imagem}}"/>
-						</div>
-						<div ng-show="view.operaction === 'Adicionar'">
-							<div ng-show="imageCropStep == 1">		
-								<div ngf-drop ngf-select ng-model="files" class="drop-box" 
-       								ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
-       								accept="image/*" ngf-pattern="'image/*'">Largue as imagens aqui ou clique para fazer upload
-       								<span ng-show="dropAvailable"> ou soltar de arquivo</span>
-       							</div>							 
-								<div class="preview">
-									<img ngf-src="!files[0].$error && files[0]">
-				        		</div>
-							</div>
-							<div ng-show="imageCropStep == 2">
-								<image-crop			 
-									data-height="370"
-									data-width="300"
-							 		data-shape="square"
-							 		data-step="imageCropStep"
-							 		src="imgSrc"
-							 		data-result="result"
-							 		data-result-blob="resultBlob"
-							 		crop="initCrop"
-							 		padding="10"
-							 		max-size="400">
-								</image-crop>
-								<div layout="row" layout-align="center center" layout-wrap>
-									<md-button class="md-primary" ng-click="initCrop = true">OK</md-button>
-									<md-button class="md-primary" ng-click="clear()">Cancelar</md-button>
-								</div>							
-							</div>
-							<div ng-show="imageCropStep == 3">
-					 			<img ng-src="{{result}}" class="img-responsive img-rounded"></img>
-				  			</div>
-						</div>
-					</div>
 					<div class="md-dialog-content" flex>
 						<md-content layout-padding ng-cloak>							
 							<md-input-container class="md-block">
-								<label>Titulo</label>
-								<input type="text" name="titulo" required md-maxlength="200" ng-model="view.selectedItem.titulo" />
-								<ng-messages for="inputForm.titulo.$error">
+								<label>Nome</label>
+								<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
+								<ng-messages for="inputForm.nome.$error">
 									<ng-message when="required">O campo e obrigatorio</ng-message>
-									<ng-message when="md-maxlength">Use 255 caracteres ou menos para o titulo</ng-message>
+									<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
                            		</ng-messages>
 							</md-input-container>							
 							<div layout-gt-sm="row">
@@ -155,24 +120,23 @@
           								</md-option>
         							</md-select>
       							</md-input-container>
-								<md-input-container class="md-block" flex-gt-xs>
-        							<label>Termo</label>
-        							<md-select ng-model="view.selectedItem.termo">
-          								<md-option ng-repeat="termo in termos" value="{{termo.name}}">
-            								{{termo.name}}
-          								</md-option>
-        							</md-select>
-      							</md-input-container>
+								
+								<md-datepicker ng-model="view.selectedItem.ano" md-placeholder="Ano de publica&#231;&#227;"></md-datepicker>								
 							</div>
-							
-							<md-datepicker ng-model="view.selectedItem.ano" md-placeholder="Enter date"></md-datepicker>
 
-							<md-input-container class="md-block" flex-gt-sm>
+							<md-input-container class="md-block">
         						<label>Categoria</label>
         						<md-select ng-model="view.selectedItem.categorias" multiple>
-          							<md-option ng-value="categoria.name" ng-repeat="categoria in listCategorias">
-            							{{categoria.name}}
-          							</md-option>
+          							<md-optgroup label="Categorias">
+										<md-option ng-value="categoria.name" ng-repeat="categoria in listCategorias | filter: {category: 'catg' }">
+            								{{categoria.name}}
+          								</md-option>
+									</md-optgroup>
+									<md-optgroup label="Generos">
+										<md-option ng-value="categoria.name" ng-repeat="categoria in listCategorias | filter: {category: 'genr' }">
+            								{{categoria.name}}
+          								</md-option>
+									</md-optgroup>
         						</md-select>
       						</md-input-container>
 						</md-content>

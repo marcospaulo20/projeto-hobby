@@ -27,9 +27,12 @@ public class Manga implements Serializable {
 	private Long id;
 
 	@Column(unique = true, length = 255, nullable = false)
-	private String titulo;
+	private String nome;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Titulo.class)	
+	@Column(length = 30, nullable = false)
+	private String classificacao;
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Titulo.class)
 	@JoinTable(name = "manga_titulo", joinColumns = {
 			@JoinColumn(name = "manga_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "titulo_id", referencedColumnName = "id", unique = true) })
@@ -44,8 +47,20 @@ public class Manga implements Serializable {
 		return id;
 	}
 
-	public String getTitulo() {
-		return titulo;
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getClassificacao() {
+		return classificacao;
+	}
+
+	public void setClassificacao(String classificacao) {
+		this.classificacao = classificacao;
 	}
 
 	public List<Titulo> getTitulos() {
