@@ -88,6 +88,8 @@ app.controller('CapituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFa
   				break;
   		}
   		
+  		$scope.status = false;
+  		
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  
   		$scope.salvar = salvar;
@@ -122,6 +124,7 @@ app.controller('CapituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFa
   			$scope.view.selectedItem.volume = $scope.volume.id;
   			CapituloFactory.update({id: $scope.titulo.manga, idTitulo: $scope.titulo.id, idVolume: $scope.volume.id, idCapitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
+  				$scope.view.dataTable[indexArr].numero = $scope.view.selectedItem.numero;
   				$mdDialog.hide('O capitulo alterado com sucesso.');
   			}, function() {
   				$mdDialog.hide('Ocorreu algum error, ao alterar o capitulo.');
@@ -136,12 +139,27 @@ app.controller('CapituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFa
   				$scope.view.selectedItem.volume = $scope.volume.id;
   	  			CapituloFactory.delete({id: $scope.titulo.manga, idTitulo: $scope.titulo.id, idVolume: $scope.volume.id, idCapitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   	  				$scope.view.dataTable.pop(item);
-  	  				$mdDialog.hide('O capitulo deletado com sucesso.');
+  	  				$mdDialog.hide('');
   	  			}, function() {
   	  				$mdDialog.hide('Ocorreu algum error, ao deleta o capitulo.');
   	  		  	});
   			}  			
   		}
-  	}  	 
+  		
+  		$scope.showExcluir = function(ev) {
+  			// Appending dialog to document.body to cover sidenav in docs app
+  			var confirm = $mdDialog.confirm()
+  				.title('Gostaria de eliminar o capitulo?')
+  	  	        .targetEvent(ev)
+  	  	        .ok('Sim')
+  	  	        .cancel('Não');
+  	  	    	$mdDialog.show(confirm).then(function() {
+  	  	    		excluir();
+  	  	    		$scope.status = 'O capitulo deletado com sucesso.';
+  	  	    	}, function() {
+  	  	    		$scope.status = 'Ocorreu algum error, ao deleta o capitulo.';
+  	  	    	});
+  	  	  	}
+  		}  	 
 
 }]);

@@ -21,6 +21,11 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   	    );
   	}
   	
+  	$scope.roundedPercentage = function(myValue, totalValue){
+   	   var result = ((myValue/totalValue)*100)
+   	   return Math.round(result, 2);
+   	}  	   
+  	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
      }
@@ -38,7 +43,7 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				autor: data.autor,
   				desenhista: data.desenhista,
   				status: data.status,
-  				ano: data.ano,  				
+  				ano: data.ano,			
   				categorias: data.categorias,
   				volumes: data.volumes,
   			};
@@ -171,6 +176,6 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			}, function() {
   				$mdDialog.hide('Ocorreu algum error, ao alterar o titulo.');
   		  	});
-  		}  		  		  	
+  		}
   	}  	 
 }]);

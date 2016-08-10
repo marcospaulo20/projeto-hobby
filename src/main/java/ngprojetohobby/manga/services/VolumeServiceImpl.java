@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ngprojetohobby.manga.domain.Capitulo;
 import ngprojetohobby.manga.domain.Titulo;
 import ngprojetohobby.manga.domain.Volume;
+import ngprojetohobby.manga.repositories.CapituloRepository;
 import ngprojetohobby.manga.repositories.TituloRepository;
 import ngprojetohobby.manga.repositories.VolumeRepository;
 
@@ -17,6 +19,9 @@ public class VolumeServiceImpl implements VolumeService {
 
 	@Inject
 	private TituloRepository tituloRepository;
+	
+	@Inject
+	private CapituloRepository capituloRepository;
 
 	@Override
 	public List<Volume> getAllVolumes(Long id) {
@@ -41,6 +46,13 @@ public class VolumeServiceImpl implements VolumeService {
 
 	@Override
 	public Volume update(Volume volume) {
+		
+		if(volume.getStatus() == true) {
+			for(Capitulo c : volume.getCapitulos()) {
+				c.setStatus(true);
+				this.capituloRepository.update(c);
+			}
+		}
 		return this.volumeRepository.update(volume);
 	}
 

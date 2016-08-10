@@ -43,8 +43,7 @@ public class Volume implements Serializable {
 	@Column(name = "ano_publicacao_br")
 	@Temporal(value = TemporalType.DATE)
 	private Date anoPublicacaoBR;
-	@Column(length = 20)
-	private String status;
+	private Boolean status;
 	private Double preco;
 	@Lob
 	@Type(type = "org.hibernate.type.BinaryType")
@@ -61,6 +60,7 @@ public class Volume implements Serializable {
 
 	public Volume() {
 		super();
+		this.status = Boolean.FALSE;
 	}
 
 	public Long getId() {
@@ -107,11 +107,11 @@ public class Volume implements Serializable {
 		this.anoPublicacaoBR = anoPublicacaoBR;
 	}
 
-	public String getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 

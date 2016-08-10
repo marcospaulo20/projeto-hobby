@@ -37,20 +37,24 @@
 <md-content md-scroll-y layout="column" flex>
 	<div layout-padding flex="noshrink">
 		<div class="doc-content">
-			<md-card ng-repeat="element in volumes | orderBy: 'nome' | filter:search">				
+			<md-card ng-repeat="element in volumes | orderBy: 'anoPublicacaoJP' | filter:search">
 				<md-card-title>
 					<md-card-title-text>
 						<span class="md-headline">{{element.nome}}</span>
 	          			<span class="md-subhead">{{element.arco}}</span>
 	          			<div ng-repeat="c in element.capitulos | orderBy: 'numero'">
-	          				<span ng-class="{{ c.status ? 'red' : 'md-subhead' }}">{{c.numero +' - '+ c.nome}}</span>	
+	          				<span class="{{ c.status ? 'red' : 'md-subhead' }}">{{c.numero +' - '+ c.nome}}</span>
 	          			</div>
 					</md-card-title-text>
 					<md-card-title-media>
 						<img data-ng-src="data:image/(png|jpg);base64,{{element.imagem}}" class="image-relative-volume" ng-click="mostrarDialog('UD', element, $event)"/>
 					</md-card-title-media>
-				</md-card-title>				
-				<md-card-actions layout="row" layout-align="end center">
+				</md-card-title>
+				<div ng-repeat="c in element.capitulos | orderBy: 'numero' | filter: query"></div>
+				<div style="padding: 16px 16px;">
+					<md-progress-linear md-mode="determinate" ng-value="roundedPercentage((element.capitulos | filter : query.status = true).length, element.capitulos.length)"></md-progress-linear>
+				</div>
+				<md-card-actions layout="row" layout-align="end center">										
 					<md-button class="md-icon-button">
 	           			<ng-md-icon class="md-secondary md-hue-3" icon="send" ng-click="capituloPage(element)" fill="none"></ng-md-icon>
 	         		</md-button>
@@ -80,63 +84,64 @@
 			<md-dialog-content>
 				<div layout="row" layout-xs="column">
 					<div class="md-dialog-content" flex>
-							<div ng-show="imageCropStep == 1">		
-								<div ngf-drop ngf-select ng-model="files" class="drop-box" 
-       								ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
-       								accept="image/*" ngf-pattern="'image/*'">Largue as imagens aqui ou clique para fazer upload
-       								<span ng-show="dropAvailable"> ou soltar de arquivo</span>
-       							</div>							 
-								<div class="preview">
-									<img ngf-src="!files[0].$error && files[0]">
-				        		</div>
-							</div>
-							<div ng-show="imageCropStep == 2">
-								<image-crop			 
-									data-height="380"
-									data-width="300"
-							 		data-shape="square"
-							 		data-step="imageCropStep"
-							 		src="imgSrc"
-							 		data-result="result"
-							 		data-result-blob="resultBlob"
-							 		crop="initCrop"
-							 		padding="10"
-							 		max-size="400">
-								</image-crop>
-								<div layout="row" layout-align="center center" layout-wrap>									
-									<md-button class="md-primary" ng-click="clear()">Cancelar</md-button>
-									<md-button class="md-primary" ng-click="initCrop = true">OK</md-button>
-								</div>							
-							</div>
-							<div ng-show="imageCropStep == 3">
-					 			<img ng-src="{{result}}" class="img-responsive img-rounded"></img>
-				  			</div>						
+						<div ng-show="imageCropStep == 1">		
+							<div ngf-drop ngf-select ng-model="files" class="drop-box" 
+       							ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
+       							accept="image/*" ngf-pattern="'image/*'">Largue as imagens aqui ou clique para fazer upload
+       							<span ng-show="dropAvailable"> ou soltar de arquivo</span>
+       						</div>							 
+							<div class="preview">
+								<img ngf-src="!files[0].$error && files[0]">
+				        	</div>
+						</div>
+						<div ng-show="imageCropStep == 2">
+							<image-crop			 
+								data-height="380"
+								data-width="290"
+						 		data-shape="square"
+						 		data-step="imageCropStep"
+						 		src="imgSrc"
+						 		data-result="result"
+						 		data-result-blob="resultBlob"
+						 		crop="initCrop"
+						 		padding="10"
+						 		max-size="390">
+							</image-crop>
+							<div layout="row" layout-align="center center" layout-wrap>									
+								<md-button class="md-primary" ng-click="clear()">Cancelar</md-button>
+								<md-button class="md-primary" ng-click="initCrop = true">OK</md-button>
+							</div>							
+						</div>
+						<div ng-show="imageCropStep == 3">
+					 		<img ng-src="{{result}}" class="img-responsive img-rounded"></img>
+				  		</div>						
 					</div>
 					<div class="md-dialog-content" flex>
 						<md-content layout-padding ng-cloak>							
-															
-								<md-input-container class="md-block">
-									<label>Nome</label>
-									<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
-									<ng-messages for="inputForm.nome.$error">
-										<ng-message when="required">O campo e obrigatorio</ng-message>
-										<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
-                           			</ng-messages>
-								</md-input-container>								
-								
-							
-								<md-input-container class="md-block">
-        							<label>Arco</label>
-        							<input name="arco" required md-maxlength="100" ng-model="view.selectedItem.arco">
-									<ng-messages for="inputForm.arco.$error">
-										<ng-message when="required">O campo e obrigatorio</ng-message>
-										<ng-message when="md-maxlength">Use 100 caracteres ou menos para o arco</ng-message>
-                           			</ng-messages>
-      							</md-input-container>
+							<md-input-container class="md-block">
+								<label>Nome</label>
+								<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
+								<ng-messages for="inputForm.nome.$error">
+									<ng-message when="required">O campo e obrigatorio</ng-message>
+									<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
+                     			</ng-messages>
+							</md-input-container>								
+							<md-input-container class="md-block">
+       							<label>Arco</label>
+       							<input name="arco" required md-maxlength="100" ng-model="view.selectedItem.arco">
+								<ng-messages for="inputForm.arco.$error">
+									<ng-message when="required">O campo e obrigatorio</ng-message>
+									<ng-message when="md-maxlength">Use 100 caracteres ou menos para o arco</ng-message>
+                       			</ng-messages>
+   							</md-input-container>
 							
 							<div layout-gt-sm="row">
-								<md-datepicker ng-model="view.selectedItem.anoPublicacaoJP" md-placeholder="Publica&#231;&#227;o jap"></md-datepicker>
-								<md-datepicker ng-model="view.selectedItem.anoPublicacaoBR" md-placeholder="Publica&#231;&#227;o br"></md-datepicker>	
+								<div>
+									<md-datepicker ng-model="view.selectedItem.anoPublicacaoJP" md-placeholder="Publica&#231;&#227;o jap"></md-datepicker>
+								</div>
+								<div>
+									<md-datepicker ng-model="view.selectedItem.anoPublicacaoBR" md-placeholder="Publica&#231;&#227;o br"></md-datepicker>
+								</div>	
 							</div>
 							<div layout-gt-sm="row">
 								<md-input-container>

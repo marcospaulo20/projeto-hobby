@@ -29,6 +29,7 @@ public class Capitulo implements Serializable {
 
 	public Capitulo() {
 		super();
+		this.status = Boolean.FALSE;
 	}
 
 	public Long getId() {

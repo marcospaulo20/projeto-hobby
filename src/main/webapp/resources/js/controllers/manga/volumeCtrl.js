@@ -24,6 +24,11 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   	            .action(action)
   	    );
   	}
+  
+  	$scope.roundedPercentage = function(myValue, totalValue){
+  	   var result = ((myValue/totalValue)*100)
+  	   return Math.round(result, 2);
+  	}
   	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
@@ -98,8 +103,8 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		// Status
   		$scope.status = '';
   		$scope.listStatus = [
-  		   { category: 'JL', name: 'Já li' },
-  		   { category: 'EL', name: 'Estou lendo' }         
+  		   { category: true, name: 'Já li' },
+  		   { category: false, name: 'Estou lendo' }         
          ];
   		//$scope.listStatus = ('Já li,Estou lendo').split(',').map(function (status) { return { name: status }; });  		
   		
@@ -141,6 +146,9 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
   				$scope.view.dataTable[indexArr].imagem = $scope.view.selectedItem.imagem;
   				$scope.view.dataTable[indexArr].arco = $scope.view.selectedItem.arco;
+  				$scope.view.dataTable[indexArr].status = $scope.view.selectedItem.status;
+  				$scope.view.dataTable[indexArr].capitulos = $scope.view.selectedItem.capitulos;
+  				$scope.view.dataTable[indexArr].capitulos.status = $scope.view.selectedItem.capitulos.status;
   				$mdDialog.hide('O volume alterado com sucesso.');
   			}, function() {
   				$mdDialog.hide('Ocorreu algum error, ao alterar o volume.');
