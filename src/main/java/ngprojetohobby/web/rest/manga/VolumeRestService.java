@@ -30,14 +30,14 @@ public class VolumeRestService {
 	}
 
 	@GET
-	@Path("{id}/titulo/{idTitulo}/volumes")
+	@Path("{id}/titulo/{idTituloM}/volumes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Volume> getAllVolumesInJSON(@PathParam("idTitulo") Long id) {
+	public List<Volume> getAllVolumesInJSON(@PathParam("idTituloM") Long id) {
 		return volumeService.getAllVolumes(id);
 	}
 
 	@GET
-	@Path("{id}/titulo/{idTitulo}/volumes/{idVolume}")
+	@Path("{id}/titulo/{idTituloM}/volumes/{idVolume}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Volume getVolumeById(@PathParam("idVolume") Long id) {
 		return volumeService.getById(id);
@@ -52,7 +52,7 @@ public class VolumeRestService {
 	}
 
 	@PUT
-	@Path("{id}/titulo/{idTitulo}/volumes/{idVolume}")
+	@Path("{id}/titulo/{idTituloM}/volumes/{idVolume}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Volume uptade(Volume volume) {
@@ -60,7 +60,7 @@ public class VolumeRestService {
 	}
 
 	@DELETE
-	@Path("{id}/titulo/{idTitulo}/volumes/{idVolume}")
+	@Path("{id}/titulo/{idTituloM}/volumes/{idVolume}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public void remove(@PathParam("idVolume") Long id) {
 		volumeService.remove(id);

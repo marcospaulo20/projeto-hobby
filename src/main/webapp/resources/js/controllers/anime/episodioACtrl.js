@@ -1,17 +1,17 @@
 'use strict';
 
-var app = angular.module('projetoHobbyApp.capitulo.controllers', []);
+var app = angular.module('projetoHobbyApp.episodio.controllers', []);
 
-app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFactory', 'TituloMFactory', 'VolumeFactory', 'CapitulosMFactory', 'CapituloMCreateFactory', 'CapituloMFactory', '$mdToast', '$mdDialog', '$location', '$filter',
-  	 function($scope, $rootScope, $routeParams, MangaFactory, TituloMFactory, VolumeFactory, CapitulosMFactory, CapituloMCreateFactory, CapituloMFactory, $mdToast, $mdDialog, $location, $filter) {
+app.controller('EpisodioACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactory', 'TituloAFactory', 'ArcoFactory', 'EpisodiosAFactory', 'EpisodioACreateFactory', 'EpisodioAFactory', '$mdToast', '$mdDialog', '$location', '$filter',
+  	 function($scope, $rootScope, $routeParams, AnimeFactory, TituloAFactory, ArcoFactory, EpisodiosAFactory, EpisodioACreateFactory, EpisodioAFactory, $mdToast, $mdDialog, $location, $filter) {
     
-	$scope.manga = MangaFactory.show({id: $routeParams.id});
+	$scope.anime = AnimeFactory.show({id: $routeParams.id});
 	
-	$scope.titulo = TituloMFactory.show({id: $routeParams.id, idTituloM: $routeParams.idTituloM});
+	$scope.titulo = TituloAFactory.show({id: $routeParams.id, idTituloA: $routeParams.idTituloA});
 	
-	$scope.volume = VolumeFactory.show({id: $routeParams.id, idTituloM: $routeParams.idTituloM, idVolume: $routeParams.idVolume});
+	$scope.arco = ArcoFactory.show({id: $routeParams.id, idTituloA: $routeParams.idTituloA, idArco: $routeParams.idArco});
 	
-	$scope.capitulos = CapitulosMFactory.query({id: $routeParams.id, idTituloM: $routeParams.idTituloM, idVolume: $routeParams.idVolume});	
+	$scope.episodios = EpisodiosAFactory.query({id: $routeParams.id, idTituloA: $routeParams.idTituloA, idArco: $routeParams.idArco});	
 	
   	$scope.mostrarDialog = mostrarDialog;
   	
@@ -40,6 +40,7 @@ app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaF
   				id: data.id,
   				nome: data.nome,
   				numero: data.numero,
+  				tipo: data.tipo,
   				status: data.status
   			};
   		}
@@ -48,7 +49,7 @@ app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaF
   			targetEvent: event,
   			locals: {
   				selectedItem: tempData,
-  				dataTable: $scope.capitulos,
+  				dataTable: $scope.episodios,
   				operaction: operaction
   			},
   			bindToController: true,
@@ -63,8 +64,8 @@ app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaF
   	// Controller de dialog
   	function DialogController($scope, $mdDialog, operaction, selectedItem, dataTable) {
   		
-  		$scope.titulo = TituloMFactory.show({id: $routeParams.id, idTituloM: $routeParams.idTituloM});
-  		$scope.volume = VolumeFactory.show({id: $routeParams.id, idTituloM: $routeParams.idTituloM, idVolume: $routeParams.idVolume});
+  		$scope.titulo = TituloAFactory.show({id: $routeParams.id, idTituloA: $routeParams.idTituloA});
+  		$scope.arco = ArcoFactory.show({id: $routeParams.id, idTituloA: $routeParams.idTituloA, idArco: $routeParams.idArco});
   		
   		$scope.view = {
   			dataTable: dataTable,
@@ -88,6 +89,13 @@ app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaF
   				break;
   		}
   		
+  		// Tipo
+  		$scope.tipo = '';
+  		$scope.listTipos = [
+  		  {name: 'Normal'},
+  		  {name: 'Especial'}  		 
+  		];
+  		
   		$scope.status = false;
   		
   		// Metodos do controller de dialog
@@ -108,12 +116,12 @@ app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaF
   		
   		// Permite adicionar um novo elemento
   		function adicionar() {
-  			$scope.view.selectedItem.volume = $scope.volume.id;
-  			CapituloMCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {
+  			$scope.view.selectedItem.arco = $scope.arco.id;
+  			EpisodioACreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {
   	    		$scope.view.dataTable.push(data);
-  				$mdDialog.hide('O capitulo adicionado com sucesso.');
+  				$mdDialog.hide('O episodio adicionado com sucesso.');
   	    	}, function() {
-  	    		$mdDialog.hide('O capitulo já foi gravado ou ocorreu algum erro.');
+  	    		$mdDialog.hide('O episodio já foi gravado ou ocorreu algum erro.');
   	    	});	    	
   		}
   		
@@ -121,13 +129,13 @@ app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaF
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			$scope.view.selectedItem.volume = $scope.volume.id;
-  			CapituloMFactory.update({id: $scope.titulo.manga, idTituloM: $scope.titulo.id, idVolume: $scope.volume.id, idCapituloM: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
+  			$scope.view.selectedItem.arco = $scope.arco.id;
+  			EpisodioAFactory.update({id: $scope.titulo.anime, idTituloA: $scope.titulo.id, idArco: $scope.arco.id, idEpisodioA: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
   				$scope.view.dataTable[indexArr].numero = $scope.view.selectedItem.numero;
-  				$mdDialog.hide('O capitulo alterado com sucesso.');
+  				$mdDialog.hide('O episodio alterado com sucesso.');
   			}, function() {
-  				$mdDialog.hide('Ocorreu algum error, ao alterar o capitulo.');
+  				$mdDialog.hide('Ocorreu algum error, ao alterar o episodio.');
   		  	});
   		}
   		
@@ -136,12 +144,12 @@ app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaF
   			var indexArr;
   			var item = $scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
   			if(item !== undefined) {
-  				$scope.view.selectedItem.volume = $scope.volume.id;
-  	  			CapituloMFactory.delete({id: $scope.titulo.manga, idTituloM: $scope.titulo.id, idVolume: $scope.volume.id, idCapituloM: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
+  				$scope.view.selectedItem.arco = $scope.arco.id;
+  	  			EpisodioAFactory.delete({id: $scope.titulo.anime, idTituloA: $scope.titulo.id, idArco: $scope.arco.id, idEpisodioA: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   	  				$scope.view.dataTable.pop(item);
   	  				$mdDialog.hide('');
   	  			}, function() {
-  	  				$mdDialog.hide('Ocorreu algum error, ao deleta o capitulo.');
+  	  				$mdDialog.hide('Ocorreu algum error, ao deleta o episodio.');
   	  		  	});
   			}  			
   		}
@@ -149,15 +157,15 @@ app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaF
   		$scope.showExcluir = function(ev) {
   			// Appending dialog to document.body to cover sidenav in docs app
   			var confirm = $mdDialog.confirm()
-  				.title('Gostaria de eliminar o capitulo?')
+  				.title('Gostaria de eliminar o episodio?')
   	  	        .targetEvent(ev)
   	  	        .ok('Sim')
   	  	        .cancel('Não');
   	  	    	$mdDialog.show(confirm).then(function() {
   	  	    		excluir();
-  	  	    		$scope.status = 'O capitulo deletado com sucesso.';
+  	  	    		$scope.status = 'O episodio deletado com sucesso.';
   	  	    	}, function() {
-  	  	    		$scope.status = 'Ocorreu algum error, ao deleta o capitulo.';
+  	  	    		$scope.status = 'Ocorreu algum error, ao deleta o episodio.';
   	  	    	});
   	  	  	}
   		}  	 

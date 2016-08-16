@@ -17,29 +17,29 @@ services.factory('MangaFactory', function MangaFactory($resource) {
 	})
 });
 
-services.factory('TitulosFactory', function TitulosFactory($resource) {
+services.factory('TitulosMFactory', function TitulosMFactory($resource) {
 	return $resource('rest/manga/:id/titulos', {}, {
 		query: { method: 'GET', isArray: true }
 	})
 });
 
-services.factory('TituloCreateFactory', function TitulosFactory($resource) {
+services.factory('TituloMCreateFactory', function TitulosMCreateFactory($resource) {
 	return $resource('rest/manga/titulos', {}, {
 		create: { method: 'POST' }
 	})
 });
 
-services.factory('TituloFactory', function TituloFactory($resource) {
-	return $resource('rest/manga/:id/titulos/:idTitulo', {}, {
-		show: { method: 'GET', params: {id: '@manga.id', idTitulo: '@id'}  },
-		update: { method: 'PUT', params: {id: '@manga.id', idTitulo: '@id'} },
-		delete: { method: 'DELETE', params: {id: '@manga.id', idTitulo: '@id'} }
+services.factory('TituloMFactory', function TituloMFactory($resource) {
+	return $resource('rest/manga/:id/titulos/:idTituloM', {}, {
+		show: { method: 'GET', params: {id: '@manga.id', idTituloM: '@id'}  },
+		update: { method: 'PUT', params: {id: '@manga.id', idTituloM: '@id'} },
+		delete: { method: 'DELETE', params: {id: '@manga.id', idTituloM: '@id'} }
 	})
 });
 
 services.factory('VolumesFactory', function VolumesFactory($resource) {
-	return $resource('rest/manga/:id/titulo/:idTitulo/volumes', {}, {
-		query: { method: 'GET', params: {id: '@manga.id', idTitulo: '@id'}, isArray: true }
+	return $resource('rest/manga/:id/titulo/:idTituloM/volumes', {}, {
+		query: { method: 'GET', params: {id: '@manga.id', idTituloM: '@id'}, isArray: true }
 	})
 });
 
@@ -50,29 +50,29 @@ services.factory('VolumeCreateFactory', function VolumeFactory($resource) {
 });
 
 services.factory('VolumeFactory', function VolumeFactory($resource) {
-	return $resource('rest/manga/:id/titulo/:idTitulo/volumes/:idVolume', {}, {
-		show: { method: 'GET', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@id'} },
-		update: { method: 'PUT', params: {id: '@manga.id', idTitulo: '@tituo.id', idVolume: '@id'} },
-		delete: { method: 'DELETE', params: {id: '@manga.id', idTitulo: '@tituo.id', idVolume: '@id'} },
+	return $resource('rest/manga/:id/titulo/:idTituloM/volumes/:idVolume', {}, {
+		show: { method: 'GET', params: {id: '@manga.id', idTituloM: '@titulo.id', idVolume: '@id'} },
+		update: { method: 'PUT', params: {id: '@manga.id', idTituloM: '@tituo.id', idVolume: '@id'} },
+		delete: { method: 'DELETE', params: {id: '@manga.id', idTituloM: '@tituo.id', idVolume: '@id'} },
 	})
 });
 
-services.factory('CapitulosFactory', function CapitulosFactory($resource) {
-	return $resource('rest/manga/:id/titulo/:idTitulo/volume/:idVolume/capitulos', {}, {
-		query: { method: 'GET', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@id'}, isArray: true }
+services.factory('CapitulosMFactory', function CapitulosMFactory($resource) {
+	return $resource('rest/manga/:id/titulo/:idTituloM/volume/:idVolume/capitulos', {}, {
+		query: { method: 'GET', params: {id: '@manga.id', idTituloM: '@titulo.id', idVolume: '@id'}, isArray: true }
 	})
 });
 
-services.factory('CapituloCreateFactory', function CapituloFactory($resource) {
+services.factory('CapituloMCreateFactory', function CapituloMFactory($resource) {
 	return $resource('rest/manga/titulo/volume/capitulos', {}, {
 		create: { method: 'POST' }
 	})
 });
 
-services.factory('CapituloFactory', function CapituloFactory($resource) {
-	return $resource('rest/manga/:id/titulo/:idTitulo/volume/:idVolume/capitulos/:idCapitulo', {}, {
-		show: { method: 'GET', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@volume.id', idCapitulo: '@id'} },
-		update: { method: 'PUT', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@volume.id', idCapitulo: '@id'} },
-		delete: { method: 'DELETE', params: {id: '@manga.id', idTitulo: '@titulo.id', idVolume: '@volume.id', idCapitulo: '@id'} },
+services.factory('CapituloMFactory', function CapituloMFactory($resource) {
+	return $resource('rest/manga/:id/titulo/:idTituloM/volume/:idVolume/capitulos/:idCapituloM', {}, {
+		show: { method: 'GET', params: {id: '@manga.id', idTituloM: '@titulo.id', idVolume: '@volume.id', idCapituloM: '@id'} },
+		update: { method: 'PUT', params: {id: '@manga.id', idTituloM: '@titulo.id', idVolume: '@volume.id', idCapituloM: '@id'} },
+		delete: { method: 'DELETE', params: {id: '@manga.id', idTituloM: '@titulo.id', idVolume: '@volume.id', idCapituloM: '@id'} },
 	})
 });

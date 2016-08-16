@@ -1,4 +1,4 @@
-package ngprojetohobby.manga.domain;
+package ngprojetohobby.anime.domain;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,8 +19,8 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
-@Table(name="manga")
-public class Manga implements Serializable {
+@Table(name="anime")
+public class Anime implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,20 +28,20 @@ public class Manga implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true, length = 255, nullable = false)
+	@Column(length = 200, nullable = false)
 	private String nome;
 
 	@Column(length = 30, nullable = false)
 	private String classificacao;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = TituloM.class)
-	@JoinTable(name = "manga_titulo", joinColumns = {
-			@JoinColumn(name = "manga_id", referencedColumnName = "id") }, inverseJoinColumns = {
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = TituloA.class)
+	@JoinTable(name = "anime_titulo", joinColumns = {
+			@JoinColumn(name = "anime_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "titulo_id", referencedColumnName = "id", unique = true) })
 	@Fetch(FetchMode.SUBSELECT)
-	private List<TituloM> titulosM;
+	private List<TituloA> titulosA;
 
-	public Manga() {
+	public Anime() {
 		super();
 	}
 
@@ -65,12 +65,12 @@ public class Manga implements Serializable {
 		this.classificacao = classificacao;
 	}
 
-	public List<TituloM> getTitulosM() {
-		return titulosM;
+	public List<TituloA> getTitulosA() {
+		return titulosA;
 	}
 
-	public void setTitulosM(List<TituloM> titulosM) {
-		this.titulosM = titulosM;
+	public void setTitulosA(List<TituloA> titulosA) {
+		this.titulosA = titulosA;
 	}
 
 }

@@ -1,14 +1,15 @@
 'use strict';
 
-var app = angular.module('projetoHobbyApp.titulo.controllers', []);
+var app = angular.module('projetoHobbyApp.tituloA.controllers', []);
 
-app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFactory', 'TitulosFactory', 'TituloFactory','TituloCreateFactory', '$mdToast', '$mdDialog', '$location', '$filter',
-  	function($scope, $rootScope, $routeParams, MangaFactory, TitulosFactory, TituloFactory, TituloCreateFactory, $mdToast, $mdDialog, $location, $filter) {
+app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactory', 'TitulosAFactory', 'TituloAFactory','TituloACreateFactory', 'MangasFactory', '$mdToast', '$mdDialog', '$location', '$filter', '$timeout',
+  	function($scope, $rootScope, $routeParams, AnimeFactory, TitulosAFactory, TituloAFactory, TituloACreateFactory, MangasFactory, $mdToast, $mdDialog, $location, $filter, $timeout) {
 	
-  	$scope.manga = MangaFactory.show({id: $routeParams.id});
-  	$scope.titulos = TitulosFactory.query({id: $routeParams.id});
+	
+  	$scope.anime = AnimeFactory.show({id: $routeParams.id});
+  	$scope.titulos = TitulosAFactory.query({id: $routeParams.id});
   	
-  	$scope.volumePage = volumePage;
+  	$scope.arcoPage = arcoPage;
   	$scope.mostrarDialog = mostrarDialog;
   	
   	function simpleToastBase(message, position, delay, action) {
@@ -24,7 +25,7 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   	$scope.roundedPercentage = function(myValue, totalValue){
    	   var result = ((myValue/totalValue)*100)
    	   return Math.round(result, 2);
-   	}  	   
+   	}
   	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
@@ -40,12 +41,11 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			tempData = {
   				id: data.id,							
   				nome: data.nome,
-  				autor: data.autor,
-  				desenhista: data.desenhista,
-  				status: data.status,
-  				ano: data.ano,			
-  				categorias: data.categorias,
-  				volumes: data.volumes,
+  				generos: data.generos,
+  				ano: new Date(data.ano),
+  				formato: data.formato,
+  				manga: data.manga,
+  				arcos: data.arcos
   			};
   		}
   		$mdDialog.show({
@@ -65,18 +65,19 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		});
   	}
   	
-  	function volumePage(element) {
-		return $location.path("manga/" + element.manga + "/" + element.id);
+  	function arcoPage(element) {
+		return $location.path("anime/" + element.anime + "/" + element.id);
 	}
   	
   	// Controller de dialog
   	function DialogController($scope, $mdDialog, operaction, selectedItem, dataTable) {
-  		$scope.manga = MangaFactory.show({id: $routeParams.id});
+  		$scope.anime = AnimeFactory.show({id: $routeParams.id});
+  		
   		$scope.view = {
   			dataTable: dataTable,
   			selectedItem: selectedItem,
   			operaction: 'Adicionar'
-  		};  		  
+  		};
   		
   		// Determinado tipo de operação
   		switch(operaction) {
@@ -94,13 +95,16 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				break;
   		}
   		
-  		// Categorias
-  		$scope.listCategorias = [
-         { category: 'catg', name: 'Komodo' },
-         { category: 'catg', name: 'Shonen' },
-         { category: 'catg', name: 'Shoujo' },
-         { category: 'catg', name: 'Seinen' },
-         { category: 'catg', name: 'Josei' },
+  		// Formato
+  		$scope.formato = '';
+  		$scope.listFormato = [
+  		  {name: 'Normal'},
+  		  {name: 'OVA'},
+ 		  {name: 'Filme'}
+  		];
+  		
+  		// Generos
+  		$scope.listGeneros = [         
          { category: 'genr', name: 'Ação' },
          { category: 'genr', name: 'Adulto' },
          { category: 'genr', name: 'Artes Marciais' },
@@ -130,14 +134,6 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
          { category: 'genr', name: 'Vampiros' }
         ];  		
   		
-  		// Status
-  		$scope.status = '';
-  		$scope.listStatus = [
-  		 {category: 'ATV', name: 'Ativo' },
-  		 {category: 'COM', name: 'Completo' },
-  		 {category: 'PAR', name: 'Parado' }
-  		];
-  		
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  
   		$scope.salvar = salvar;  		
@@ -155,12 +151,12 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		
   		// Permite adicionar um novo elemento
   		function adicionar() {
-  			$scope.view.selectedItem.manga = $scope.manga.id;  			
-  	    	TituloCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {    		
+  			$scope.view.selectedItem.anime = $scope.anime.id;
+  	    	TituloACreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {    		
   	    		$scope.view.dataTable.push(data);
   				$mdDialog.hide('O titulo adicionado com sucesso.');
   	    	}, function() {
-  	    		$mdDialog.hide('O titulo já foi gravado.');
+  	    		$mdDialog.hide('O titulo já foi gravado ou ocorreu algum erro.');
   	    	});	    	
   		}
   		
@@ -168,14 +164,45 @@ app.controller('TituloCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			$scope.view.selectedItem.manga = $scope.manga.id;
-  			TituloFactory.update({id: $scope.manga.id, idTitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
+  			$scope.view.selectedItem.anime = $scope.anime.id;
+
+  			TituloAFactory.update({id: $scope.anime.id, idTitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
-  				$scope.view.dataTable[indexArr].categorias = $scope.view.selectedItem.categorias;
+  				$scope.view.dataTable[indexArr].generos = $scope.view.selectedItem.generos;
   				$mdDialog.hide('O titulo alterado com sucesso.');
   			}, function() {
   				$mdDialog.hide('Ocorreu algum error, ao alterar o titulo.');
   		  	});
   		}
+  		
+  		$scope.manga = null;
+  		$scope.mangas = null;
+  		
+  		$scope.loadMangas = function() {
+  			// Use timeout to simulate a 650ms request.
+  			return $timeout(function() {
+  				$scope.mangas = MangasFactory.query();
+  			}, 650);
+  		};
+  		
+  		$scope.$watch('files', function () {
+  	        var files = $scope.files;		
+
+  			var fileReader = new FileReader();
+  			if(files != null)
+  				fileReader.readAsDataURL(files);		
+  		
+  			fileReader.onload = function(e) {
+  				$scope.imgSrc = this.result;
+  				$scope.$apply();
+  			};
+  	    });
+  		
+  		$scope.clear = function() {
+  			 $scope.imageCropStep = 1;
+  			 delete $scope.imgSrc;
+  			 delete $scope.result;
+  			 delete $scope.resultBlob;
+  		};
   	}  	 
 }]);

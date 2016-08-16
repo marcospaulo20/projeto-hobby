@@ -33,7 +33,8 @@ app.controller('MangaListCtrl', ['$scope', '$rootScope', 'MangasFactory', 'Manga
 		} else {
 			tempData = {
 				id: data.id,
-				titulo: data.titulo
+				titulo: data.titulo,
+				titulosM: data.titulosM
 			};
 		}
 		$mdDialog.show({

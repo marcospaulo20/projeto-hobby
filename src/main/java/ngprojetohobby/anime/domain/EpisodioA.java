@@ -1,4 +1,4 @@
-package ngprojetohobby.manga.domain;
+package ngprojetohobby.anime.domain;
 
 import java.io.Serializable;
 
@@ -7,9 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-public class Capitulo implements Serializable {
+@Table(name = "episodio_a")
+public class EpisodioA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,13 +23,15 @@ public class Capitulo implements Serializable {
 	private String nome;
 	@Column(nullable = false)
 	private Integer numero;
+	@Column(name = "tipo", nullable = false)
+	private String tipo;
 
 	private Boolean status;
 
-	@Column(name = "volume_id")
-	private Long volume;
+	@Column(name = "arco_id", nullable = false)
+	private Long arco;
 
-	public Capitulo() {
+	public EpisodioA() {
 		super();
 		this.status = Boolean.FALSE;
 	}
@@ -52,6 +56,14 @@ public class Capitulo implements Serializable {
 		this.numero = numero;
 	}
 
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
 	public Boolean getStatus() {
 		return status;
 	}
@@ -60,12 +72,12 @@ public class Capitulo implements Serializable {
 		this.status = status;
 	}
 
-	public Long getVolume() {
-		return volume;
+	public Long getArco() {
+		return arco;
 	}
 
-	public void setVolume(Long volume) {
-		this.volume = volume;
+	public void setArco(Long arco) {
+		this.arco = arco;
 	}
 
 }

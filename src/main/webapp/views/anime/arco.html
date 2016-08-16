@@ -4,11 +4,11 @@
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>		
 		<h3>
-			<a ng-href="#/manga/{{manga.id}}">{{manga.nome}}</a>
+			<a ng-href="#/anime/{{anime.id}}">{{anime.nome}}</a>
 		</h3>
 		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon>
 		<h3>
-			<a ng-href="#/manga/{{manga.id}}/{{titulo.id}}">{{titulo.nome}}</a>
+			<a ng-href="#/anime/{{anime.id}}/{{titulo.id}}">{{titulo.formato}}</a>
 		</h3>	
 		<span flex></span>
 		<md-button ng-click="showSearch = !showSearch">
@@ -22,7 +22,7 @@
 			<ng-md-icon icon="arrow_back"></ng-md-icon>
 		</md-button>
 		<md-input-container md-no-float flex>
-			<input ng-model="search.nome" placeholder="Pesquisar">
+			<input ng-model="search.nome" placeholder="enter search">
 		</md-input-container>
 		<md-button ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search" fill="none"></ng-md-icon>
@@ -37,30 +37,29 @@
 <md-content md-scroll-y layout="column" flex>
 	<div layout-padding flex="noshrink">
 		<div class="doc-content">
-			<md-card ng-repeat="element in volumes | orderBy: 'anoPublicacaoJP' | filter:search">
+			<md-card ng-repeat="element in arcos | orderBy: 'ano' | filter:search">
 				<md-card-title>
 					<md-card-title-text>
-						<span class="md-headline">{{element.nome}}</span>
-	          			<span class="md-subhead">{{element.arco}}</span>
-	          			<div ng-repeat="c in element.capitulosM | orderBy: 'numero'">
-	          				<span class="{{ c.status ? 'red' : 'md-subhead' }}">{{c.numero +' - '+ c.nome}}</span>
-	          			</div>
+						<span class="md-headline">{{element.nome}} arc</span>
+						<div ng-repeat="e in element.episodios | orderBy: 'numero'">
+	          				<span class="{{ e.status ? 'red' : 'md-subhead' }}">{{e.numero +' - '+ e.nome}}</span>
+	          			</div>	          			
 					</md-card-title-text>
 					<md-card-title-media>
-						<img data-ng-src="data:image/(png|jpg);base64,{{element.imagem}}" class="md-media-xl image-relative-volume"/>
+						<img data-ng-src="data:image/(png|jpg);base64,{{element.imagem}}" class="image-relative-volume"/>
 					</md-card-title-media>
 				</md-card-title>
-				<div ng-repeat="c in element.capitulosM | orderBy: 'numero' | filter: query"></div>
+				<div ng-repeat="c in element.episodios | orderBy: 'numero' | filter: query"></div>
 				<div style="padding: 16px 16px;">
-					<md-progress-linear md-mode="determinate" ng-value="roundedPercentage((element.capitulosM | filter : query.status = true).length, element.capitulosM.length)"></md-progress-linear>
+					<md-progress-linear md-mode="determinate" ng-value="roundedPercentage((element.episodios | filter : query.status = true).length, element.episodios.length)"></md-progress-linear>
 				</div>
-				<md-card-actions layout="row" layout-align="end center">										
+				<md-card-actions layout="row" layout-align="end center">
 					<md-button ng-click="mostrarDialog('UD', element, $event)">
 	           			CONFIGURA&#199;&#195;O
 	         		</md-button>
-					<md-button ng-click="capituloPage(element)">
-	           			CAPITULOS
-	         		</md-button>	         		
+					<md-button ng-click="episodioPage(element)">
+	           			EPISODIOS
+	         		</md-button>					
 				</md-card-actions>
 			</md-card>
 		</div>
@@ -68,7 +67,7 @@
 </md-content>
 
 <script type="text/ng-template" id="editor.html">
-	<md-dialog arial-label="Editar" class="dialog-95">
+	<md-dialog class="dialog-95">
 		<form name="inputForm" novalidate>
 			<md-toolbar>
 				<div class="md-toolbar-tools">
@@ -77,7 +76,7 @@
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>					
 					<h2>{{view.operaction}}</h2>
-					<span flex></span>					
+					<span flex></span>
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
 						<ng-md-icon icon="save" fill="none"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Salvar</md-tooltip>
@@ -92,23 +91,23 @@
        							ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
        							accept="image/*" ngf-pattern="'image/*'">Largue as imagens aqui ou clique para fazer upload
        							<span ng-show="dropAvailable"> ou soltar de arquivo</span>
-       						</div>							 
+       						</div>		 
 							<div class="preview">
 								<img ngf-src="!files[0].$error && files[0]">
 				        	</div>
 						</div>
 						<div ng-show="imageCropStep == 2">
 							<image-crop			 
-								data-height="400"
-								data-width="280"
+								data-height="380"
+								data-width="290"
 						 		data-shape="square"
 						 		data-step="imageCropStep"
 						 		src="imgSrc"
 						 		data-result="result"
 						 		data-result-blob="resultBlob"
 						 		crop="initCrop"
-						 		padding="30"
-						 		max-size="400">
+						 		padding="10"
+						 		max-size="390">
 							</image-crop>
 							<div layout="row" layout-align="center center" layout-wrap>									
 								<md-button class="md-primary" ng-click="clear()">Cancelar</md-button>
@@ -128,33 +127,10 @@
 									<ng-message when="required">O campo e obrigatorio</ng-message>
 									<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
                      			</ng-messages>
-							</md-input-container>								
-							<md-input-container class="md-block">
-       							<label>Arco</label>
-       							<input name="arco" required md-maxlength="100" ng-model="view.selectedItem.arco">
-								<ng-messages for="inputForm.arco.$error">
-									<ng-message when="required">O campo e obrigatorio</ng-message>
-									<ng-message when="md-maxlength">Use 100 caracteres ou menos para o arco</ng-message>
-                       			</ng-messages>
-   							</md-input-container>
+							</md-input-container>
 							
-							<div layout-gt-sm="row">
-								<div>
-									<md-datepicker ng-model="view.selectedItem.anoPublicacaoJP" md-placeholder="Publica&#231;&#227;o jap"></md-datepicker>
-								</div>
-								<div>
-									<md-datepicker ng-model="view.selectedItem.anoPublicacaoBR" md-placeholder="Publica&#231;&#227;o br"></md-datepicker>
-								</div>	
-							</div>
-							<div layout-gt-sm="row">
-								<md-input-container>
-        							<label>Paginas</label>
-        							<input type="number" ng-model="view.selectedItem.paginas">									
-      							</md-input-container>
-								<md-input-container>
-        							<label>Pre&#231;o</label>
-        							<input type="number" ng-model="view.selectedItem.preco" step="0.01">
-      							</md-input-container>	
+							<div layout-gt-sm="row">															
+								<md-datepicker ng-model="view.selectedItem.ano" md-placeholder="Ano publica&#231;&#227;o"></md-datepicker>
 							</div>
 							<md-input-container class="md-block" flex-gt-xs>
         						<label>Status</label>
@@ -164,6 +140,7 @@
           							</md-option>
         						</md-select>
       						</md-input-container>							
+
 						</md-content>
 					</div>
 				</div>

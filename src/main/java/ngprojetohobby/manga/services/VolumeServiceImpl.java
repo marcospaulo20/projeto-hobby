@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ngprojetohobby.manga.domain.Capitulo;
-import ngprojetohobby.manga.domain.Titulo;
+import ngprojetohobby.manga.domain.CapituloM;
+import ngprojetohobby.manga.domain.TituloM;
 import ngprojetohobby.manga.domain.Volume;
-import ngprojetohobby.manga.repositories.CapituloRepository;
-import ngprojetohobby.manga.repositories.TituloRepository;
+import ngprojetohobby.manga.repositories.CapituloMRepository;
+import ngprojetohobby.manga.repositories.TituloMRepository;
 import ngprojetohobby.manga.repositories.VolumeRepository;
 
 @javax.enterprise.context.RequestScoped
@@ -18,14 +18,14 @@ public class VolumeServiceImpl implements VolumeService {
 	private VolumeRepository volumeRepository;
 
 	@Inject
-	private TituloRepository tituloRepository;
+	private TituloMRepository tituloMRepository;
 	
 	@Inject
-	private CapituloRepository capituloRepository;
+	private CapituloMRepository capituloMRepository;
 
 	@Override
 	public List<Volume> getAllVolumes(Long id) {
-		return this.volumeRepository.findAllByCol(Volume.class, "titulo", id);
+		return this.volumeRepository.findAllByCol(Volume.class, "tituloM", id);
 	}
 
 	@Override
@@ -37,9 +37,9 @@ public class VolumeServiceImpl implements VolumeService {
 	public Volume create(Volume volume) {
 		volume = this.volumeRepository.create(volume);
 
-		Titulo titulo = tituloRepository.getById(volume.getTitulo());
-		titulo.getVolumes().add(volume);
-		tituloRepository.update(titulo);
+		TituloM tituloM = tituloMRepository.getById(volume.getTituloM());
+		tituloM.getVolumes().add(volume);
+		tituloMRepository.update(tituloM);
 
 		return volume;
 	}
@@ -48,9 +48,9 @@ public class VolumeServiceImpl implements VolumeService {
 	public Volume update(Volume volume) {
 		
 		if(volume.getStatus() == true) {
-			for(Capitulo c : volume.getCapitulos()) {
+			for(CapituloM c : volume.getCapitulosM()) {
 				c.setStatus(true);
-				this.capituloRepository.update(c);
+				this.capituloMRepository.update(c);
 			}
 		}
 		return this.volumeRepository.update(volume);

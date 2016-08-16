@@ -1,11 +1,11 @@
 'use strict';
 
-var app = angular.module('projetoHobbyApp.manga.controllers', []);
+var app = angular.module('projetoHobbyApp.anime.controllers', []);
 
-app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFactory', '$mdToast', '$mdDialog', '$location', '$filter', 
-  	 function($scope, $rootScope, MangasFactory, MangaFactory, $mdToast, $mdDialog, $location, $filter) {    
+app.controller('AnimeCtrl', ['$scope', '$rootScope', 'AnimesFactory', 'AnimeFactory', '$mdToast', '$mdDialog', '$location', '$filter', 
+  	 function($scope, $rootScope, AnimesFactory, AnimeFactory, $mdToast, $mdDialog, $location, $filter) {    
 	
-	$scope.mangas = MangasFactory.query();
+	$scope.animes = AnimesFactory.query();
 	
 	$scope.tituloPage = tituloPage;
 	$scope.mostrarDialog = mostrarDialog;	
@@ -35,7 +35,7 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 				id: data.id,
 				nome: data.nome,
 				classificacao: data.classificacao,
-				titulosM: data.titulosM
+				titulosA: data.titulosA
 			};
 		}
 		$mdDialog.show({
@@ -43,7 +43,7 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 			targetEvent: event,
 			locals: {
 				selectedItem: tempData,
-				dataTable: $scope.mangas,
+				dataTable: $scope.animes,
 				operaction: operaction
 			},
 			bindToController: true,
@@ -56,7 +56,7 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 	}
 	
 	function tituloPage(element) {
-		return $location.path("manga/" + element.id);
+		return $location.path("anime/" + element.id);
 	}
 	
 	// Controller de dialog
@@ -112,11 +112,11 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 		// Permite adicionar um novo elemento
 		function adicionar() {
 			// Determinado existe um elemento titulo especifico
-			MangasFactory.create($scope.view.selectedItem).$promise.then(function(data) {
+			AnimesFactory.create($scope.view.selectedItem).$promise.then(function(data) {
 				$scope.view.dataTable.push(data);
-				$mdDialog.hide('O mangá adicionado com sucesso.');
+				$mdDialog.hide('O anime adicionado com sucesso.');
 			}, function() {
-				$mdDialog.hide('O mangá já foi gravado ou ocorreu algum error interno.');
+				$mdDialog.hide('O anime já foi gravado ou ocorreu algum error interno.');
 		  	});
 		}
 		
@@ -124,11 +124,11 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 		function modificar() {
 			var indexArr;
 			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-			MangaFactory.update({id: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
+			AnimeFactory.update({id: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
 				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
-				$mdDialog.hide('O mangá alterado com sucesso.');
+				$mdDialog.hide('O anime alterado com sucesso.');
 			}, function() {
-				$mdDialog.hide('Ocorreu algum error, ao alterar o mangá.');
+				$mdDialog.hide('Ocorreu algum error, ao alterar o anime.');
 		  	});
 		}
 	}

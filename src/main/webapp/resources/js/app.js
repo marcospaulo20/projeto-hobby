@@ -1,7 +1,8 @@
 'use strict';
 
 var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ngMdIcons', 'ImageCropper', 'ngFileUpload', 'projetoHobbyApp.directive', 
-                                             'projetoHobbyApp.manga.services', 'projetoHobbyApp.manga.controllers', 'projetoHobbyApp.titulo.controllers', 'projetoHobbyApp.volume.controllers', 'projetoHobbyApp.capitulo.controllers']); 
+                                             'projetoHobbyApp.manga.services', 'projetoHobbyApp.manga.controllers', 'projetoHobbyApp.tituloM.controllers', 'projetoHobbyApp.volume.controllers', 'projetoHobbyApp.capitulo.controllers',
+                                             'projetoHobbyApp.anime.services', 'projetoHobbyApp.anime.controllers', 'projetoHobbyApp.tituloA.controllers', 'projetoHobbyApp.arco.controllers', 'projetoHobbyApp.episodio.controllers']); 
 
 	app.config(['$routeProvider', function($routeProvider) {
 		var version = '?nocache=${project.version}';
@@ -12,15 +13,32 @@ var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', '
 		});
 		$routeProvider.when('/manga/:id', {
 			templateUrl: 'views/manga/titulo.html',
-			controller: 'TituloCtrl'
+			controller: 'TituloMCtrl'
 		});
-		$routeProvider.when('/manga/:id/:idTitulo', {
+		$routeProvider.when('/manga/:id/:idTituloM', {
 			templateUrl: 'views/manga/volume.html', 
 			controller: 'VolumeCtrl'
 		});
-		$routeProvider.when('/manga/:id/:idTitulo/:idVolume', {
+		$routeProvider.when('/manga/:id/:idTituloM/:idVolume', {
 			templateUrl: 'views/manga/capitulo.html', 
-			controller: 'CapituloCtrl'
+			controller: 'CapituloMCtrl'
+		});
+		
+		$routeProvider.when('/animes', {
+			templateUrl: 'views/anime/index.html',
+			controller: 'AnimeCtrl'
+		});
+		$routeProvider.when('/anime/:id', {
+			templateUrl: 'views/anime/titulo.html',
+			controller: 'TituloACtrl'
+		});
+		$routeProvider.when('/anime/:id/:idTituloA', {
+			templateUrl: 'views/anime/arco.html', 
+			controller: 'ArcoCtrl'
+		});
+		$routeProvider.when('/anime/:id/:idTituloA/:idArco', {
+			templateUrl: 'views/anime/episodio.html', 
+			controller: 'EpisodioACtrl'
 		});
 	}]);
 	
@@ -41,7 +59,22 @@ var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', '
 	  		link: projectUrl + '/mangas',
 	  		title: 'Mangás',
 	  		icon: 'img/manga-icon.png'	  		
-	  	  }	  	  
+	  	  },
+	  	  {
+		  	link: projectUrl + '/animes',
+		  	title: 'Animes',
+		  	icon: 'img/anime-icon.png'	  		
+		  },
+		  {
+		  	link: projectUrl + '/series',
+		  	title: 'Series',
+		  	icon: 'img/serie-icon.png'	  		
+		  },
+		  {
+		  	link: projectUrl + '/comics',
+		  	title: 'Comics',
+		  	icon: 'img/comic-icon.png'	  		
+		  }		 
 	  	];
 	  	
 	  	function selectHobby(hobby) {

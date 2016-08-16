@@ -13,12 +13,12 @@
 }
 
 .hobby-list .selected {
-  color: #03a9f4;
+  color: #020202;
+  background: lightgray;
+  font-weight: 600;
 }
 
-.face {
-  border-radius: 30px;
-  border: 1px solid #ddd;
+.face {  
   display: inline-block;
   margin: 4px 16px; 
   vertical-align: middle;
@@ -42,9 +42,9 @@
 }
 
 .image-relative-volume {
-    width: 160px;
-    height: 190px;
-    margin-top: 40px;
+     width: 130px;
+    height: 160px;
+    margin: 2px 2px 2px 2px;
 }
 
 .card-titulo {
@@ -113,7 +113,7 @@ md-input-container {
 	display: flex;	
 }
 
- .site-sidenav, .site-sidenav.md-locked-open-add-active, .site-sidenav.md-locked-open {
+.site-sidenav, .site-sidenav.md-locked-open-add-active, .site-sidenav.md-locked-open {
     width: 272px;
     min-width: 272px;
     max-width: 272px;
@@ -127,16 +127,23 @@ md-input-container {
 
 
 md-grid-list {
-  margin: 8px; }
+	margin: 8px;
+}
 md-grid-tile {
-  transition: all 400ms ease-out 50ms; }
+  	transition: all 400ms ease-out 50ms;
+}
   
 md-grid-list md-grid-tile md-grid-tile-footer {
-  background: rgba(0, 0, 0, 0.68);
-  height: 36px;
+  	background: rgba(0, 0, 0, 0.68);
+  	height: 36px;
 }
-md-grid-tile-footer h3 {
-  margin: 0;
-  font-weight: 700;
+md-grid-list md-grid-tile md-grid-tile-footer figcaption {
   width: 100%;
-  text-align: center; }
+}
+  
+md-grid-list md-grid-tile md-grid-tile-footer h3 {
+	margin: 0;
+  	font-weight: 700;
+  	width: 100%;
+  	text-align: center;
+}

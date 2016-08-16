@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,6 +24,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
 @Entity
+@Table(name="volume")
 public class Volume implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -49,14 +51,14 @@ public class Volume implements Serializable {
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] imagem;
 
-	@Column(name = "titulo_id")
-	private Long titulo;
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Capitulo.class)
-	@JoinTable(name = "volume_capitulo", joinColumns = {
+	@Column(name = "titulo_m_id")
+	private Long tituloM;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = CapituloM.class)
+	@JoinTable(name = "volume_capitulo_m", joinColumns = {
 			@JoinColumn(name = "volume_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "capitulo_id", referencedColumnName = "id", unique = true) })
+					@JoinColumn(name = "capitulo_m_id", referencedColumnName = "id", unique = true) })
 	@Fetch(FetchMode.SUBSELECT)
-	private List<Capitulo> capitulos;
+	private List<CapituloM> capitulosM;
 
 	public Volume() {
 		super();
@@ -131,20 +133,20 @@ public class Volume implements Serializable {
 		this.imagem = imagem;
 	}
 
-	public Long getTitulo() {
-		return titulo;
+	public Long getTituloM() {
+		return tituloM;
 	}
 
-	public void setTitulo(Long titulo) {
-		this.titulo = titulo;
+	public void setTituloM(Long tituloM) {
+		this.tituloM = tituloM;
 	}
 
-	public List<Capitulo> getCapitulos() {
-		return capitulos;
+	public List<CapituloM> getCapitulosM() {
+		return capitulosM;
 	}
 
-	public void setCapitulos(List<Capitulo> capitulos) {
-		this.capitulos = capitulos;
+	public void setCapitulosM(List<CapituloM> capitulosM) {
+		this.capitulosM = capitulosM;
 	}
 
 }

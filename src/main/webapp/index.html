@@ -17,10 +17,11 @@
 	<md-sidenav layout="column" class="site-sidenav md-sidenav-left md-whiteframe-z2"
 		md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
 		<md-toolbar class="md-tall md-hue-2">
-			<span flex></span>
+			<span layout-align="center center" flex>
+			</span>			
 		</md-toolbar>
 		<md-list class="hobby-list">
-			<md-item ng-repeat="it in hobbys">
+			<md-item ng-repeat="it in hobbys | orderBy: 'title'">
 				<a ng-href="{{it.link}}">			
 					<md-item-content>
 						<md-button ng-click="selectHobby(it)" ng-class="{'selected' : it === selected}">
@@ -56,12 +57,19 @@
 	<script src="resources/js/lib/ng-file-upload.min.js"></script>
 	
 	<script src="resources/js/app.js?version=${project.version}"></script>
-	<script src="resources/js/directives/directive.js?version=${project.version}"></script>
-	<script src="resources/js/services/mangaService.js?version=${project.version}"></script>
+	<script src="resources/js/directives/directive.js?version=${project.version}"></script>	
 	<!-- Mangas -->
+	<script src="resources/js/services/mangaService.js?version=${project.version}"></script>
 	<script src="resources/js/controllers/manga/mangaCtrl.js?version=${project.version}"></script>
-	<script src="resources/js/controllers/manga/tituloCtrl.js?version=${project.version}"></script>
+	<script src="resources/js/controllers/manga/tituloMCtrl.js?version=${project.version}"></script>
 	<script src="resources/js/controllers/manga/volumeCtrl.js?version=${project.version}"></script>
-	<script src="resources/js/controllers/manga/capituloCtrl.js?version=${project.version}"></script>	
+	<script src="resources/js/controllers/manga/capituloCtrl.js?version=${project.version}"></script>
+	
+	<!-- Animes -->
+	<script src="resources/js/services/animeService.js?version=${project.version}"></script>
+	<script src="resources/js/controllers/anime/animeCtrl.js?version=${project.version}"></script>	
+	<script src="resources/js/controllers/anime/tituloACtrl.js?version=${project.version}"></script>
+	<script src="resources/js/controllers/anime/arcoCtrl.js?version=${project.version}"></script>
+	<script src="resources/js/controllers/anime/episodioACtrl.js?version=${project.version}"></script>
 </body>
 </html>

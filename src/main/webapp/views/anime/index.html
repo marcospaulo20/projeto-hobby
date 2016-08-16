@@ -7,7 +7,7 @@
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>
 		<h3>
-            Mang&aacute;s
+            Animes
 		</h3>
 		<span flex></span>
 		<md-button ng-click="showSearch = !showSearch">
@@ -36,30 +36,30 @@
         md-cols-xs="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="6"
         md-row-height-gt-md="1:1" md-row-height="4:3"
         md-gutter="8px" md-gutter-gt-sm="4px" >
-    <md-grid-tile ng-repeat="element in mangas | orderBy: 'nome' | filter:search"
+    <md-grid-tile ng-repeat="element in animes | orderBy: 'nome' | filter:search"
         md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
-        <div ng-show="{{element.titulosM == ''}}">
+        <div ng-show="{{element.titulosA[0].arcos == ''}}">
         	<img data-ng-src="img/image-default.png" class="image-relative" />
         </div>
-        <div ng-show="{{element.titulosM[0].volumes[0].imagem != null}}">
-        	<img data-ng-src="data:image/(png|jpg);base64,{{element.titulosM[0].volumes[element.titulosM[0].volumes.length-1].imagem}}" class="image-relative" ng-click="mostrarDialog('UD', element, $event)" />
+        <div ng-show="{{element.titulosA[0].arcos[0].imagem != null}}">
+        	<img data-ng-src="data:image/(png|jpg);base64,{{element.titulosA[0].arcos[0].imagem}}" class="image-relative" ng-click="mostrarDialog('UD', element, $event)" />
         </div>
       <md-grid-tile-footer ng-click="tituloPage(element)">
-        <h3>{{element.nome}}</h3>
+        <h3>{{element.nome}}</h3>        
       </md-grid-tile-footer>
     </md-grid-tile>
 	
 </md-content>
 
 <script type="text/ng-template" id="editor.html">
-	<md-dialog class="dialog-95">
+	<md-dialog arial-label="Editar" class="dialog-95">
 		<form name="inputForm" novalidate>
 			<md-toolbar>
 				<div class="md-toolbar-tools">
 					<md-button class="md-icon-button" ng-click="retorno()">
 						<ng-md-icon icon="arrow_back" fill="none"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
-					</md-button>
+					</md-button>					
 					<h2>{{view.operaction}}</h2>
 					<span flex></span>					
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">

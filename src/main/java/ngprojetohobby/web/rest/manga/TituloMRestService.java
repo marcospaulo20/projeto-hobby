@@ -13,14 +13,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import ngprojetohobby.manga.domain.Titulo;
-import ngprojetohobby.manga.services.TituloService;
+import ngprojetohobby.manga.domain.TituloM;
+import ngprojetohobby.manga.services.TituloMService;
 
 @Path("manga")
-public class TituloRestService {
+public class TituloMRestService {
 
 	@Inject
-	private TituloService tituloService;
+	private TituloMService tituloService;
 	
 	@GET
 	@Path("{manga}/titulos/numberOfTitulos")
@@ -32,14 +32,14 @@ public class TituloRestService {
 	@GET
 	@Path("{manga}/titulos")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Titulo> getAllTitulosInJSON(@PathParam("manga") Long id) {
+	public List<TituloM> getAllTitulosInJSON(@PathParam("manga") Long id) {
 		return tituloService.getAllTitulos(id);
 	}
 
 	@GET
 	@Path("{manga}/titulos/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Titulo getTituloById(@PathParam("id") Long id) {
+	public TituloM getTituloById(@PathParam("id") Long id) {
 		return tituloService.getById(id);
 	}
 
@@ -47,7 +47,7 @@ public class TituloRestService {
 	@Path("titulos")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Titulo create(Titulo titulo) {
+	public TituloM create(TituloM titulo) {
 		return tituloService.create(titulo);
 	}
 
@@ -55,7 +55,7 @@ public class TituloRestService {
 	@Path("{manga}/titulos/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Titulo uptade(Titulo titulo) {
+	public TituloM uptade(TituloM titulo) {
 		return tituloService.update(titulo);
 	}
 

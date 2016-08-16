@@ -1,18 +1,18 @@
 'use strict';
 
-var app = angular.module('projetoHobbyApp.volume.controllers', []);
+var app = angular.module('projetoHobbyApp.arco.controllers', []);
 
-app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFactory', 'TituloMFactory', 'VolumesFactory', 'VolumeCreateFactory', 'VolumeFactory', '$mdToast', '$mdDialog', '$location', '$filter',
-  	 function($scope, $rootScope, $routeParams, MangaFactory, TituloMFactory, VolumesFactory, VolumeCreateFactory, VolumeFactory, $mdToast, $mdDialog, $location, $filter) {
+app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactory', 'TituloAFactory', 'ArcosFactory', 'ArcoCreateFactory', 'ArcoFactory', '$mdToast', '$mdDialog', '$location', '$filter',
+  	 function($scope, $rootScope, $routeParams, AnimeFactory, TituloAFactory, ArcosFactory, ArcoCreateFactory, ArcoFactory, $mdToast, $mdDialog, $location, $filter) {
     
-	$scope.manga = MangaFactory.show({id: $routeParams.id});
+	$scope.anime = AnimeFactory.show({id: $routeParams.id});
 	
-	$scope.titulo = TituloMFactory.show({id: $routeParams.id, idTituloM: $routeParams.idTituloM});
+	$scope.titulo = TituloAFactory.show({id: $routeParams.id, idTituloA: $routeParams.idTituloA});
 	
-	$scope.volumes = VolumesFactory.query({id: $routeParams.id , idTituloM: $routeParams.idTituloM});
+	$scope.arcos = ArcosFactory.query({id: $routeParams.id , idTituloA: $routeParams.idTituloA});
 	
 	
-	$scope.capituloPage = capituloPage;
+	$scope.episodioPage = episodioPage;
   	$scope.mostrarDialog = mostrarDialog;
   	
   	function simpleToastBase(message, position, delay, action) {
@@ -42,15 +42,12 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			tempData = {};
   		} else {
   			tempData = {
-  				id: data.id,							
+  				id: data.id,
   				nome: data.nome,
   				arco: data.arco,
-  				paginas: data.paginas,
-  				anoPublicacaoJP: new Date(data.anoPublicacaoJP),
-  				anoPublicacaoBR: new Date(data.anoPublicacaoBR),
   				status: data.status,
-  				preco: data.preco,
-  				capitulosM: data.capitulosM,
+  				ano: new Date(data.ano),
+  				episodios: data.episodios,
   				imagem: data.imagem
   			};
   		}
@@ -59,7 +56,7 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			targetEvent: event,
   			locals: {
   				selectedItem: tempData,
-  				dataTable: $scope.volumes,
+  				dataTable: $scope.arcos,
   				operaction: operaction
   			},
   			bindToController: true,
@@ -71,13 +68,14 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		});
   	}
   	
-  	function capituloPage(element) {
-		return $location.path("manga/" + $scope.manga.id + "/" + $scope.titulo.id + "/" + element.id);
+  	function episodioPage(element) {
+		return $location.path("anime/" + $scope.anime.id + "/" + $scope.titulo.id + "/" + element.id);
 	}
   	
   	// Controller de dialog
   	function DialogController($scope, $mdDialog, operaction, selectedItem, dataTable) {
-  		$scope.titulo = TituloMFactory.show({id: $routeParams.id, idTituloM: $routeParams.idTituloM});
+  		$scope.titulo = TituloAFactory.show({id: $routeParams.id, idTituloA: $routeParams.idTituloA});
+  		
   		$scope.view = {
   			dataTable: dataTable,
   			selectedItem: selectedItem,
@@ -103,8 +101,8 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		// Status
   		$scope.status = '';
   		$scope.listStatus = [
-  		   { category: true, name: 'Já li' },
-  		   { category: false, name: 'Não li' }         
+  		   { category: true, name: 'Vi este arco' },
+  		   { category: false, name: 'Não vi este arco' }         
          ];
   		//$scope.listStatus = ('Já li,Estou lendo').split(',').map(function (status) { return { name: status }; });  		
   		
@@ -125,13 +123,13 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		
   		// Permite adicionar um novo elemento
   		function adicionar() {
-  			$scope.view.selectedItem.tituloM = $scope.titulo.id;
+  			$scope.view.selectedItem.tituloA = $scope.titulo.id;
   			$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
-  	    	VolumeCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {    		
+  	    	ArcoCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {    		
   	    		$scope.view.dataTable.push(data);
-  				$mdDialog.hide('O volume adicionado com sucesso.');
+  				$mdDialog.hide('O arco adicionado com sucesso.');
   	    	}, function() {
-  	    		$mdDialog.hide('O volume já foi gravado ou ocorreu algum erro.');
+  	    		$mdDialog.hide('O arco já foi gravado ou ocorreu algum erro.');
   	    	});	    	
   		}
   		
@@ -139,18 +137,16 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			$scope.view.selectedItem.tituloM = $scope.titulo.id;
+  			$scope.view.selectedItem.tituloA = $scope.titulo.id;
   			if($scope.result != null)
   				$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
-  			VolumeFactory.update({id: $scope.titulo.manga, idTituloM: $scope.titulo.id, idVolume: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
+  			ArcoFactory.update({id: $scope.titulo.anime, idTituloA: $scope.titulo.id, idArco: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
   				$scope.view.dataTable[indexArr].imagem = $scope.view.selectedItem.imagem;
-  				$scope.view.dataTable[indexArr].arco = $scope.view.selectedItem.arco;
-  				$scope.view.dataTable[indexArr].status = $scope.view.selectedItem.status;
-  				$scope.view.dataTable[indexArr].capitulosM = $scope.view.selectedItem.capitulosM;
-  				$mdDialog.hide('O volume alterado com sucesso.');
+  				$scope.view.dataTable[indexArr].episodios = $scope.view.selectedItem.episodios;
+  				$mdDialog.hide('O arco alterado com sucesso.');
   			}, function() {
-  				$mdDialog.hide('Ocorreu algum error, ao alterar o volume.');
+  				$mdDialog.hide('Ocorreu algum error, ao alterar o arco.');
   		  	});
   		}  		
   		
@@ -159,7 +155,7 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
 
   			var fileReader = new FileReader();
   			if(files != null)
-  				fileReader.readAsDataURL(files);		
+  				fileReader.readAsDataURL(files);
   		
   			fileReader.onload = function(e) {
   				$scope.imgSrc = this.result;
@@ -173,6 +169,5 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			 delete $scope.result;
   			 delete $scope.resultBlob;
   		};
-  	}
-  	
+  	}	
 }]);

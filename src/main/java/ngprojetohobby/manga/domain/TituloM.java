@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,7 +24,8 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
-public class Titulo implements Serializable {
+@Table(name="titulo_m")
+public class TituloM implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,7 +60,7 @@ public class Titulo implements Serializable {
 	@Fetch(FetchMode.SUBSELECT)
 	private List<Volume> volumes;
 
-	public Titulo() {
+	public TituloM() {
 		super();
 	}
 

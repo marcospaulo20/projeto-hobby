@@ -1,22 +1,22 @@
 <md-toolbar ng-show="!showSearch">
 	<div class="md-toolbar-tools">
-		<md-button ng-click="toggleSidenav('left')" hide-gt-md arial-label="Menu">
+		<md-button ng-click="toggleSidenav('left')" hide-gt-md>
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>		
 		<h3>{{manga.nome}}</h3>
 		<span flex></span>
-		<md-button arial-label="Search" ng-click="showSearch = !showSearch">
+		<md-button ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search" fill="none"></ng-md-icon>
 		</md-button>
 	</div>
 </md-toolbar>
 <md-toolbar class="md-hue-1" ng-show="showSearch">
 	<div class="md-toolbar-tools">
-		<md-button ng-click="showSearch = !showSearch" arial-label="Back">
+		<md-button ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="arrow_back"></ng-md-icon>
 		</md-button>
 		<md-input-container md-no-float flex>
-			<input ng-model="search.nome" placeholder="enter search">
+			<input ng-model="search.nome" placeholder="Pesquisar">
 		</md-input-container>
 		<md-button arial-label="Search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search" fill="none"></ng-md-icon>
@@ -24,7 +24,7 @@
 	</div>
 </md-toolbar>
 
-<md-button class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="mostrarDialog('C', undefined, $event)">
+<md-button class="md-fab md-fab-bottom-right" ng-click="mostrarDialog('C', undefined, $event)">
 	<ng-md-icon icon="add" fill="none"></ng-md-icon>
 </md-button>
 
@@ -45,18 +45,31 @@
 								<img data-ng-src="img/image-default.png" class="image-relative"/>
 							</div>
 							<div ng-show="{{element.volumes[0].imagem != null}}">
-								<img data-ng-src="data:image/(png|jpg);base64,{{element.volumes[0].imagem}}" class="image-relative" ng-click="mostrarDialog('UD', element, $event)"/>
+								<img data-ng-src="data:image/(png|jpg);base64,{{element.volumes[0].imagem}}" class="image-relative"/>
 							</div>							
 							<md-card-actions layout="column">
 								<div>
 									<img data-ng-src="img/classificacao_indicativa/{{manga.classificacao}}.svg" style="width: 35px; margin: 0 6px;">
 								</div>
-								<md-button class="md-icon-button">
-	              					<ng-md-icon class="md-secondary md-hue-3" icon="send" ng-click="volumePage(element)" fill="none"></ng-md-icon>
+								<md-button class="md-icon-button" ng-click="mostrarDialog('UD', element, $event)">
+	           						<ng-md-icon class="md-secondary md-hue-3" icon="mode_edit" fill="none"></ng-md-icon>
+	         					</md-button>
+								<md-button class="md-icon-button" ng-click="volumePage(element)" >
+	              					<ng-md-icon class="md-secondary md-hue-3" icon="send" fill="none"></ng-md-icon>
 	            				</md-button>
 	            				<md-button class="md-icon-button">
-	              					<ng-md-icon class="md-secondary md-hue-3" icon="visibility" fill="none"></ng-md-icon>
+	            					<div ng-repeat="v in element.volumes | orderBy: 'ano' | filter: query"></div>
+					
+	            					<div ng-show="(element.volumes | filter : query.status = false).length === element.volumes.length">
+	              						<ng-md-icon class="md-secondary md-hue-3" icon="thumb_down" fill="none"></ng-md-icon>
+	              					</div>
+	              					<div ng-show="(element.volumes | filter : query.status = true).length === element.volumes.length">
+	              						<ng-md-icon class="md-secondary md-hue-3" icon="thumb_up" fill="none"></ng-md-icon>
+	              					</div>
 	            				</md-button>
+	            				<div>
+	            					<h2 style="padding-left: 20px;">{{element.volumes.length}}</h2>
+	            				</div>
 							</md-card-actions>							
 						</md-card-content>						
 					</md-card>
@@ -66,18 +79,18 @@
 	</div>
 </md-content>
 <script type="text/ng-template" id="editor.html">
-	<md-dialog arial-label="Editar" class="dialog-95">
+	<md-dialog class="dialog-95">
 		<form name="inputForm" novalidate>
 			<md-toolbar>
 				<div class="md-toolbar-tools">
 					<md-button class="md-icon-button" ng-click="retorno()">
-						<ng-md-icon icon="arrow_back" fill="none" arial-label="Retorno"></ng-md-icon>
+						<ng-md-icon icon="arrow_back" fill="none"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>					
 					<h2>{{view.operaction}}</h2>
 					<span flex></span>					
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
-						<ng-md-icon icon="save" fill="none" arial-label="Salvar"></ng-md-icon>
+						<ng-md-icon icon="save" fill="none"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Salvar</md-tooltip>
 					</md-button>
 				</div>
@@ -95,7 +108,7 @@
 						</md-input-container>							
 						<div layout-gt-sm="row">
 							<md-input-container class="md-block">
-        						<label>Autor</label>
+        						<label>Autor(a)</label>
         						<input name="autor" ng-model="view.selectedItem.autor" required md-maxlength="100">
 								<ng-messages for="inputForm.autor.$error">
 									<ng-message when="required">O campo e obrigatorio</ng-message>

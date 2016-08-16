@@ -1,0 +1,157 @@
+<md-toolbar ng-show="!showSearch">
+	<div class="md-toolbar-tools">
+		<md-button ng-click="toggleSidenav('left')" hide-gt-md>
+			<ng-md-icon icon="menu"></ng-md-icon>
+		</md-button>		
+		<h3>{{anime.nome}}</h3>
+		<span flex></span>
+		<md-button arial-label="Search" ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="search" fill="none"></ng-md-icon>
+		</md-button>
+	</div>
+</md-toolbar>
+<md-toolbar class="md-hue-1" ng-show="showSearch">
+	<div class="md-toolbar-tools">
+		<md-button ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="arrow_back"></ng-md-icon>
+		</md-button>
+		<md-input-container md-no-float flex>
+			<input ng-model="search.nome" placeholder="Pesquisar">
+		</md-input-container>
+		<md-button ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="search" fill="none"></ng-md-icon>
+		</md-button>				
+	</div>
+</md-toolbar>
+
+<md-button class="md-fab md-fab-bottom-right" ng-click="mostrarDialog('C', undefined, $event)">
+	<ng-md-icon icon="add" fill="none"></ng-md-icon>
+</md-button>
+
+<md-content md-scroll-y layout="column" flex>
+	<div layout-padding flex="noshrink">
+		<div class="doc-content">
+			<md-content class="md-padding" layout-xs="column" layout="row">
+				<div flex-xs layout="row">
+					<md-card ng-repeat="element in titulos | orderBy: 'ano' | filter:search" class="card-titulo">
+						<md-card-title>
+							<md-card-title-text>
+								<span class="md-headline">{{element.nome}}</span>
+	            				<span class="md-subhead">{{element.ano | date:'mediumDate'}}</span>
+	            				<span class="md-subhead">{{element.generos.join(", ")}}</span>
+							</md-card-title-text>
+						</md-card-title>						
+						<md-card-content layout="row" layout-align="space-between">
+							<div ng-show="{{element.arcos == ''}}">
+								<img data-ng-src="img/image-default.png" class="image-relative"/>
+							</div>
+							<div ng-show="{{element.arcos[0].imagem != null}}">
+								<img data-ng-src="data:image/(png|jpg);base64,{{element.arcos[0].imagem}}" class="image-relative"/>
+							</div>							
+							<md-card-actions layout="column">
+								<div>
+									<img data-ng-src="img/classificacao_indicativa/{{anime.classificacao}}.svg" style="width: 35px; margin: 0 6px;">
+								</div>
+								<md-button class="md-icon-button" ng-click="mostrarDialog('UD', element, $event)">
+	           						<ng-md-icon class="md-secondary md-hue-3" icon="mode_edit" fill="none"></ng-md-icon>
+	         					</md-button>
+								<md-button class="md-icon-button" ng-click="arcoPage(element)">
+	              					<ng-md-icon class="md-secondary md-hue-3" icon="send" fill="none"></ng-md-icon>
+	            				</md-button>
+	            				<md-button class="md-icon-button">
+	            					<div ng-repeat="a in element.arcos | orderBy: 'ano' | filter: query"></div>
+					
+	            					<div ng-show="(element.arcos | filter : query.status = false).length === element.arcos.length">
+	              						<ng-md-icon class="md-secondary md-hue-3" icon="thumb_down" fill="none"></ng-md-icon>
+	              					</div>
+	              					<div ng-show="(element.arcos | filter : query.status = true).length === element.arcos.length">
+	              						<ng-md-icon class="md-secondary md-hue-3" icon="thumb_up" fill="none"></ng-md-icon>
+	              					</div>
+	              					<div>
+	            						<h2 style="padding-left: 20px;">{{element.arcos.length}}</h2>
+	            					</div>
+	            				</md-button>
+							</md-card-actions>							
+						</md-card-content>						
+					</md-card>
+				</div>
+			</md-content>
+		</div>
+	</div>
+</md-content>
+
+<script type="text/ng-template" id="editor.html">
+	<md-dialog class="dialog-95">
+		<form name="inputForm" novalidate>
+			<md-toolbar>
+				<div class="md-toolbar-tools">
+					<md-button class="md-icon-button" ng-click="retorno()">
+						<ng-md-icon icon="arrow_back" fill="none"></ng-md-icon>
+						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
+					</md-button>
+					<h2>{{view.operaction}}</h2>
+					<span flex></span>					
+					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
+						<ng-md-icon icon="save" fill="none"></ng-md-icon>
+						<md-tooltip md-delay="1500" md-autohide="true">Salvar</md-tooltip>
+					</md-button>
+				</div>
+			</md-toolbar>
+			<md-dialog-content>
+				<div layout="row" layout-xs="column">
+					<div class="md-dialog-content" flex>
+						<md-content layout-padding ng-cloak>							
+							<md-input-container class="md-block">
+								<label>Nome</label>
+								<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
+								<ng-messages for="inputForm.nome.$error">
+									<ng-message when="required">O campo e obrigatorio</ng-message>
+									<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
+                     			</ng-messages>
+							</md-input-container>									
+							<div layout="column">
+								<div ng-show="view.operaction === 'Adicionar'">
+								<md-select placeholder="Manga" ng-model="view.selectedItem.manga" md-on-open="loadMangas()" style="min-width: 200px;">
+									<md-option ng-value="manga" ng-repeat="manga in mangas">
+										{{manga.nome}}
+									</md-option>
+								</md-select>
+								</div>
+								<div ng-show="view.operaction === 'Modificar'">
+									<md-input-container class="md-block">
+										<label>Manga</label>
+										<input type="text" name="manga" ng-model="view.selectedItem.manga.nome" ng-disabled="true" />
+									</md-input-container>
+								</div>
+							</div>
+							
+							<div layout-gt-sm="row">
+								<md-input-container class="md-block" flex-gt-xs>
+        							<label>Formato</label>
+        							<md-select ng-model="view.selectedItem.formato">
+          								<md-option ng-repeat="formato in listFormato" value="{{formato.name}}">
+	            							{{formato.name}}
+    	      							</md-option>
+        							</md-select>
+      							</md-input-container>
+									
+								<md-datepicker ng-model="view.selectedItem.ano" md-placeholder="Ano publica&#231;&#227;o"></md-datepicker>
+							</div>
+							
+							<md-input-container class="md-block">
+        						<label>Generos</label>
+        						<md-select ng-model="view.selectedItem.generos" multiple>          							
+									<md-optgroup label="Generos">
+										<md-option ng-value="genero.name" ng-repeat="genero in listGeneros | filter: {category: 'genr' }">
+            								{{genero.name}}
+          								</md-option>
+									</md-optgroup>
+        						</md-select>
+      						</md-input-container>					
+						</md-content>
+					</div>
+				</div>
+			</md-dialog-content>
+		</form>
+	</md-dialog>
+</script>
