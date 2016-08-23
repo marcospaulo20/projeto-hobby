@@ -38,10 +38,12 @@ app.controller('EpisodioACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeF
   		} else {
   			tempData = {
   				id: data.id,
+  				arco: data.arco,
   				nome: data.nome,
   				numero: data.numero,
   				tipo: data.tipo,
-  				status: data.status
+  				status: data.status,
+  				statusVirtual: data.statusVirtual
   			};
   		}
   		$mdDialog.show({
@@ -97,6 +99,7 @@ app.controller('EpisodioACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeF
   		];
   		
   		$scope.status = false;
+  		$scope.statusVirtual = false;
   		
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  
@@ -129,10 +132,12 @@ app.controller('EpisodioACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeF
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			$scope.view.selectedItem.arco = $scope.arco.id;
+  			//$scope.view.selectedItem.arco = $scope.arco.id;
   			EpisodioAFactory.update({id: $scope.titulo.anime, idTituloA: $scope.titulo.id, idArco: $scope.arco.id, idEpisodioA: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
   				$scope.view.dataTable[indexArr].numero = $scope.view.selectedItem.numero;
+  				$scope.view.dataTable[indexArr].status = $scope.view.selectedItem.status;
+  				$scope.view.dataTable[indexArr].statusVirtual = $scope.view.selectedItem.statusVirtual;
   				$mdDialog.hide('O episodio alterado com sucesso.');
   			}, function() {
   				$mdDialog.hide('Ocorreu algum error, ao alterar o episodio.');
@@ -144,7 +149,7 @@ app.controller('EpisodioACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeF
   			var indexArr;
   			var item = $scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
   			if(item !== undefined) {
-  				$scope.view.selectedItem.arco = $scope.arco.id;
+  				//$scope.view.selectedItem.arco = $scope.arco.id;
   	  			EpisodioAFactory.delete({id: $scope.titulo.anime, idTituloA: $scope.titulo.id, idArco: $scope.arco.id, idEpisodioA: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   	  				$scope.view.dataTable.pop(item);
   	  				$mdDialog.hide('');

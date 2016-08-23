@@ -24,7 +24,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name="volume")
+@Table(name = "volume")
 public class Volume implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -38,21 +38,27 @@ public class Volume implements Serializable {
 	@Column(length = 100)
 	private String arco;
 
+	@Column(name = "ano_JP")
+	@Temporal(value = TemporalType.DATE)
+	private Date anoJP;
+	@Column(name = "ano_BR")
+	@Temporal(value = TemporalType.DATE)
+	private Date anoBR;
+
 	private Integer paginas;
-	@Column(name = "ano_publicacao_jp")
-	@Temporal(value = TemporalType.DATE)
-	private Date anoPublicacaoJP;
-	@Column(name = "ano_publicacao_br")
-	@Temporal(value = TemporalType.DATE)
-	private Date anoPublicacaoBR;
-	private Boolean status;
-	private Double preco;
+
+	private String status;
+
+	private Boolean statusColecao;
+
 	@Lob
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] imagem;
 
+	@JoinColumn(name = "manga_id", nullable = false)
 	@Column(name = "titulo_m_id")
 	private Long tituloM;
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = CapituloM.class)
 	@JoinTable(name = "volume_capitulo_m", joinColumns = {
 			@JoinColumn(name = "volume_id", referencedColumnName = "id") }, inverseJoinColumns = {
@@ -62,7 +68,7 @@ public class Volume implements Serializable {
 
 	public Volume() {
 		super();
-		this.status = Boolean.FALSE;
+		this.statusColecao = Boolean.FALSE;
 	}
 
 	public Long getId() {
@@ -85,6 +91,22 @@ public class Volume implements Serializable {
 		this.arco = arco;
 	}
 
+	public Date getAnoJP() {
+		return anoJP;
+	}
+
+	public void setAnoJP(Date anoJP) {
+		this.anoJP = anoJP;
+	}
+
+	public Date getAnoBR() {
+		return anoBR;
+	}
+
+	public void setAnoBR(Date anoBR) {
+		this.anoBR = anoBR;
+	}
+
 	public Integer getPaginas() {
 		return paginas;
 	}
@@ -93,36 +115,20 @@ public class Volume implements Serializable {
 		this.paginas = paginas;
 	}
 
-	public Date getAnoPublicacaoJP() {
-		return anoPublicacaoJP;
-	}
-
-	public void setAnoPublicacaoJP(Date anoPublicacaoJP) {
-		this.anoPublicacaoJP = anoPublicacaoJP;
-	}
-
-	public Date getAnoPublicacaoBR() {
-		return anoPublicacaoBR;
-	}
-
-	public void setAnoPublicacaoBR(Date anoPublicacaoBR) {
-		this.anoPublicacaoBR = anoPublicacaoBR;
-	}
-
-	public Boolean getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
-	public Double getPreco() {
-		return preco;
+	public Boolean getStatusColecao() {
+		return statusColecao;
 	}
 
-	public void setPreco(Double preco) {
-		this.preco = preco;
+	public void setStatusColecao(Boolean statusColecao) {
+		this.statusColecao = statusColecao;
 	}
 
 	public byte[] getImagem() {

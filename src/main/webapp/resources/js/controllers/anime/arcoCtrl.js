@@ -43,12 +43,12 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
   		} else {
   			tempData = {
   				id: data.id,
+				tituloA: data.tituloA,
   				nome: data.nome,
-  				arco: data.arco,
   				status: data.status,
   				ano: new Date(data.ano),
-  				episodios: data.episodios,
-  				imagem: data.imagem
+  				imagem: data.imagem,
+  				episodios: data.episodios
   			};
   		}
   		$mdDialog.show({
@@ -69,7 +69,7 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
   	}
   	
   	function episodioPage(element) {
-		return $location.path("anime/" + $scope.anime.id + "/" + $scope.titulo.id + "/" + element.id);
+		return $location.path("animes/" + $scope.anime.id + "/" + $scope.titulo.id + "/" + element.id);
 	}
   	
   	// Controller de dialog
@@ -137,7 +137,7 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			$scope.view.selectedItem.tituloA = $scope.titulo.id;
+  			//$scope.view.selectedItem.tituloA = $scope.titulo.id;
   			if($scope.result != null)
   				$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
   			ArcoFactory.update({id: $scope.titulo.anime, idTituloA: $scope.titulo.id, idArco: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
@@ -169,5 +169,20 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
   			 delete $scope.result;
   			 delete $scope.resultBlob;
   		};
-  	}	
+  	}
+  	
+  	$scope.numComplete = countComplete();
+
+    $scope.$watch("arcos", function(newValue, oldValue) {
+    	$scope.arcos = newValue;
+    	$scope.numComplete = countComplete();
+    }, true);
+
+    function countComplete() {
+    	var cnt = 0;
+    	angular.forEach($scope.arcos, function(item) {
+    		cnt += item.episodios.length;
+    	});
+    	return cnt;
+    }
 }]);

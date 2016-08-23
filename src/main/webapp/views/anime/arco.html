@@ -4,11 +4,11 @@
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>		
 		<h3>
-			<a ng-href="#/anime/{{anime.id}}">{{anime.nome}}</a>
+			<a ng-href="#/animes/{{anime.id}}">{{anime.nome}}</a>
 		</h3>
 		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon>
 		<h3>
-			<a ng-href="#/anime/{{anime.id}}/{{titulo.id}}">{{titulo.formato}}</a>
+			<a ng-href="#/animes/{{anime.id}}/{{titulo.id}}">{{titulo.formato}}</a>
 		</h3>	
 		<span flex></span>
 		<md-button ng-click="showSearch = !showSearch">
@@ -37,12 +37,20 @@
 <md-content md-scroll-y layout="column" flex>
 	<div layout-padding flex="noshrink">
 		<div class="doc-content">
+			<md-card>
+				<md-card-title>
+					<span class="md-headline">Total epis&#243;dios: {{numComplete}}</span>
+				</md-card-title>
+			</md-card>
 			<md-card ng-repeat="element in arcos | orderBy: 'ano' | filter:search">
 				<md-card-title>
-					<md-card-title-text>
-						<span class="md-headline">{{element.nome}} arc</span>
+					<md-card-title-text>						
+						<span class="md-headline">{{element.nome}}</span>
 						<div ng-repeat="e in element.episodios | orderBy: 'numero'">
 	          				<span class="{{ e.status ? 'red' : 'md-subhead' }}">{{e.numero +' - '+ e.nome}}</span>
+	          				<div ng-show="e.statusVirtual == true" class="statusVirtualBlocoCapitulos">
+	          					<ng-md-icon icon="folder_special" size="15"></ng-md-icon>
+	          				</div>
 	          			</div>	          			
 					</md-card-title-text>
 					<md-card-title-media>
@@ -106,8 +114,8 @@
 						 		data-result="result"
 						 		data-result-blob="resultBlob"
 						 		crop="initCrop"
-						 		padding="10"
-						 		max-size="390">
+						 		padding="20"
+						 		max-size="800">
 							</image-crop>
 							<div layout="row" layout-align="center center" layout-wrap>									
 								<md-button class="md-primary" ng-click="clear()">Cancelar</md-button>
@@ -129,8 +137,9 @@
                      			</ng-messages>
 							</md-input-container>
 							
-							<div layout-gt-sm="row">															
-								<md-datepicker ng-model="view.selectedItem.ano" md-placeholder="Ano publica&#231;&#227;o"></md-datepicker>
+							<div>															
+								<p>Ano</p>
+								<md-datepicker ng-model="view.selectedItem.ano"></md-datepicker>
 							</div>
 							<md-input-container class="md-block" flex-gt-xs>
         						<label>Status</label>
@@ -140,7 +149,6 @@
           							</md-option>
         						</md-select>
       						</md-input-container>							
-
 						</md-content>
 					</div>
 				</div>

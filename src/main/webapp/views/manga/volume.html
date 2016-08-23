@@ -4,11 +4,11 @@
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>		
 		<h3>
-			<a ng-href="#/manga/{{manga.id}}">{{manga.nome}}</a>
+			<a ng-href="#/mangas/{{manga.id}}">{{manga.nome}}</a>
 		</h3>
 		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon>
 		<h3>
-			<a ng-href="#/manga/{{manga.id}}/{{titulo.id}}">{{titulo.nome}}</a>
+			<a ng-href="#/mangas/{{manga.id}}/{{titulo.id}}">{{titulo.nome}}</a>
 		</h3>	
 		<span flex></span>
 		<md-button ng-click="showSearch = !showSearch">
@@ -37,13 +37,21 @@
 <md-content md-scroll-y layout="column" flex>
 	<div layout-padding flex="noshrink">
 		<div class="doc-content">
+			<md-card>
+				<md-card-title>
+					<span class="md-headline">Total cap&#237;tulos: {{numComplete}}</span>
+				</md-card-title>
+			</md-card>
 			<md-card ng-repeat="element in volumes | orderBy: 'anoPublicacaoJP' | filter:search">
 				<md-card-title>
 					<md-card-title-text>
 						<span class="md-headline">{{element.nome}}</span>
 	          			<span class="md-subhead">{{element.arco}}</span>
 	          			<div ng-repeat="c in element.capitulosM | orderBy: 'numero'">
-	          				<span class="{{ c.status ? 'red' : 'md-subhead' }}">{{c.numero +' - '+ c.nome}}</span>
+	          				<span class="{{ c.status ? 'red' : 'md-subhead' }}">{{c.numero +'. '+ c.nome}}</span>
+	          				<div ng-show="c.statusVirtual == true" class="statusVirtualBlocoCapitulos">
+	          					<ng-md-icon icon="folder_special" size="15"></ng-md-icon>
+	          				</div>
 	          			</div>
 					</md-card-title-text>
 					<md-card-title-media>
@@ -131,19 +139,20 @@
 							</md-input-container>								
 							<md-input-container class="md-block">
        							<label>Arco</label>
-       							<input name="arco" required md-maxlength="100" ng-model="view.selectedItem.arco">
+       							<input name="arco" md-maxlength="100" ng-model="view.selectedItem.arco">
 								<ng-messages for="inputForm.arco.$error">
-									<ng-message when="required">O campo e obrigatorio</ng-message>
 									<ng-message when="md-maxlength">Use 100 caracteres ou menos para o arco</ng-message>
                        			</ng-messages>
    							</md-input-container>
 							
 							<div layout-gt-sm="row">
 								<div>
-									<md-datepicker ng-model="view.selectedItem.anoPublicacaoJP" md-placeholder="Publica&#231;&#227;o jap"></md-datepicker>
+									<p>Publica&#231;&#227;o JP</p>
+									<md-datepicker ng-model="view.selectedItem.anoJP"></md-datepicker>
 								</div>
 								<div>
-									<md-datepicker ng-model="view.selectedItem.anoPublicacaoBR" md-placeholder="Publica&#231;&#227;o br"></md-datepicker>
+									<p>Publica&#231;&#227;o BR</p>
+									<md-datepicker ng-model="view.selectedItem.anoBR"></md-datepicker>
 								</div>	
 							</div>
 							<div layout-gt-sm="row">
@@ -151,19 +160,16 @@
         							<label>Paginas</label>
         							<input type="number" ng-model="view.selectedItem.paginas">									
       							</md-input-container>
-								<md-input-container>
-        							<label>Pre&#231;o</label>
-        							<input type="number" ng-model="view.selectedItem.preco" step="0.01">
-      							</md-input-container>	
+								<md-switch class="md-primary" ng-model="view.selectedItem.statusColecao">Contem na cole&#231;&#227o</md-switch>								
 							</div>
 							<md-input-container class="md-block" flex-gt-xs>
         						<label>Status</label>
         						<md-select ng-model="view.selectedItem.status">
-          							<md-option ng-repeat="status in listStatus" value="{{status.category}}">
+          							<md-option ng-repeat="status in listStatus" value="{{status.name}}">
             							{{status.name}}
           							</md-option>
         						</md-select>
-      						</md-input-container>							
+      						</md-input-container>
 						</md-content>
 					</div>
 				</div>

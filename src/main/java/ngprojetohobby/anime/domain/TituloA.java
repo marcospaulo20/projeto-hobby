@@ -3,8 +3,8 @@ package ngprojetohobby.anime.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -21,9 +21,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import ngprojetohobby.manga.domain.Manga;
 
 @Entity
@@ -35,21 +32,27 @@ public class TituloA implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@Column(length = 200, nullable = false)
 	private String nome;
+	@Column(nullable = false)
+	private String classificacao;
+
+	private String emissora;
+
+	@Column(name = "ano_original")
+	@Temporal(value = TemporalType.DATE)
+	private Date anoOriginal;
+
+	@Column(nullable = false)
+	private String formato;
+
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "genero", joinColumns = @JoinColumn(name = "id"))
+	@CollectionTable(name = "generos_a", joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "tipo")
 	private List<String> generos;
 
-	@Column(length = 40, nullable = false)
-	private String formato;
-
-	@Column(name = "ano")
-	@Temporal(value = TemporalType.DATE)
-	private Date ano;
-
-	@Column(name = "anime_id")
+	@JoinColumn(name = "anime_id", nullable = false)
 	private Long anime;
 
 	@OneToOne(fetch = FetchType.EAGER, targetEntity = Manga.class)
@@ -58,12 +61,8 @@ public class TituloA implements Serializable {
 					@JoinColumn(name = "manga_id", referencedColumnName = "id") })
 	private Manga manga;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Arco.class)
-	@JoinTable(name = "titulo_arco", joinColumns = {
-			@JoinColumn(name = "titulo_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "arco_id", referencedColumnName = "id", unique = true) })
-	@Fetch(FetchMode.SUBSELECT)
-	private List<Arco> arcos;
+	@OneToMany(mappedBy = "tituloA", fetch = FetchType.EAGER)
+	private Set<Arco> arcos;
 
 	public TituloA() {
 		super();
@@ -81,12 +80,28 @@ public class TituloA implements Serializable {
 		this.nome = nome;
 	}
 
-	public List<String> getGeneros() {
-		return generos;
+	public String getClassificacao() {
+		return classificacao;
 	}
 
-	public void setGeneros(List<String> generos) {
-		this.generos = generos;
+	public void setClassificacao(String classificacao) {
+		this.classificacao = classificacao;
+	}
+
+	public String getEmissora() {
+		return emissora;
+	}
+
+	public void setEmissora(String emissora) {
+		this.emissora = emissora;
+	}
+
+	public Date getAnoOriginal() {
+		return anoOriginal;
+	}
+
+	public void setAnoOriginal(Date anoOriginal) {
+		this.anoOriginal = anoOriginal;
 	}
 
 	public String getFormato() {
@@ -97,12 +112,12 @@ public class TituloA implements Serializable {
 		this.formato = formato;
 	}
 
-	public Date getAno() {
-		return ano;
+	public List<String> getGeneros() {
+		return generos;
 	}
 
-	public void setAno(Date ano) {
-		this.ano = ano;
+	public void setGeneros(List<String> generos) {
+		this.generos = generos;
 	}
 
 	public Long getAnime() {
@@ -121,11 +136,11 @@ public class TituloA implements Serializable {
 		this.manga = manga;
 	}
 
-	public List<Arco> getArcos() {
+	public Set<Arco> getArcos() {
 		return arcos;
 	}
 
-	public void setArcos(List<Arco> arcos) {
+	public void setArcos(Set<Arco> arcos) {
 		this.arcos = arcos;
 	}
 

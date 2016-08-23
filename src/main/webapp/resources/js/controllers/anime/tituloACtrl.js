@@ -40,10 +40,13 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
   		} else {
   			tempData = {
   				id: data.id,							
+  				anime: data.anime,
   				nome: data.nome,
-  				generos: data.generos,
-  				ano: new Date(data.ano),
+  				classificacao: data.classificacao,
+  				emissora: data.emissora,
+  				anoOriginal: new Date(data.anoOriginal),
   				formato: data.formato,
+  				generos: data.generos,
   				manga: data.manga,
   				arcos: data.arcos
   			};
@@ -66,7 +69,7 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
   	}
   	
   	function arcoPage(element) {
-		return $location.path("anime/" + element.anime + "/" + element.id);
+		return $location.path("animes/" + element.anime + "/" + element.id);
 	}
   	
   	// Controller de dialog
@@ -94,6 +97,23 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
   				$scope.view.operaction = 'Detalhes';
   				break;
   		}
+  		
+		// Classificacao
+  		$scope.classificacao = '';
+  		$scope.listClassificacao = [
+  		 {category: 'LIVRE', name: 'Livre' },
+  		 {category: 'S_10', name: '10 anos' },
+  		 {category: 'S_12', name: '12 anos' },
+  		 {category: 'S_14', name: '14 anos' },
+  		 {category: 'S_16', name: '16 anos' },
+  		 {category: 'S_18', name: '18 anos' }
+  		];
+  		
+  		// Emissora
+  		$scope.emissora = '';
+  		$scope.listEmissora = [
+  		  {name: 'Tokyo'}
+  		];  		
   		
   		// Formato
   		$scope.formato = '';
@@ -164,7 +184,7 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			$scope.view.selectedItem.anime = $scope.anime.id;
+  			//$scope.view.selectedItem.anime = $scope.anime.id;
 
   			TituloAFactory.update({id: $scope.anime.id, idTitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;

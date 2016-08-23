@@ -42,7 +42,7 @@ public abstract class RepositoryImpl<T> {
 		return entity;
 	}
 
-	public T update(T entity) {		
+	public T update(T entity) {
 		return (T) em.merge(entity);
 	}
 
@@ -50,11 +50,11 @@ public abstract class RepositoryImpl<T> {
 		try {
 			T ref = em.getReference(entityClass, primaryKey);
 			em.remove(ref);
-		} catch(EntityNotFoundException e) {
+		} catch (EntityNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	public Integer countAll(Class<T> entityClass) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<Long> query = builder.createQuery(Long.class);
@@ -63,16 +63,16 @@ public abstract class RepositoryImpl<T> {
 		TypedQuery<Long> exeQuery = em.createQuery(query);
 		return (Integer) exeQuery.getSingleResult().intValue();
 	}
-	
+
 	public List<T> findAll(Class<T> entityClass, int startPosition, int maxResults, String sortFields) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<T> query = builder.createQuery(entityClass);
 		Root<T> root = query.from(entityClass);
-		query.select(root).orderBy(builder.asc(root.<String>get(sortFields)));		
+		query.select(root).orderBy(builder.asc(root.<String> get(sortFields)));
 		return em.createQuery(query).setFirstResult(startPosition).setMaxResults(maxResults).getResultList();
 	}
-	
-	public List<T> findAllByCol(Class<T> entityClass, String fieldName, Long fieldValue) {
+
+	public <T> List<T> findAllByCol(Class<T> entityClass, String fieldName, Long fieldValue) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<T> query = builder.createQuery(entityClass);
 		Root<T> root = query.from(entityClass);
@@ -83,7 +83,7 @@ public abstract class RepositoryImpl<T> {
 	public List<?> findWithNamedQuery(String queryName) {
 		return em.createNamedQuery(queryName).getResultList();
 	}
-	
+
 	public List<?> findWithNamedQuery(String queryName, int startPosition, int resultLimit) {
 		return em.createNamedQuery(queryName).setFirstResult(startPosition).setMaxResults(resultLimit).getResultList();
 	}

@@ -6,7 +6,7 @@ import ngprojetohobby.anime.domain.EpisodioA;
 
 public interface EpisodioService {
 
-	public List<EpisodioA> getAllEpisodios(Long id);
+	List<EpisodioA> getAllEpisodios(Long id);
 
 	EpisodioA getById(Long id);
 

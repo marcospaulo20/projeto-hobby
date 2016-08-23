@@ -11,7 +11,7 @@ import ngprojetohobby.anime.repositories.AnimeRepository;
 import ngprojetohobby.anime.repositories.TituloARepository;
 
 @javax.enterprise.context.RequestScoped
-public class TituloAServiceImpl  implements TituloAService {
+public class TituloAServiceImpl implements TituloAService {
 
 	@Inject
 	private TituloARepository tituloRepository;

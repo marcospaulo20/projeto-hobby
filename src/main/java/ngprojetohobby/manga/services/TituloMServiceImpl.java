@@ -5,9 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ngprojetohobby.manga.domain.Manga;
 import ngprojetohobby.manga.domain.TituloM;
-import ngprojetohobby.manga.repositories.MangaRepository;
 import ngprojetohobby.manga.repositories.TituloMRepository;
 
 @javax.enterprise.context.RequestScoped
@@ -15,9 +13,6 @@ public class TituloMServiceImpl implements TituloMService {
 
 	@Inject
 	private TituloMRepository tituloMRepository;
-	
-	@Inject
-	private MangaRepository mangaRepository;
 
 	@Override
 	public List<TituloM> getAllTitulos(Long id) {
@@ -32,16 +27,12 @@ public class TituloMServiceImpl implements TituloMService {
 	@Override
 	public TituloM create(TituloM titulo) {
 		List<String> categorias = new ArrayList<String>();
-		for(String c : titulo.getCategorias()) {
+		for (String c : titulo.getCategorias()) {
 			categorias.add(c);
 		}
-		
+
 		titulo.setCategorias(categorias);
 		titulo = this.tituloMRepository.create(titulo);
-	
-		Manga manga = mangaRepository.getById(titulo.getManga());
-		manga.getTitulosM().add(titulo);
-		mangaRepository.update(manga);
 		
 		return titulo;
 	}

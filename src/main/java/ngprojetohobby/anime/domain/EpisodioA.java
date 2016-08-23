@@ -22,11 +22,13 @@ public class EpisodioA implements Serializable {
 	@Column(length = 200, nullable = false)
 	private String nome;
 	@Column(nullable = false)
-	private Integer numero;
+	private String numero;
 	@Column(name = "tipo", nullable = false)
 	private String tipo;
 
 	private Boolean status;
+
+	private Boolean statusVirtual;
 
 	@Column(name = "arco_id", nullable = false)
 	private Long arco;
@@ -48,11 +50,11 @@ public class EpisodioA implements Serializable {
 		this.nome = nome;
 	}
 
-	public Integer getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(Integer numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 
@@ -70,6 +72,14 @@ public class EpisodioA implements Serializable {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public Boolean getStatusVirtual() {
+		return statusVirtual;
+	}
+
+	public void setStatusVirtual(Boolean statusVirtual) {
+		this.statusVirtual = statusVirtual;
 	}
 
 	public Long getArco() {

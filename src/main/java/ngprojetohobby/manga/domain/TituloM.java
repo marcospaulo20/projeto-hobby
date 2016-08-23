@@ -3,8 +3,8 @@ package ngprojetohobby.manga.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -14,17 +14,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 @Entity
-@Table(name="titulo_m")
+@Table(name = "titulo_m")
 public class TituloM implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -35,30 +33,32 @@ public class TituloM implements Serializable {
 
 	@Column(length = 255, nullable = false)
 	private String nome;
+	@Column(nullable = false)
+	private String classificacao;
+	@Column(length = 60)
+	private String editora;
+	@Column(length = 100, nullable = false)
+	private String escritor;
+	@Column(length = 100, nullable = false)
+	private String arte;
+
+	@Column(name = "pub_original")
+	@Temporal(value = TemporalType.DATE)
+	private Date pubOriginal;
+
 	@Column(length = 30, nullable = false)
 	private String status;
-	@Column(name = "ano")
-	@Temporal(value = TemporalType.DATE)
-	private Date ano;
-	@Column(length = 100, nullable = false)
-	private String autor;
-	@Column(length = 100, nullable = false)
-	private String desenhista;
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "categoria", joinColumns = @JoinColumn(name = "id"))
+	@CollectionTable(name = "categorias_m", joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "tipo")
 	private List<String> categorias;
 
-	@Column(name = "manga_id")
+	@JoinColumn(name = "manga_id", nullable = false)
 	private Long manga;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Volume.class)
-	@JoinTable(name = "titulo_volume", joinColumns = {
-			@JoinColumn(name = "titulo_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "volume_id", referencedColumnName = "id", unique = true) })
-	@Fetch(FetchMode.SUBSELECT)
-	private List<Volume> volumes;
+	@OneToMany(mappedBy = "tituloM", fetch = FetchType.EAGER)
+	private Set<Volume> volumes;
 
 	public TituloM() {
 		super();
@@ -76,36 +76,52 @@ public class TituloM implements Serializable {
 		this.nome = nome;
 	}
 
+	public String getClassificacao() {
+		return classificacao;
+	}
+
+	public void setClassificacao(String classificacao) {
+		this.classificacao = classificacao;
+	}
+
+	public String getEditora() {
+		return editora;
+	}
+
+	public void setEditora(String editora) {
+		this.editora = editora;
+	}
+
+	public String getEscritor() {
+		return escritor;
+	}
+
+	public void setEscritor(String escritor) {
+		this.escritor = escritor;
+	}
+
+	public String getArte() {
+		return arte;
+	}
+
+	public void setArte(String arte) {
+		this.arte = arte;
+	}
+
+	public Date getPubOriginal() {
+		return pubOriginal;
+	}
+
+	public void setPubOriginal(Date pubOriginal) {
+		this.pubOriginal = pubOriginal;
+	}
+
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public Date getAno() {
-		return ano;
-	}
-
-	public void setAno(Date ano) {
-		this.ano = ano;
-	}
-
-	public String getAutor() {
-		return autor;
-	}
-
-	public void setAutor(String autor) {
-		this.autor = autor;
-	}
-
-	public String getDesenhista() {
-		return desenhista;
-	}
-
-	public void setDesenhista(String desenhista) {
-		this.desenhista = desenhista;
 	}
 
 	public List<String> getCategorias() {
@@ -124,11 +140,11 @@ public class TituloM implements Serializable {
 		this.manga = manga;
 	}
 
-	public List<Volume> getVolumes() {
+	public Set<Volume> getVolumes() {
 		return volumes;
 	}
 
-	public void setVolumes(List<Volume> volumes) {
+	public void setVolumes(Set<Volume> volumes) {
 		this.volumes = volumes;
 	}
 

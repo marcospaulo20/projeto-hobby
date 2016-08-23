@@ -34,7 +34,6 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 			tempData = {
 				id: data.id,
 				nome: data.nome,
-				classificacao: data.classificacao,
 				titulosM: data.titulosM
 			};
 		}
@@ -56,7 +55,7 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 	}
 	
 	function tituloPage(element) {
-		return $location.path("manga/" + element.id);
+		return $location.path("mangas/" + element.id);
 	}
 	
 	// Controller de dialog
@@ -82,17 +81,6 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 				$scope.view.operaction = 'Detalhes';
 				break;
 		}
-		
-		// Classificacao
-  		$scope.classificacao = '';
-  		$scope.listClassificacao = [
-  		 {category: 'LIVRE', name: 'Livre' },
-  		 {category: 'S_10', name: '10 anos' },
-  		 {category: 'S_12', name: '12 anos' },
-  		 {category: 'S_14', name: '14 anos' },
-  		 {category: 'S_16', name: '16 anos' },
-  		 {category: 'S_18', name: '18 anos' }
-  		];
 		
 		// Metodos do controller de dialog
 		$scope.retorno = retorno;  

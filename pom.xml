@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.marcospaulo.projetohobby</groupId>
 	<artifactId>projeto-hobby</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>war</packaging>
 	<name>Projeto de controle de hobby</name>
 

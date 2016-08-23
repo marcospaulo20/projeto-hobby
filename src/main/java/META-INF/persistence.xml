@@ -16,9 +16,20 @@
 		<class>ngprojetohobby.anime.domain.Arco</class>
 		<class>ngprojetohobby.anime.domain.EpisodioA</class>
 		
+		<!-- Comics -->
+		<class>ngprojetohobby.comic.domain.Comic</class>
+		<class>ngprojetohobby.comic.domain.TituloC</class>
+		<class>ngprojetohobby.comic.domain.CapituloC</class>
+		
+		<!-- Series -->
+		<class>ngprojetohobby.serie.domain.Serie</class>
+		<class>ngprojetohobby.serie.domain.TituloS</class>
+		<class>ngprojetohobby.serie.domain.Temporada</class>
+		<class>ngprojetohobby.serie.domain.EpisodioS</class>
+		
 		<properties>
-			<property name="javax.persistence.schema-generation.database.action"
-				value="drop-and-create" />
+			<!-- <property name="javax.persistence.schema-generation.database.action"
+				value="drop-and-create" />  -->
 
 			<property name="javax.persistence.schema-generation-target"
 				value="scripts" />

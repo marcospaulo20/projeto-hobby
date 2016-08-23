@@ -38,14 +38,17 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
   			tempData = {};
   		} else {
   			tempData = {
-  				id: data.id,							
+  				id: data.id,
+  				manga: data.manga,
   				nome: data.nome,
-  				autor: data.autor,
-  				desenhista: data.desenhista,
+  				classificacao: data.classificacao,
+  				editora: data.editora,
+  				escritor: data.escritor,
+  				arte: data.arte,
+  				pubOriginal: new Date(data.pubOriginal),
   				status: data.status,
-  				ano: new Date(data.ano),
   				categorias: data.categorias,
-  				volumes: data.volumes,
+  				volumes: data.volumes
   			};
   		}
   		$mdDialog.show({
@@ -66,7 +69,7 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
   	}
   	
   	function volumePage(element) {
-		return $location.path("manga/" + element.manga + "/" + element.id);
+		return $location.path("mangas/" + element.manga + "/" + element.id);
 	}
   	
   	// Controller de dialog
@@ -94,6 +97,17 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
   				break;
   		}
   		
+  		// Classificacao
+  		$scope.classificacao = '';
+  		$scope.listClassificacao = [
+  		 {category: 'LIVRE', name: 'Livre' },
+  		 {category: 'S_10', name: '10 anos' },
+  		 {category: 'S_12', name: '12 anos' },
+  		 {category: 'S_14', name: '14 anos' },
+  		 {category: 'S_16', name: '16 anos' },
+  		 {category: 'S_18', name: '18 anos' }
+  		];
+  		
   		// Categorias
   		$scope.listCategorias = [
          { category: 'catg', name: 'Komodo' },
@@ -118,6 +132,7 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
          { category: 'genr', name: 'Histórico' },
          { category: 'genr', name: 'Horror' },
          { category: 'genr', name: 'Jogo' },
+         { category: 'genr', name: 'Mágico' },
          { category: 'genr', name: 'Mistério' },
          { category: 'genr', name: 'Paródia' },
          { category: 'genr', name: 'Policial' },
@@ -137,6 +152,8 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
   		 {category: 'COM', name: 'Completo' },
   		 {category: 'PAR', name: 'Parado' }
   		];
+  		
+  		 $scope.pubOriginal = new Date();
   		
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  
@@ -168,9 +185,15 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			$scope.view.selectedItem.manga = $scope.manga.id;
+  			//$scope.view.selectedItem.manga = $scope.manga.id;
   			TituloMFactory.update({id: $scope.manga.id, idTitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
+  				$scope.view.dataTable[indexArr].classificacao = $scope.view.selectedItem.classificacao;
+  				$scope.view.dataTable[indexArr].editora = $scope.view.selectedItem.editora;
+  				$scope.view.dataTable[indexArr].escritor = $scope.view.selectedItem.escritor;
+  				$scope.view.dataTable[indexArr].arte = $scope.view.selectedItem.arte;
+  				$scope.view.dataTable[indexArr].pubOriginal = $scope.view.selectedItem.pubOriginal;
+  				$scope.view.dataTable[indexArr].status = $scope.view.selectedItem.status;
   				$scope.view.dataTable[indexArr].categorias = $scope.view.selectedItem.categorias;
   				$mdDialog.hide('O titulo alterado com sucesso.');
   			}, function() {

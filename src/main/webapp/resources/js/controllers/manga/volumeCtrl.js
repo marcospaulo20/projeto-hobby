@@ -42,16 +42,17 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			tempData = {};
   		} else {
   			tempData = {
-  				id: data.id,							
+  				id: data.id,
+  				tituloM: data.tituloM,
   				nome: data.nome,
   				arco: data.arco,
+  				anoJP: new Date(data.anoJP),
+  				anoBR: new Date(data.anoBR),
   				paginas: data.paginas,
-  				anoPublicacaoJP: new Date(data.anoPublicacaoJP),
-  				anoPublicacaoBR: new Date(data.anoPublicacaoBR),
   				status: data.status,
-  				preco: data.preco,
-  				capitulosM: data.capitulosM,
-  				imagem: data.imagem
+  				statusColecao: data.statusColecao,
+  				imagem: data.imagem,
+  				capitulosM: data.capitulosM
   			};
   		}
   		$mdDialog.show({
@@ -72,7 +73,7 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   	}
   	
   	function capituloPage(element) {
-		return $location.path("manga/" + $scope.manga.id + "/" + $scope.titulo.id + "/" + element.id);
+		return $location.path("mangas/" + $scope.manga.id + "/" + element.tituloM + "/" + element.id);
 	}
   	
   	// Controller de dialog
@@ -100,13 +101,18 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				break;
   		}
   		
+  		$scope.statusColecao = false;
+  		
   		// Status
   		$scope.status = '';
   		$scope.listStatus = [
-  		   { category: true, name: 'Já li' },
-  		   { category: false, name: 'Não li' }         
+  		   { name: 'Já li' },
+  		   { name: 'Lendo' },
+  		   { name: 'Não li' },
+  		   { name: 'Relendo' },
+  		   { name: 'Vou ler' },
+  		   { name: 'Desistir' }
          ];
-  		//$scope.listStatus = ('Já li,Estou lendo').split(',').map(function (status) { return { name: status }; });  		
   		
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  
@@ -139,7 +145,7 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			$scope.view.selectedItem.tituloM = $scope.titulo.id;
+  			//$scope.view.selectedItem.tituloM = $scope.titulo.id;
   			if($scope.result != null)
   				$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
   			VolumeFactory.update({id: $scope.titulo.manga, idTituloM: $scope.titulo.id, idVolume: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
@@ -175,4 +181,18 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		};
   	}
   	
+  	$scope.numComplete = countComplete();
+
+    $scope.$watch("volumes", function(newValue, oldValue) {
+    	$scope.volumes = newValue;
+    	$scope.numComplete = countComplete();
+    }, true);
+
+    function countComplete() {
+    	var cnt = 0;
+    	angular.forEach($scope.volumes, function(item) {
+    		cnt += item.capitulosM.length;
+    	});
+    	return cnt;
+    }
 }]);

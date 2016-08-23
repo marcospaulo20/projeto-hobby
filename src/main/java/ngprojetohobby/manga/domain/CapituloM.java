@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="capitulo_m")
+@Table(name = "capitulo_m")
 public class CapituloM implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -21,10 +21,12 @@ public class CapituloM implements Serializable {
 
 	@Column(length = 200, nullable = false)
 	private String nome;
-	@Column(nullable = false)
-	private Integer numero;
+	@Column(length = 10,nullable = false)
+	private String numero;
 
 	private Boolean status;
+
+	private Boolean statusVirtual;
 
 	@Column(name = "volume_id")
 	private Long volume;
@@ -32,6 +34,7 @@ public class CapituloM implements Serializable {
 	public CapituloM() {
 		super();
 		this.status = Boolean.FALSE;
+		this.statusVirtual = Boolean.FALSE;
 	}
 
 	public Long getId() {
@@ -46,11 +49,11 @@ public class CapituloM implements Serializable {
 		this.nome = nome;
 	}
 
-	public Integer getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(Integer numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 
@@ -60,6 +63,14 @@ public class CapituloM implements Serializable {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public Boolean getStatusVirtual() {
+		return statusVirtual;
+	}
+
+	public void setStatusVirtual(Boolean statusVirtual) {
+		this.statusVirtual = statusVirtual;
 	}
 
 	public Long getVolume() {

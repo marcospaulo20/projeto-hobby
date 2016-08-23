@@ -73,6 +73,6 @@ services.factory('EpisodioAFactory', function EpisodioAFactory($resource) {
 	return $resource('rest/anime/:id/titulo/:idTituloA/arco/:idArco/episodios/:idEpisodioA', {}, {
 		show: { method: 'GET', params: {id: '@anime.id', idTituloA: '@titulo.id', idArco: '@arco.id', idEpisodioA: '@id'} },
 		update: { method: 'PUT', params: {id: '@anime.id', idTituloA: '@titulo.id', idArco: '@arco.id', idEpisodioA: '@id'} },
-		delete: { method: 'DELETE', params: {id: '@manga.id', idTituloA: '@titulo.id', idArco: '@arco.id', idEpisodioA: '@id'} },
+		delete: { method: 'DELETE', params: {id: '@anime.id', idTituloA: '@titulo.id', idArco: '@arco.id', idEpisodioA: '@id'} },
 	})
 });

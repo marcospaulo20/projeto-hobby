@@ -36,9 +36,10 @@
 					<md-card ng-repeat="element in titulos | orderBy: 'ano' | filter:search" class="card-titulo">
 						<md-card-title>
 							<md-card-title-text>
-								<span class="md-headline">{{element.nome}}</span>
-	            				<span class="md-subhead">{{element.ano | date:'mediumDate'}}</span>
-	            				<span class="md-subhead">{{element.generos.join(", ")}}</span>
+								<span class="md-headline">{{element.nome}} ({{element.formato}})</span>
+								<span class="md-subhead subhead">{{element.emissora}}</span>
+	            				<span class="md-subhead subhead">{{element.anoOriginal | date:'mediumDate'}}</span>
+	            				<span class="md-subhead subhead">{{element.generos.join(", ")}}</span>
 							</md-card-title-text>
 						</md-card-title>						
 						<md-card-content layout="row" layout-align="space-between">
@@ -50,7 +51,7 @@
 							</div>							
 							<md-card-actions layout="column">
 								<div>
-									<img data-ng-src="img/classificacao_indicativa/{{anime.classificacao}}.svg" style="width: 35px; margin: 0 6px;">
+									<img data-ng-src="img/classificacao_indicativa/{{element.classificacao}}.svg" style="width: 35px; margin: 0 6px;">
 								</div>
 								<md-button class="md-icon-button" ng-click="mostrarDialog('UD', element, $event)">
 	           						<ng-md-icon class="md-secondary md-hue-3" icon="mode_edit" fill="none"></ng-md-icon>
@@ -59,18 +60,18 @@
 	              					<ng-md-icon class="md-secondary md-hue-3" icon="send" fill="none"></ng-md-icon>
 	            				</md-button>
 	            				<md-button class="md-icon-button">
-	            					<div ng-repeat="a in element.arcos | orderBy: 'ano' | filter: query"></div>
+	            					<div ng-repeat="v in element.arcos | orderBy: 'ano' | filter: query"></div>
 					
-	            					<div ng-show="(element.arcos | filter : query.status = false).length === element.arcos.length">
-	              						<ng-md-icon class="md-secondary md-hue-3" icon="thumb_down" fill="none"></ng-md-icon>
+	            					<div ng-show="(element.arcos | filter : query.statusColecao = false).length === element.arcos.length">
+	              						<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: red" size="30"></ng-md-icon>
 	              					</div>
-	              					<div ng-show="(element.arcos | filter : query.status = true).length === element.arcos.length">
-	              						<ng-md-icon class="md-secondary md-hue-3" icon="thumb_up" fill="none"></ng-md-icon>
+	              					<div ng-show="(element.arcos | filter : query.statusColecao = true).length === element.arcos.length">
+	              						<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: green" size="30"></ng-md-icon>
 	              					</div>
-	              					<div>
-	            						<h2 style="padding-left: 20px;">{{element.arcos.length}}</h2>
-	            					</div>
 	            				</md-button>
+	            				<div>
+	            					<h2>{{(element.arcos | filter : query.statusColecao = true).length}}/{{element.arcos.length}}</h2>
+	            				</div>
 							</md-card-actions>							
 						</md-card-content>						
 					</md-card>
@@ -109,13 +110,27 @@
 									<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
                      			</ng-messages>
 							</md-input-container>									
+							<md-input-container class="md-block" flex-gt-xs>
+								<label>Classificacao</label>
+        						<md-select name="classificacao" ng-model="view.selectedItem.classificacao" required>
+          							<md-option ng-repeat="classificacao in listClassificacao" value="{{classificacao.category}}">
+            							{{classificacao.name}}
+          							</md-option>
+        						</md-select>
+								<div class="errors" ng-messages="inputForm.classificacao.$error" ng-if="inputForm.$dirty">
+        							<div ng-message="required">Required</div>
+      							</div>
+      						</md-input-container>
 							<div layout="column">
 								<div ng-show="view.operaction === 'Adicionar'">
-								<md-select placeholder="Manga" ng-model="view.selectedItem.manga" md-on-open="loadMangas()" style="min-width: 200px;">
-									<md-option ng-value="manga" ng-repeat="manga in mangas">
-										{{manga.nome}}
-									</md-option>
-								</md-select>
+									<md-input-container class="md-block">
+										<label>Manga</label>
+										<md-select name="manga" ng-model="view.selectedItem.manga" md-on-open="loadMangas()" style="min-width: 200px;">
+											<md-option ng-value="manga" ng-repeat="manga in mangas">
+												{{manga.nome}}
+											</md-option>
+										</md-select>
+									</md-input-container>							
 								</div>
 								<div ng-show="view.operaction === 'Modificar'">
 									<md-input-container class="md-block">
@@ -124,18 +139,29 @@
 									</md-input-container>
 								</div>
 							</div>
-							
-							<div layout-gt-sm="row">
-								<md-input-container class="md-block" flex-gt-xs>
-        							<label>Formato</label>
-        							<md-select ng-model="view.selectedItem.formato">
-          								<md-option ng-repeat="formato in listFormato" value="{{formato.name}}">
-	            							{{formato.name}}
-    	      							</md-option>
-        							</md-select>
-      							</md-input-container>
-									
-								<md-datepicker ng-model="view.selectedItem.ano" md-placeholder="Ano publica&#231;&#227;o"></md-datepicker>
+							<md-input-container class="md-block" flex-gt-xs>
+								<label>Emissora</label>
+        						<md-select ng-model="view.selectedItem.emissora">
+          							<md-option ng-repeat="emissora in listEmissora" value="{{emissora.name}}">
+            							{{emissora.name}}
+          							</md-option>
+        						</md-select>
+      						</md-input-container>
+
+							<md-input-container class="md-block" flex-gt-xs>
+        						<label>Formato</label>
+        						<md-select name="formato" ng-model="view.selectedItem.formato" required>
+          							<md-option ng-repeat="formato in listFormato" value="{{formato.name}}">
+	            						{{formato.name}}
+    	      						</md-option>
+        						</md-select>
+								<div class="errors" ng-messages="inputForm.formato.$error" ng-if="inputForm.$dirty">
+        							<div ng-message="required">Required</div>
+      							</div>
+      						</md-input-container>
+							<div>
+								<p>Ano Original</p>	
+								<md-datepicker ng-model="view.selectedItem.anoOriginal"></md-datepicker>
 							</div>
 							
 							<md-input-container class="md-block">

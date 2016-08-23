@@ -2,7 +2,9 @@
 
 var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ngMdIcons', 'ImageCropper', 'ngFileUpload', 'projetoHobbyApp.directive', 
                                              'projetoHobbyApp.manga.services', 'projetoHobbyApp.manga.controllers', 'projetoHobbyApp.tituloM.controllers', 'projetoHobbyApp.volume.controllers', 'projetoHobbyApp.capitulo.controllers',
-                                             'projetoHobbyApp.anime.services', 'projetoHobbyApp.anime.controllers', 'projetoHobbyApp.tituloA.controllers', 'projetoHobbyApp.arco.controllers', 'projetoHobbyApp.episodio.controllers']); 
+                                             'projetoHobbyApp.anime.services', 'projetoHobbyApp.anime.controllers', 'projetoHobbyApp.tituloA.controllers', 'projetoHobbyApp.arco.controllers', 'projetoHobbyApp.episodio.controllers',
+                                             'projetoHobbyApp.comic.services', 'projetoHobbyApp.comic.controllers', 'projetoHobbyApp.tituloC.controllers', 'projetoHobbyApp.capituloC.controllers',
+                                             'projetoHobbyApp.serie.services', 'projetoHobbyApp.serie.controllers', 'projetoHobbyApp.tituloS.controllers', 'projetoHobbyApp.temporada.controllers', 'projetoHobbyApp.episodioS.controllers']); 
 
 	app.config(['$routeProvider', function($routeProvider) {
 		var version = '?nocache=${project.version}';
@@ -11,15 +13,15 @@ var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', '
 			templateUrl: 'views/manga/index.html',
 			controller: 'MangaCtrl'
 		});
-		$routeProvider.when('/manga/:id', {
+		$routeProvider.when('/mangas/:id', {
 			templateUrl: 'views/manga/titulo.html',
 			controller: 'TituloMCtrl'
 		});
-		$routeProvider.when('/manga/:id/:idTituloM', {
+		$routeProvider.when('/mangas/:id/:idTituloM', {
 			templateUrl: 'views/manga/volume.html', 
 			controller: 'VolumeCtrl'
 		});
-		$routeProvider.when('/manga/:id/:idTituloM/:idVolume', {
+		$routeProvider.when('/mangas/:id/:idTituloM/:idVolume', {
 			templateUrl: 'views/manga/capitulo.html', 
 			controller: 'CapituloMCtrl'
 		});
@@ -28,26 +30,53 @@ var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', '
 			templateUrl: 'views/anime/index.html',
 			controller: 'AnimeCtrl'
 		});
-		$routeProvider.when('/anime/:id', {
+		$routeProvider.when('/animes/:id', {
 			templateUrl: 'views/anime/titulo.html',
 			controller: 'TituloACtrl'
 		});
-		$routeProvider.when('/anime/:id/:idTituloA', {
+		$routeProvider.when('/animes/:id/:idTituloA', {
 			templateUrl: 'views/anime/arco.html', 
 			controller: 'ArcoCtrl'
 		});
-		$routeProvider.when('/anime/:id/:idTituloA/:idArco', {
+		$routeProvider.when('/animes/:id/:idTituloA/:idArco', {
 			templateUrl: 'views/anime/episodio.html', 
 			controller: 'EpisodioACtrl'
 		});
+		
+		$routeProvider.when('/comics', {
+			templateUrl: 'views/comic/index.html',
+			controller: 'ComicCtrl'
+		});
+		$routeProvider.when('/comics/:id', {
+			templateUrl: 'views/comic/titulo.html',
+			controller: 'TituloCCtrl'
+		});
+		$routeProvider.when('/comics/:id/:idTituloC', {
+			templateUrl: 'views/comic/capitulo.html',
+			controller: 'CapituloCCtrl'
+		});
+		
+		$routeProvider.when('/series', {
+			templateUrl: 'views/serie/index.html',
+			controller: 'SerieCtrl'
+		});
+		$routeProvider.when('/series/:id', {
+			templateUrl: 'views/anime/titulo.html',
+			controller: 'TituloSCtrl'
+		});
+		$routeProvider.when('/series/:id/:idTituloS', {
+			templateUrl: 'views/serie/temporada.html', 
+			controller: 'TemporadaCtrl'
+		});
+		$routeProvider.when('/series/:id/:idTituloA/:idTemporada', {
+			templateUrl: 'views/serie/episodio.html', 
+			controller: 'EpisodioSCtrl'
+		});
 	}]);
 	
-	app.controller('AppCtrl', ['$scope','$mdSidenav', 
-	    function($scope, $mdSidenav) {
+	app.controller('AppCtrl', ['$scope','$mdSidenav', '$location',
+	    function($scope, $mdSidenav, $location) {
 	  	
-		$scope.selected = null;
-		$scope.selectHobby = selectHobby;
-		
 		var projectUrl = "/projeto-hobby/#";
 		
 	  	$scope.toggleSidenav = function(name) {
@@ -76,11 +105,11 @@ var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', '
 		  	icon: 'img/comic-icon.png'	  		
 		  }		 
 	  	];
-	  	
-	  	function selectHobby(hobby) {
-	  		$scope.selected = angular.isNumber(hobby) ? $scope.hobbys[hobby] : hobby;
-	  		$scope.toggleSidenav('left');
-	  	}
+	    
+	  	 $scope.selectHobby = function (page) {
+	         var currentRoute = "/projeto-hobby/#" + $location.path().slice(0,7);
+	         return page == currentRoute ? 'selected' : '';
+	     };	     	    
 	}]);
 	
 	app.config(function($mdThemingProvider) {
@@ -102,11 +131,11 @@ var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', '
 	
 	app.config(function($mdDateLocaleProvider) {
 		$mdDateLocaleProvider.formatDate = function(date) {
-			return date ? moment(date).format('DD-MM-YYYY') : '';
+			return moment(date).format('DD/MM/YYYY');
 		};
 		  
 		$mdDateLocaleProvider.parseDate = function(dateString) {
-		    var m = moment(dateString, 'DD-MM-YYYY', true);
+		    var m = moment(dateString, 'DD/MM/YYYY', true);
 		    return m.isValid() ? m.toDate() : new Date(NaN);
 		};
 	});

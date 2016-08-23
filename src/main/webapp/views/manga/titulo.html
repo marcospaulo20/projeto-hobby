@@ -36,20 +36,22 @@
 					<md-card ng-repeat="element in titulos | orderBy: 'nome' | filter:search" class="card-titulo">
 						<md-card-title>
 							<md-card-title-text>
-								<span class="md-headline">{{element.nome}}</span>
-	            				<span class="md-subhead">{{element.categorias.join(", ")}}</span>
+								<span class="md-headline">{{element.nome}} ({{element.editora}})</span>
+								<span class="md-subhead subhead">{{element.escritor}} / {{element.arte}}</span>
+								<span class="md-subhead subhead">{{element.pubOriginal | date: dd/MM/yyyy}}</span>
+	            				<span class="md-subhead subhead">{{element.categorias.join(", ")}}</span>
 							</md-card-title-text>
 						</md-card-title>						
 						<md-card-content layout="row" layout-align="space-between">
 							<div ng-show="{{element.volumes == ''}}">
-								<img data-ng-src="img/image-default.png" class="image-relative"/>
+								<img data-ng-src="img/image-default.png" class="image-relative"/>								
 							</div>
 							<div ng-show="{{element.volumes[0].imagem != null}}">
-								<img data-ng-src="data:image/(png|jpg);base64,{{element.volumes[0].imagem}}" class="image-relative"/>
+								<img data-ng-src="data:image/(png|jpg);base64,{{element.volumes[0].imagem}}" class="image-relative"/>								
 							</div>							
 							<md-card-actions layout="column">
 								<div>
-									<img data-ng-src="img/classificacao_indicativa/{{manga.classificacao}}.svg" style="width: 35px; margin: 0 6px;">
+									<img data-ng-src="img/classificacao_indicativa/{{element.classificacao}}.svg" style="width: 35px; margin: 0 6px;">
 								</div>
 								<md-button class="md-icon-button" ng-click="mostrarDialog('UD', element, $event)">
 	           						<ng-md-icon class="md-secondary md-hue-3" icon="mode_edit" fill="none"></ng-md-icon>
@@ -60,15 +62,15 @@
 	            				<md-button class="md-icon-button">
 	            					<div ng-repeat="v in element.volumes | orderBy: 'ano' | filter: query"></div>
 					
-	            					<div ng-show="(element.volumes | filter : query.status = false).length === element.volumes.length">
-	              						<ng-md-icon class="md-secondary md-hue-3" icon="thumb_down" fill="none"></ng-md-icon>
+	            					<div ng-show="(element.volumes | filter : query.statusColecao = false).length === element.volumes.length">
+	              						<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: red" size="30"></ng-md-icon>
 	              					</div>
-	              					<div ng-show="(element.volumes | filter : query.status = true).length === element.volumes.length">
-	              						<ng-md-icon class="md-secondary md-hue-3" icon="thumb_up" fill="none"></ng-md-icon>
+	              					<div ng-show="(element.volumes | filter : query.statusColecao = true).length === element.volumes.length">
+	              						<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: green" size="30"></ng-md-icon>
 	              					</div>
 	            				</md-button>
 	            				<div>
-	            					<h2 style="padding-left: 20px;">{{element.volumes.length}}</h2>
+	            					<h2>{{(element.volumes | filter : query.statusColecao = true).length}}/{{element.volumes.length}}</h2>
 	            				</div>
 							</md-card-actions>							
 						</md-card-content>						
@@ -105,24 +107,41 @@
 								<ng-message when="required">O campo e obrigatorio</ng-message>
 								<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
                        		</ng-messages>
-						</md-input-container>							
-						<div layout-gt-sm="row">
+						</md-input-container>
+						<md-input-container class="md-block" flex-gt-xs>
+							<label>Classificacao</label>
+        					<md-select ng-model="view.selectedItem.classificacao">
+          						<md-option ng-repeat="classificacao in listClassificacao" value="{{classificacao.category}}">
+            						{{classificacao.name}}
+          						</md-option>
+        					</md-select>
+      					</md-input-container>
+
 							<md-input-container class="md-block">
-        						<label>Autor(a)</label>
-        						<input name="autor" ng-model="view.selectedItem.autor" required md-maxlength="100">
+        						<label>Editora</label>
+        						<input name="editora" ng-model="view.selectedItem.editora" md-maxlength="60">
+								<ng-messages for="inputForm.editora.$error">
+									<ng-message when="md-maxlength">Use 60 caracteres ou menos para a editora</ng-message>
+                       			</ng-messages>								
+      						</md-input-container>
+						
+							<md-input-container class="md-block">
+        						<label>Escritor(a)</label>
+        						<input name="escritor" ng-model="view.selectedItem.escritor" md-maxlength="100">
 								<ng-messages for="inputForm.autor.$error">
-									<ng-message when="required">O campo e obrigatorio</ng-message>
 									<ng-message when="md-maxlength">Use 100 caracteres ou menos para o autor</ng-message>
                        			</ng-messages>
       						</md-input-container>
       						<md-input-container class="md-block">
-        						<label>Desenhista (Art)</label>
-        						<input name="desenhista" ng-model="view.selectedItem.desenhista" required md-maxlength="100">
-								<ng-messages for="inputForm.desenhista.$error">
-									<ng-message when="required">O campo e obrigatorio</ng-message>
+        						<label>Arte</label>
+        						<input name="arte" ng-model="view.selectedItem.arte" md-maxlength="100">
+								<ng-messages for="inputForm.arte.$error">
 									<ng-message when="md-maxlength">Use 100 caracteres ou menos para o desenhista</ng-message>
                        			</ng-messages>
       						</md-input-container>
+						<div>
+							<p>Publica&#231;&#227;o Original</p>
+							<md-datepicker ng-model="view.selectedItem.pubOriginal"></md-datepicker>
 						</div>
 						<div layout-gt-sm="row">
 							<md-input-container class="md-block" flex-gt-xs>
@@ -133,8 +152,6 @@
           							</md-option>
         						</md-select>
       						</md-input-container>
-								
-							<md-datepicker ng-model="view.selectedItem.ano" md-placeholder="Ano de publica&#231;&#227;"></md-datepicker>								
 						</div>
 
 						<md-input-container class="md-block">
@@ -152,7 +169,7 @@
 								</md-optgroup>
         					</md-select>
       					</md-input-container>
-					</md-content>					
+					</md-content>
 				</div>
 			</md-dialog-content>
 		</form>

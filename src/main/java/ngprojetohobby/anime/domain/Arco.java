@@ -44,7 +44,7 @@ public class Arco implements Serializable {
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] imagem;
 
-	@Column(name = "tituloA_id")
+	@JoinColumn(name = "tituloA_id", nullable = false)
 	private Long tituloA;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = EpisodioA.class)

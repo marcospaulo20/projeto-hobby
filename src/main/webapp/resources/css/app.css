@@ -25,11 +25,6 @@
   width: 60px;
 }
 
-.full-heigth {
-    height: -moz-calc(100% - 64px); 
-    height: -webkit-calc(100% - 64px);
-    height: calc(100% - 64px);
-}
 
 .dialog-95 {
     width: 95%;
@@ -54,8 +49,25 @@
 .red {
     color: red;
     padding-top: 0;
-    font-size: 14px;
+    font-size: 15px;
+    letter-spacing: .005em;
+    font-weight: 600;
 }
+
+.statusVirtualCapituloBloco {
+	display: inline-block;
+    padding-left: 30px;
+}
+
+.statusVirtualBlocoCapitulos {
+	display: inline-block;
+    padding-left: 10px;
+}
+
+.statusCapituloBloco {
+	display: inline-block;
+}
+
 
 /** Material angular **/	
 $gray: #eee;
@@ -111,6 +123,10 @@ md-toolbar.md-hue-1:not(.md-menu-toolbar) {
 
 md-input-container {
 	display: flex;	
+}
+
+md-card md-card-title md-card-title-text:only-child .md-subhead.subhead {
+    padding-top: 0px;
 }
 
 .site-sidenav, .site-sidenav.md-locked-open-add-active, .site-sidenav.md-locked-open {
