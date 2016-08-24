@@ -44,9 +44,7 @@ app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFac
   				nome: data.nome,
   				classificacao: data.classificacao,
   				editora: data.editora,
-  				pubOriginal: new Date(data.pubOriginal),
-  				escritor: data.escritor,
-  				arte: data.arte,
+  				pubOriginal: new Date(data.pubOriginal),  		
   				status: data.status,
   				generos: data.generos,
   				capitulos: data.capitulos
@@ -110,49 +108,68 @@ app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFac
   		 {category: 'S_18', name: '18 anos' }
   		];
   		
-  		// Emissora
-  		$scope.emissora = '';
-  		$scope.listEmissora = [
-  		  {name: 'Tokyo'}
-  		];  		
+  		// Paises
+  		$scope.paises = '';
+  		$scope.listPaises = [
+         {category: 'AUS', name: 'Austrália' },
+  		 {category: 'BEL', name: 'Bélgica' },
+  		 {category: 'BOL', name: 'Bolívia' },
+  		 {category: 'BRA', name: 'Brasil' },
+  		 {category: 'CAN', name: 'Canadá' },
+  		 {category: 'DEN', name: 'Dinamarca' },
+  		 {category: 'ESP', name: 'Espanha' },
+  		 {category: 'FRA', name: 'França' },
+  		 {category: 'GBR', name: 'Reino Unido' },
+  		 {category: 'GER', name: 'Alemanha' },
+  		 {category: 'IND', name: 'Índia' },
+  		 {category: 'ITA', name: 'Itália' },
+  		 {category: 'JPN', name: 'Japão' },
+  		 {category: 'MEX', name: 'México' },
+  		 {category: 'POR', name: 'Portugal' },
+  		 {category: 'RUS', name: 'Rússia' },
+  		 {category: 'SRB', name: 'Sérvia' },
+  		 {category: 'SUI', name: 'Suíça' },
+  		 {category: 'SWE', name: 'Suécia' },
+  		 {category: 'USA', name: 'Estados Unidos' }
+  		]; 		
   		
-  		// Formato
-  		$scope.formato = '';
-  		$scope.listFormato = [
-  		  {name: 'Normal'},
-  		  {name: 'OVA'},
- 		  {name: 'Filme'}
+  		// Status
+  		$scope.status = '';
+  		$scope.listStatus = [
+  		 {category: 'ATV', name: 'Ativo' },
+  		 {category: 'COM', name: 'Completo' },
+  		 {category: 'PAR', name: 'Parado' }
   		];
   		
   		// Generos
   		$scope.listGeneros = [         
-         { category: 'genr', name: 'Ação' },
-         { category: 'genr', name: 'Adulto' },
-         { category: 'genr', name: 'Artes Marciais' },
-         { category: 'genr', name: 'Aventura' },
-         { category: 'genr', name: 'Comédia' },
-         { category: 'genr', name: 'Demônios' },
-         { category: 'genr', name: 'Drama' },
-         { category: 'genr', name: 'Ecchi' },
-         { category: 'genr', name: 'Escolar' },
-         { category: 'genr', name: 'Espaço' },
-         { category: 'genr', name: 'Esportes' },
-         { category: 'genr', name: 'Fantasia' },
-         { category: 'genr', name: 'Ficção' },
-         { category: 'genr', name: 'Harem' },
-         { category: 'genr', name: 'Histórico' },
-         { category: 'genr', name: 'Horror' },
-         { category: 'genr', name: 'Jogo' },
-         { category: 'genr', name: 'Mistério' },
-         { category: 'genr', name: 'Paródia' },
-         { category: 'genr', name: 'Policial' },
-         { category: 'genr', name: 'Psicológico' },
-         { category: 'genr', name: 'Romance' },
-         { category: 'genr', name: 'Samurai' },
-         { category: 'genr', name: 'Sobrenatural' },
-         { category: 'genr', name: 'Slice of Life' },
-         { category: 'genr', name: 'Thriler' },
-         { category: 'genr', name: 'Vampiros' }
+         { name: 'Ação' },
+         { name: 'Adulto' },
+         { name: 'Artes Marciais' },
+         { name: 'Aventura' },
+         { name: 'Comédia' },
+         { name: 'Demônios' },
+         { name: 'Drama' },
+         { name: 'Ecchi' },
+         { name: 'Escolar' },
+         { name: 'Espaço' },
+         { name: 'Esportes' },
+         { name: 'Fantasia' },
+         { name: 'Ficção' },
+         { name: 'Harem' },
+         { name: 'Histórico' },
+         { name: 'Horror' },
+         { name: 'Jogo' },
+         { name: 'Mistério' },
+         { name: 'Paródia' },
+         { name: 'Policial' },
+         { name: 'Psicológico' },
+         { name: 'Romance' },
+         { name: 'Samurai' },
+         { name: 'Sobrenatural' },
+         { name: 'Slice of Life' },
+         { name: 'Thriler' },
+         { name: 'Vampiros' }
         ];  		
   		
   		// Metodos do controller de dialog
@@ -172,7 +189,7 @@ app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFac
   		
   		// Permite adicionar um novo elemento
   		function adicionar() {
-  			$scope.view.selectedItem.anime = $scope.anime.id;
+  			$scope.view.selectedItem.comic = $scope.comic.id;
   	    	TituloCCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {    		
   	    		$scope.view.dataTable.push(data);
   				$mdDialog.hide('O titulo adicionado com sucesso.');

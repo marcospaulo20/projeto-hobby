@@ -132,7 +132,7 @@ app.controller('EpisodioSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			EpisodioSFactory.update({id: $scope.titulo.serie, idTituloS: $scope.titulo.id, idTemporada: $scope.arco.id, idEpisodioS: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
+  			EpisodioSFactory.update({id: $scope.titulo.serie, idTituloS: $scope.titulo.id, idTemporada: $scope.temporada.id, idEpisodioS: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
   				$scope.view.dataTable[indexArr].numero = $scope.view.selectedItem.numero;
   				$scope.view.dataTable[indexArr].status = $scope.view.selectedItem.status;

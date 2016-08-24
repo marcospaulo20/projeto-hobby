@@ -38,19 +38,19 @@ services.factory('TituloCFactory', function TituloCFactory($resource) {
 });
 
 services.factory('CapitulosCFactory', function CapitulosCFactory($resource) {
-	return $resource('rest/comic/:id/titulo/:idTituloC/capitulos', {}, {
+	return $resource('rest/comic/:id/titulo/:idTituloC/capitulosC', {}, {
 		query: { method: 'GET', params: {id: '@comic.id', idTituloC: '@id'}, isArray: true }
 	})
 });
 
-services.factory('CapituloCCreateFactory', function CapituloCFactory($resource) {
-	return $resource('rest/comic/titulo/capitulos', {}, {
+services.factory('CapituloCCreateFactory', function CapituloCCreateFactory($resource) {
+	return $resource('rest/comic/titulo/capitulosC', {}, {
 		create: { method: 'POST' }
 	})
 });
 
 services.factory('CapituloCFactory', function CapituloCFactory($resource) {
-	return $resource('rest/comic/:id/titulo/:idTituloC/capitulos/:idCapituloC', {}, {
+	return $resource('rest/comic/:id/titulo/:idTituloC/capitulosC/:idCapituloC', {}, {
 		show: { method: 'GET', params: {id: '@comic.id', idTituloC: '@titulo.id', idCapituloC: '@id'} },
 		update: { method: 'PUT', params: {id: '@comic.id', idTituloC: '@titulo.id', idCapituloC: '@id'} },
 		delete: { method: 'DELETE', params: {id: '@comic.id', idTituloC: '@titulo.id', idCapituloC: '@id'} },

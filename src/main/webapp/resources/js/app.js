@@ -61,14 +61,14 @@ var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', '
 			controller: 'SerieCtrl'
 		});
 		$routeProvider.when('/series/:id', {
-			templateUrl: 'views/anime/titulo.html',
+			templateUrl: 'views/serie/titulo.html',
 			controller: 'TituloSCtrl'
 		});
 		$routeProvider.when('/series/:id/:idTituloS', {
 			templateUrl: 'views/serie/temporada.html', 
 			controller: 'TemporadaCtrl'
 		});
-		$routeProvider.when('/series/:id/:idTituloA/:idTemporada', {
+		$routeProvider.when('/series/:id/:idTituloS/:idTemporada', {
 			templateUrl: 'views/serie/episodio.html', 
 			controller: 'EpisodioSCtrl'
 		});

@@ -54,6 +54,14 @@
     font-weight: 600;
 }
 
+.green {
+    color: green;
+    padding-top: 0;
+    font-size: 15px;
+    letter-spacing: .005em;
+    font-weight: 600;
+}
+
 .statusVirtualCapituloBloco {
 	display: inline-block;
     padding-left: 30px;

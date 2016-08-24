@@ -45,8 +45,8 @@ public class TituloS implements Serializable {
 	@Temporal(value = TemporalType.DATE)
 	private Date anoOriginal;
 
-	@Column(name = "pais_original")
-	private String paisOriginal;
+	@Column(name = "pais_origem")
+	private String paisOrigem;
 
 	private String status;
 
@@ -107,12 +107,12 @@ public class TituloS implements Serializable {
 		this.anoOriginal = anoOriginal;
 	}
 
-	public String getPaisOriginal() {
-		return paisOriginal;
+	public String getPaisOrigem() {
+		return paisOrigem;
 	}
 
-	public void setPaisOriginal(String paisOriginal) {
-		this.paisOriginal = paisOriginal;
+	public void setPaisOrigem(String paisOrigem) {
+		this.paisOrigem = paisOrigem;
 	}
 
 	public String getStatus() {

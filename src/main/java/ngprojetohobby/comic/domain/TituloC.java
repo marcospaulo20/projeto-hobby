@@ -23,8 +23,6 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import ngprojetohobby.manga.domain.CapituloM;
-
 @Entity
 @Table(name = "titulo_c")
 public class TituloC implements Serializable {
@@ -46,15 +44,10 @@ public class TituloC implements Serializable {
 	@Temporal(value = TemporalType.DATE)
 	private Date pubOriginal;
 
-	@Column(length = 200)
-	private String escritor;
-	@Column(length = 200)
-	private String arte;
-
 	@Column(nullable = false)
 	private String paisOrigem;
 
-	private Boolean status;
+	private String status;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "generos_c", joinColumns = @JoinColumn(name = "id"))
@@ -64,16 +57,15 @@ public class TituloC implements Serializable {
 	@JoinColumn(name = "comic_id", nullable = false)
 	private Long comic;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = CapituloM.class)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = CapituloC.class)
 	@JoinTable(name = "tituloc_capitulo_c", joinColumns = {
-			@JoinColumn(name = "tituloc_id", referencedColumnName = "id") }, inverseJoinColumns = {
+			@JoinColumn(name = "titulo_c_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "capitulo_c_id", referencedColumnName = "id", unique = true) })
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CapituloC> capitulosC;
 
 	public TituloC() {
 		super();
-		this.status = Boolean.FALSE;
 	}
 
 	public Long getId() {
@@ -112,22 +104,6 @@ public class TituloC implements Serializable {
 		this.pubOriginal = pubOriginal;
 	}
 
-	public String getEscritor() {
-		return escritor;
-	}
-
-	public void setEscritor(String escritor) {
-		this.escritor = escritor;
-	}
-
-	public String getArte() {
-		return arte;
-	}
-
-	public void setArte(String arte) {
-		this.arte = arte;
-	}
-
 	public String getPaisOrigem() {
 		return paisOrigem;
 	}
@@ -136,11 +112,11 @@ public class TituloC implements Serializable {
 		this.paisOrigem = paisOrigem;
 	}
 
-	public Boolean getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

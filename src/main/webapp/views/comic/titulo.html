@@ -3,7 +3,7 @@
 		<md-button ng-click="toggleSidenav('left')" hide-gt-md>
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>		
-		<h3>{{manga.nome}}</h3>
+		<h3>{{comic.nome}}</h3>
 		<span flex></span>
 		<md-button ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search" fill="none"></ng-md-icon>
@@ -36,18 +36,17 @@
 					<md-card ng-repeat="element in titulos | orderBy: 'nome' | filter:search" class="card-titulo">
 						<md-card-title>
 							<md-card-title-text>
-								<span class="md-headline">{{element.nome}} ({{element.status}})</span>
-								<span class="md-subhead subhead">{{element.escritor}} / {{element.arte}}</span>
-								<span class="md-subhead subhead">{{element.pubOriginal | date: dd/MM/yyyy}}, {{element.editora}}</span>
-	            				<span class="md-subhead subhead">{{element.categorias.join(", ")}}</span>
+								<span class="md-headline">{{element.nome}} ({{element.editora}})</span>
+								<span class="md-subhead subhead">{{element.pubOriginal | date: dd/MM/yyyy}}</span>
+	            				<span class="md-subhead subhead">{{element.generos.join(", ")}}</span>
 							</md-card-title-text>
 						</md-card-title>						
 						<md-card-content layout="row" layout-align="space-between">
-							<div ng-show="{{element.volumes == ''}}">
+							<div ng-show="{{element.capitulosC == ''}}">
 								<img data-ng-src="img/image-default.png" class="image-relative"/>								
 							</div>
-							<div ng-show="{{element.volumes[0].imagem != null}}">
-								<img data-ng-src="data:image/(png|jpg);base64,{{element.volumes[0].imagem}}" class="image-relative"/>								
+							<div ng-show="{{element.capitulosC[0].imagem != null}}">
+								<img data-ng-src="data:image/(png|jpg);base64,{{element.capitulosC[0].imagem}}" class="image-relative"/>								
 							</div>							
 							<md-card-actions layout="column">
 								<div>
@@ -56,24 +55,24 @@
 								<md-button class="md-icon-button" ng-click="mostrarDialog('UD', element, $event)">
 	           						<ng-md-icon class="md-secondary md-hue-3" icon="mode_edit" fill="none"></ng-md-icon>
 	         					</md-button>
-								<md-button class="md-icon-button" ng-click="volumePage(element)" >
+								<md-button class="md-icon-button" ng-click="capituloPage(element)" >
 	              					<ng-md-icon class="md-secondary md-hue-3" icon="send" fill="none"></ng-md-icon>
 	            				</md-button>
 	            				<md-button class="md-icon-button">
-	            					<div ng-repeat="v in element.volumes | orderBy: 'ano' | filter: query"></div>
+	            					<div ng-repeat="c in element.capitulosC | orderBy: 'ano' | filter: query"></div>
 					
-	            					<div ng-show="(element.volumes | filter : query.statusColecao = false).length === element.volumes.length">
+	            					<div ng-show="(element.capitulosC | filter : query.status = false).length === element.capitulosC.length">
 	              						<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: red" size="30"></ng-md-icon>
 	              					</div>
-	              					<div ng-show="(element.volumes | filter : query.statusColecao = true).length === element.volumes.length">
+	              					<div ng-show="(element.capitulosC | filter : query.status = true).length === element.capitulosC.length">
 	              						<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: green" size="30"></ng-md-icon>
 	              					</div>
 	            				</md-button>
 	            				<div>
-	            					<h2>{{(element.volumes | filter : query.statusColecao = true).length}}/{{element.volumes.length}}</h2>
+	            					<h2>{{(element.capitulosC | filter: query.statusVirtual = true).length}}/{{element.capitulosC.length}}</h2>
 	            				</div>
-							</md-card-actions>							
-						</md-card-content>						
+							</md-card-actions>
+						</md-card-content>				
 					</md-card>
 				</div>
 			</md-content>
@@ -124,21 +123,6 @@
 									<ng-message when="md-maxlength">Use 60 caracteres ou menos para a editora</ng-message>
                        			</ng-messages>								
       						</md-input-container>
-						
-							<md-input-container class="md-block">
-        						<label>Escritor(a)</label>
-        						<input name="escritor" ng-model="view.selectedItem.escritor" md-maxlength="100">
-								<ng-messages for="inputForm.autor.$error">
-									<ng-message when="md-maxlength">Use 100 caracteres ou menos para o autor</ng-message>
-                       			</ng-messages>
-      						</md-input-container>
-      						<md-input-container class="md-block">
-        						<label>Arte</label>
-        						<input name="arte" ng-model="view.selectedItem.arte" md-maxlength="100">
-								<ng-messages for="inputForm.arte.$error">
-									<ng-message when="md-maxlength">Use 100 caracteres ou menos para o desenhista</ng-message>
-                       			</ng-messages>
-      						</md-input-container>
 						<div>
 							<p>Publica&#231;&#227;o Original</p>
 							<md-datepicker ng-model="view.selectedItem.pubOriginal"></md-datepicker>
@@ -152,19 +136,23 @@
           							</md-option>
         						</md-select>
       						</md-input-container>
+
+							<md-input-container class="md-block" flex-gt-xs>
+        						<label>Pais de Origem</label>
+        						<md-select ng-model="view.selectedItem.paisOrigem">
+          							<md-option ng-repeat="paises in listPaises" value="{{paises.name}}">
+            							{{paises.category + '-' + paises.name}}
+          							</md-option>
+        						</md-select>
+      						</md-input-container>
 						</div>
 
 						<md-input-container class="md-block">
-        					<label>Categoria</label>
-        					<md-select ng-model="view.selectedItem.categorias" multiple>
-          						<md-optgroup label="Categorias">
-									<md-option ng-value="categoria.name" ng-repeat="categoria in listCategorias | filter: {category: 'catg' }">
-            							{{categoria.name}}
-          							</md-option>
-								</md-optgroup>
+        					<label>Generos</label>
+        					<md-select ng-model="view.selectedItem.generos" multiple>          							
 								<md-optgroup label="Generos">
-									<md-option ng-value="categoria.name" ng-repeat="categoria in listCategorias | filter: {category: 'genr' }">
-            							{{categoria.name}}
+									<md-option ng-value="genero.name" ng-repeat="genero in listGeneros">
+            							{{genero.name}}
           							</md-option>
 								</md-optgroup>
         					</md-select>

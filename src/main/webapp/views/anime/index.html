@@ -38,7 +38,7 @@
         md-gutter="8px" md-gutter-gt-sm="4px" >
     <md-grid-tile ng-repeat="element in animes | orderBy: 'nome' | filter:search"
         md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
-        <div ng-show="{{element.titulosA == ''}}">
+        <div ng-show="{{element.titulosA[0].arcos == ''}}">
         	<img data-ng-src="img/image-default.png" class="image-relative" ng-click="tituloPage(element)" />
         </div>
         <div ng-show="{{element.titulosA[0].arcos[0].imagem != null}}">

@@ -145,7 +145,6 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			//$scope.view.selectedItem.tituloM = $scope.titulo.id;
   			if($scope.result != null)
   				$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
   			VolumeFactory.update({id: $scope.titulo.manga, idTituloM: $scope.titulo.id, idVolume: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				

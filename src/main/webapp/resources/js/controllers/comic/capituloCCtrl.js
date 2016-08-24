@@ -39,10 +39,14 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   				tituloC: data.tituloC,
   				nome: data.nome,
   				numero: data.numero,
+  				escritor: data.escritor,
+  				arte: data.arte,
+  				colorista: data.colorista,
+  				editor: data.editor,
   				ano: new Date(data.ano),
   				status: data.status,
   				statusVirtual: data.statusVirtual,
-  				imagem: imagem
+  				imagem: data.imagem
   			};
   		}
   		$mdDialog.show({
@@ -110,7 +114,8 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   		
   		// Permite adicionar um novo elemento
   		function adicionar() {
-  			$scope.view.selectedItem.tituloC = $scope.tituloC.id;
+  			$scope.view.selectedItem.tituloC = $scope.titulo.id;
+  			$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
   			CapituloCCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {
   	    		$scope.view.dataTable.push(data);
   				$mdDialog.hide('O capitulo adicionado com sucesso.');
@@ -123,10 +128,16 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			//$scope.view.selectedItem.volume = $scope.volume.id;
-  			CapituloMFactory.update({id: $scope.titulo.comic, idTituloC: $scope.titulo.id, idCapituloC: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
+  			if($scope.result != null)
+  				$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
+  			CapituloCFactory.update({id: $scope.titulo.comic, idTituloC: $scope.titulo.id, idCapituloC: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
   				$scope.view.dataTable[indexArr].numero = $scope.view.selectedItem.numero;
+  				$scope.view.dataTable[indexArr].escritor = $scope.view.selectedItem.escritor;
+  				$scope.view.dataTable[indexArr].arte = $scope.view.selectedItem.arte;
+  				$scope.view.dataTable[indexArr].colorista = $scope.view.selectedItem.colorista;
+  				$scope.view.dataTable[indexArr].editor = $scope.view.selectedItem.editor;
+  				$scope.view.dataTable[indexArr].ano = $scope.view.selectedItem.ano;
   				$scope.view.dataTable[indexArr].status = $scope.view.selectedItem.status;
   				$scope.view.dataTable[indexArr].statusVirtual = $scope.view.selectedItem.statusVirtual;
   				$scope.view.dataTable[indexArr].imagem = $scope.view.selectedItem.imagem;

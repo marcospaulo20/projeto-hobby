@@ -1,0 +1,111 @@
+<md-toolbar ng-show="!showSearch">
+	<div class="md-toolbar-tools">
+		<md-button ng-click="toggleSidenav('left')" hide-gt-md>
+			<ng-md-icon icon="menu"></ng-md-icon>
+		</md-button>		
+		<h3>
+			<a ng-href="#/series/{{serie.id}}">{{serie.nome}}</a>
+		</h3>		
+		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon>
+		<h3>
+			<a ng-href="#/series/{{serie.id}}/{{titulo.id}}">{{titulo.nome}}</a>
+		</h3>
+		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon>		
+		<h3>
+			{{temporada.nome}}
+		</h3>
+		
+		<span flex></span>
+		<md-button ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="search" fill="none"></ng-md-icon>
+		</md-button>
+	</div>
+</md-toolbar>
+<md-toolbar class="md-hue-1" ng-show="showSearch">
+	<div class="md-toolbar-tools">
+		<md-button ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="arrow_back"></ng-md-icon>
+		</md-button>
+		<md-input-container md-no-float flex>
+			<input ng-model="search.nome" placeholder="Pesquisar">
+		</md-input-container>
+		<md-button ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="search" fill="none"></ng-md-icon>
+		</md-button>				
+	</div>
+</md-toolbar>
+
+<md-button class="md-fab md-fab-bottom-right" ng-click="mostrarDialog('C', undefined, $event)">
+	<ng-md-icon icon="add" fill="none"></ng-md-icon>
+</md-button>
+
+<md-content md-scroll-y layout="column" flex>
+<div class="doc-content">
+<md-card ng-repeat="element in episodios | orderBy: 'numero' | filter:search" md-theme="default" md-theme-watch ng-click="mostrarDialog('UD', element, $event)">
+	<md-card-title>
+		<md-card-title-text>
+			<span class="md-headline">{{element.numero + '. ' + element.nome}}
+				<div ng-show="element.statusVirtual == true" class="statusVirtualCapituloBloco">
+					<ng-md-icon class="md-secondary md-hue-3" icon="folder_special" style="fill: blue" size="30"></ng-md-icon>
+				</div>
+				<div ng-show="element.status == true" class="statusCapituloBloco">
+					<ng-md-icon class="md-secondary md-hue-3" icon="check" style="fill: green" size="30"></ng-md-icon>
+				</div>
+			</span>          			          		
+		</md-card-title-text>				
+	</md-card-title>						
+</md-card>
+</div>
+</md-content>
+
+<script type="text/ng-template" id="editor.html">
+	<md-dialog class="dialog-95">
+		<form name="inputForm" novalidate>
+			<md-toolbar>
+				<div class="md-toolbar-tools">
+					<md-button class="md-icon-button" ng-click="retorno()">
+						<ng-md-icon icon="arrow_back" fill="none" arial-label="Retorno"></ng-md-icon>
+						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
+					</md-button>					
+					<h2>{{view.operaction}}</h2>
+					<span flex></span>
+					<md-button class="md-icon-button" ng-click="showExcluir()" ng-show="view.operaction === 'Modificar'">
+						<ng-md-icon icon="delete" fill="none" arial-label="Excluir"></ng-md-icon>
+						<md-tooltip md-delay="1500" md-autohide="true">Excluir</md-tooltip>	
+					</md-button>
+					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
+						<ng-md-icon icon="save" fill="none" arial-label="Salvar"></ng-md-icon>
+						<md-tooltip md-delay="1500" md-autohide="true">Salvar</md-tooltip>
+					</md-button>
+				</div>
+			</md-toolbar>
+			<md-dialog-content>				
+				<div class="md-dialog-content" flex>
+					<md-content layout-padding ng-cloak>							
+						<md-input-container class="md-block">
+							<label>Nome</label>
+							<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
+							<ng-messages for="inputForm.nome.$error">
+								<ng-message when="required">O campo e obrigatorio</ng-message>
+								<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
+                       		</ng-messages>
+						</md-input-container>
+						<md-input-container>
+        					<label>Numero</label>
+        					<input type="text" required ng-model="view.selectedItem.numero">
+      					</md-input-container>
+						<div>															
+							<p>Ano</p>
+							<md-datepicker ng-model="view.selectedItem.ano"></md-datepicker>
+						</div>
+						<div>
+							<md-switch class="md-primary" ng-model="view.selectedItem.status">J&#225; assitir</md-switch>
+	
+							<md-switch class="md-primary" ng-model="view.selectedItem.statusVirtual">Contem na cole&#231;&#227o virtual</md-switch>
+						</div>
+					</md-content>
+				</div>								
+			</md-dialog-content>
+		</form>
+	</md-dialog>
+</script>

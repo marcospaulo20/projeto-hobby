@@ -69,7 +69,7 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   		});
   	}
   	
-  	function arcoPage(element) {
+  	function temporadaPage(element) {
 		return $location.path("series/" + element.serie + "/" + element.id);
 	}
   	
@@ -113,46 +113,78 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   		// Emissora
   		$scope.emissora = '';
   		$scope.listEmissora = [
-  		  {name: 'Tokyo'}
-  		];  		
+  		  {name: 'The CW'}
+  		];  		  	
   		
-  		// Formato
-  		$scope.formato = '';
-  		$scope.listFormato = [
-  		  {name: 'Normal'},
-  		  {name: 'OVA'},
- 		  {name: 'Filme'}
+  		// Status
+  		$scope.status = '';
+  		$scope.listStatus = [
+  		 {category: 'CAN', name: 'Cancelada' },
+  		 {category: 'EEX', name: 'Em Exibição' },
+  		 {category: 'FIN', name: 'Finalizada' }
+  		];
+  		
+  		
+  		// Paises
+  		$scope.paises = '';
+  		$scope.listPaises = [
+         {category: 'AUS', name: 'Austrália' },
+  		 {category: 'BEL', name: 'Bélgica' },
+  		 {category: 'BOL', name: 'Bolívia' },
+  		 {category: 'BRA', name: 'Brasil' },
+  		 {category: 'CAN', name: 'Canadá' },
+  		 {category: 'DEN', name: 'Dinamarca' },
+  		 {category: 'ESP', name: 'Espanha' },
+  		 {category: 'FRA', name: 'França' },
+  		 {category: 'GBR', name: 'Reino Unido' },
+  		 {category: 'GER', name: 'Alemanha' },
+  		 {category: 'IND', name: 'Índia' },
+  		 {category: 'ITA', name: 'Itália' },
+  		 {category: 'JPN', name: 'Japão' },
+  		 {category: 'MEX', name: 'México' },
+  		 {category: 'POR', name: 'Portugal' },
+  		 {category: 'RUS', name: 'Rússia' },
+  		 {category: 'SRB', name: 'Sérvia' },
+  		 {category: 'SUI', name: 'Suíça' },
+  		 {category: 'SWE', name: 'Suécia' },
+  		 {category: 'USA', name: 'Estados Unidos' }
   		];
   		
   		// Generos
   		$scope.listGeneros = [         
-         { category: 'genr', name: 'Ação' },
-         { category: 'genr', name: 'Adulto' },
-         { category: 'genr', name: 'Artes Marciais' },
-         { category: 'genr', name: 'Aventura' },
-         { category: 'genr', name: 'Comédia' },
-         { category: 'genr', name: 'Demônios' },
-         { category: 'genr', name: 'Drama' },
-         { category: 'genr', name: 'Ecchi' },
-         { category: 'genr', name: 'Escolar' },
-         { category: 'genr', name: 'Espaço' },
-         { category: 'genr', name: 'Esportes' },
-         { category: 'genr', name: 'Fantasia' },
-         { category: 'genr', name: 'Ficção' },
-         { category: 'genr', name: 'Harem' },
-         { category: 'genr', name: 'Histórico' },
-         { category: 'genr', name: 'Horror' },
-         { category: 'genr', name: 'Jogo' },
-         { category: 'genr', name: 'Mistério' },
-         { category: 'genr', name: 'Paródia' },
-         { category: 'genr', name: 'Policial' },
-         { category: 'genr', name: 'Psicológico' },
-         { category: 'genr', name: 'Romance' },
-         { category: 'genr', name: 'Samurai' },
-         { category: 'genr', name: 'Sobrenatural' },
-         { category: 'genr', name: 'Slice of Life' },
-         { category: 'genr', name: 'Thriler' },
-         { category: 'genr', name: 'Vampiros' }
+         { name: 'Ação' },
+         { name: 'Animação' },
+         { name: 'Artes Marciais' },
+         { name: 'Aventura' },
+         { name: 'Comédia' },
+         { name: 'Criminal' },
+         { name: 'Demônios' },
+         { name: 'Desenho' },
+         { name: 'Drama' },
+         { name: 'Infantil' },
+         { name: 'Investigação' },
+         { name: 'Escolar' },
+         { name: 'Espaço' },
+         { name: 'Esportes' },
+         { name: 'Fantasia' },
+         { name: 'Ficção Científica' },
+         { name: 'Faroeste' },
+         { name: 'Histórico' },
+         { name: 'Horror' },
+         { name: 'Jogo' },
+         { name: 'Mistério' },
+         { name: 'Mitologia' },
+         { name: 'Paródia' },
+         { name: 'Policial' },
+         { name: 'Psicológico' },
+         { name: 'Romance' },
+         { name: 'Samurai' },
+         { name: 'Sobrenatural' },
+         { name: 'Super-Heróis' },
+         { name: 'Suspense' },
+         { name: 'Thriler' },
+         { name: 'Terror' },
+         { name: 'Vampiros' }
         ];  		
   		
   		// Metodos do controller de dialog
@@ -186,8 +218,10 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
 
-  			TituloSFactory.update({id: $scope.serie.id, idTitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
+  			TituloSFactory.update({id: $scope.serie.id, idTituloS: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
+  				$scope.view.dataTable[indexArr].emissora = $scope.view.selectedItem.emissora;
+  				$scope.view.dataTable[indexArr].anoOriginal = $scope.view.selectedItem.anoOriginal;
   				$scope.view.dataTable[indexArr].generos = $scope.view.selectedItem.generos;
   				$mdDialog.hide('O titulo alterado com sucesso.');
   			}, function() {

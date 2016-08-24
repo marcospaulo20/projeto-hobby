@@ -31,6 +31,15 @@ public class CapituloC implements Serializable {
 	@Column(length = 10, nullable = false)
 	private String numero;
 
+	@Column(length = 200)
+	private String escritor;
+	@Column(length = 200)
+	private String arte;
+	@Column(length = 200)
+	private String colorista;
+	@Column(length = 200)
+	private String editor;
+
 	@Column(name = "ano")
 	@Temporal(value = TemporalType.DATE)
 	private Date ano;
@@ -69,6 +78,38 @@ public class CapituloC implements Serializable {
 
 	public void setNumero(String numero) {
 		this.numero = numero;
+	}
+
+	public String getEscritor() {
+		return escritor;
+	}
+
+	public void setEscritor(String escritor) {
+		this.escritor = escritor;
+	}
+
+	public String getArte() {
+		return arte;
+	}
+
+	public void setArte(String arte) {
+		this.arte = arte;
+	}
+
+	public String getColorista() {
+		return colorista;
+	}
+
+	public void setColorista(String colorista) {
+		this.colorista = colorista;
+	}
+
+	public String getEditor() {
+		return editor;
+	}
+
+	public void setEditor(String editor) {
+		this.editor = editor;
 	}
 
 	public Date getAno() {

@@ -5,7 +5,7 @@ var app = angular.module('projetoHobbyApp.temporada.controllers', []);
 app.controller('TemporadaCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFactory', 'TituloSFactory', 'TemporadasFactory', 'TemporadaCreateFactory', 'TemporadaFactory', '$mdToast', '$mdDialog', '$location', '$filter',
   	 function($scope, $rootScope, $routeParams, SerieFactory, TituloSFactory, TemporadasFactory, TemporadaCreateFactory, TemporadaFactory, $mdToast, $mdDialog, $location, $filter) {
     
-	$scope.anime = SerieFactory.show({id: $routeParams.id});
+	$scope.serie = SerieFactory.show({id: $routeParams.id});
 	
 	$scope.titulo = TituloSFactory.show({id: $routeParams.id, idTituloS: $routeParams.idTituloS});
 	
@@ -172,15 +172,15 @@ app.controller('TemporadaCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   	
   	$scope.numComplete = countComplete();
 
-    $scope.$watch("arcos", function(newValue, oldValue) {
-    	$scope.arcos = newValue;
+    $scope.$watch("temporadas", function(newValue, oldValue) {
+    	$scope.temporadas = newValue;
     	$scope.numComplete = countComplete();
     }, true);
 
     function countComplete() {
     	var cnt = 0;
-    	angular.forEach($scope.arcos, function(item) {
-    		cnt += item.episodios.length;
+    	angular.forEach($scope.temporadas, function(item) {
+    		cnt += item.episodiosS.length;
     	});
     	return cnt;
     }

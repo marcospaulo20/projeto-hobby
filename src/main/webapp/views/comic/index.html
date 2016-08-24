@@ -31,18 +31,17 @@
 </md-toolbar>
 
 <md-content md-scroll-y layout="column" flex>
-	
 	<md-grid-list
-        md-cols-xs="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="6"
+        md-cols-xs="4" md-cols-sm="3" md-cols-md="3" md-cols-gt-md="6"
         md-row-height-gt-md="1:1" md-row-height="4:3"
         md-gutter="8px" md-gutter-gt-sm="4px" >
     <md-grid-tile ng-repeat="element in comics | orderBy: 'nome' | filter:search"
-        md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
+        md-rowspan="2" md-colspan="2" md-colspan-sm="2" md-colspan-xs="2">
         <div ng-show="{{element.titulosC == ''}}">
         	<img data-ng-src="img/image-default.png" class="image-relative" ng-click="tituloPage(element)" />
         </div>
-        <div ng-show="{{element.titulosC[0].capitulos[0].imagem != null}}">
-        	<img data-ng-src="data:image/(png|jpg);base64,{{element.titulosC[0].capitulos[0].imagem}}" class="image-relative" ng-click="tituloPage(element)" />
+        <div ng-show="{{element.titulosC[0].capitulosC[0].imagem != null}}">
+        	<img data-ng-src="data:image/(png|jpg);base64,{{element.titulosC[0].capitulosC[0].imagem}}" class="image-relative" ng-click="tituloPage(element)" />
         </div>
       <md-grid-tile-footer ng-click="mostrarDialog('UD', element, $event)">
         <h3>{{element.nome}}</h3>        
