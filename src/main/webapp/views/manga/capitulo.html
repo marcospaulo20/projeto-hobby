@@ -2,15 +2,10 @@
 	<div class="md-toolbar-tools">
 		<md-button ng-click="toggleSidenav('left')" hide-gt-md arial-label="Menu">
 			<ng-md-icon icon="menu"></ng-md-icon>
-		</md-button>		
-		<h3>
-			<a ng-href="#/mangas/{{manga.id}}">{{manga.nome}}</a>
-		</h3>		
-		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon>
-		<h3>
-			<a ng-href="#/mangas/{{manga.id}}/{{titulo.id}}">{{titulo.nome}}</a>
-		</h3>
-		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon>		
+		</md-button>			
+		<a ng-click="comeBack()" class="space-right">
+			<ng-md-icon icon="arrow_back" fill="none" size="30"></ng-md-icon>
+		</a>
 		<h3>
 			{{volume.nome}}
 		</h3>

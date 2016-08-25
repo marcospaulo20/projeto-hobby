@@ -1,7 +1,7 @@
 package ngprojetohobby.comic.domain;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "comic")
@@ -26,8 +29,11 @@ public class Comic implements Serializable {
 	private String nome;
 
 	@OneToMany(mappedBy = "comic", fetch = FetchType.EAGER)
-	private Set<TituloC> titulosC;
-
+	@JsonIgnore
+	private List<TituloC> titulosC;
+	@Transient
+	private byte[] Imagem;
+	
 	public Comic() {
 		super();
 	}
@@ -44,12 +50,20 @@ public class Comic implements Serializable {
 		this.nome = nome;
 	}
 
-	public Set<TituloC> getTitulosC() {
+	public List<TituloC> getTitulosC() {
 		return titulosC;
 	}
 
-	public void setTitulosC(Set<TituloC> titulosC) {
+	public void setTitulosC(List<TituloC> titulosC) {
 		this.titulosC = titulosC;
+	}
+	
+	public byte[] getImagem() {
+		byte[] image = null;
+		if (!this.getTitulosC().isEmpty() && !this.getTitulosC().get(0).getCapitulosC().isEmpty()) {
+			image = this.getTitulosC().get(0).getCapitulosC().get(0).getImagem();			
+		}
+		return image;
 	}
 
 }

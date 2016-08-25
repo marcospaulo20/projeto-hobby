@@ -13,6 +13,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import ngprojetohobby.manga.domain.Manga;
+
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public abstract class RepositoryImpl<T> {
 
@@ -30,9 +32,18 @@ public abstract class RepositoryImpl<T> {
 		query.select(query.from(entityClass));
 		return em.createQuery(query).getResultList();
 	}
-
+	
 	public T getById(Long id) {
 		return em.find(clazz, id);
+	}
+	
+	public T getByIdEx(Long id, Class<T> entityClazz) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<T> query = builder.createQuery(entityClazz);
+		Root<T> root = query.from(entityClazz);
+		query.where(builder.equal(root.get("id"), id));
+		TypedQuery<T> q = em.createQuery(query);
+		return q.getSingleResult();		
 	}
 
 	public T create(T entity) {

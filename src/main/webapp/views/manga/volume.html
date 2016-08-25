@@ -3,10 +3,9 @@
 		<md-button ng-click="toggleSidenav('left')" hide-gt-md>
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>		
-		<h3>
-			<a ng-href="#/mangas/{{manga.id}}">{{manga.nome}}</a>
-		</h3>
-		<ng-md-icon icon="keyboard_arrow_right" fill="none"></ng-md-icon>
+		<a ng-click="comeBack()" class="space-right">
+			<ng-md-icon icon="arrow_back" fill="none" size="30"></ng-md-icon>
+		</a>
 		<h3>
 			{{titulo.nome}}
 		</h3>	
@@ -66,7 +65,7 @@
 					<md-button ng-click="mostrarDialog('UD', element, $event)">
 	           			CONFIGURA&#199;&#195;O
 	         		</md-button>
-					<md-button ng-click="capituloPage(element)">
+					<md-button ng-click="next(element)">
 	           			CAPITULOS
 	         		</md-button>	         		
 				</md-card-actions>

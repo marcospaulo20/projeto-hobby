@@ -43,11 +43,11 @@
         md-gutter="8px" md-gutter-gt-sm="4px" >
     <md-grid-tile ng-repeat="element in mangas | orderBy: 'nome' | filter:search"
         md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
-        <div ng-show="{{element.titulosM == ''}}">
+        <div ng-show="{{element.imagem == null}}">
         	<img data-ng-src="img/image-default.png" class="image-relative" ng-click="tituloPage(element)" />
         </div>
-        <div ng-show="{{element.titulosM[0].volumes[0].imagem != null}}">
-        	<img data-ng-src="data:image/(png|jpg);base64,{{element.titulosM[0].volumes[0].imagem}}" class="image-relative" ng-click="tituloPage(element)" />
+        <div ng-show="{{element.imagem != null}}">
+        	<img data-ng-src="data:image/(png|jpg);base64,{{element.imagem}}" class="image-relative" ng-click="tituloPage(element)" />
         </div>
       <md-grid-tile-footer ng-click="mostrarDialog('UD', element, $event)">
         <h3>{{element.nome}}</h3>

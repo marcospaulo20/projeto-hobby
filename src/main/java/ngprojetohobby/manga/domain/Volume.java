@@ -55,8 +55,7 @@ public class Volume implements Serializable {
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] imagem;
 
-	@JoinColumn(name = "manga_id", nullable = false)
-	@Column(name = "titulo_m_id")
+	@JoinColumn(name = "tituloM_id", nullable = false)
 	private Long tituloM;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = CapituloM.class)

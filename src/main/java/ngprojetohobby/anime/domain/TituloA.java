@@ -3,7 +3,6 @@ package ngprojetohobby.anime.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -62,7 +61,7 @@ public class TituloA implements Serializable {
 	private Manga manga;
 
 	@OneToMany(mappedBy = "tituloA", fetch = FetchType.EAGER)
-	private Set<Arco> arcos;
+	private List<Arco> arcos;
 
 	public TituloA() {
 		super();
@@ -136,11 +135,11 @@ public class TituloA implements Serializable {
 		this.manga = manga;
 	}
 
-	public Set<Arco> getArcos() {
+	public List<Arco> getArcos() {
 		return arcos;
 	}
 
-	public void setArcos(Set<Arco> arcos) {
+	public void setArcos(List<Arco> arcos) {
 		this.arcos = arcos;
 	}
 

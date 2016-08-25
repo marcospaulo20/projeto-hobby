@@ -5,7 +5,7 @@ var app = angular.module('projetoHobbyApp.capitulo.controllers', []);
 app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFactory', 'TituloMFactory', 'VolumeFactory', 'CapitulosMFactory', 'CapituloMCreateFactory', 'CapituloMFactory', '$mdToast', '$mdDialog', '$location', '$filter',
   	 function($scope, $rootScope, $routeParams, MangaFactory, TituloMFactory, VolumeFactory, CapitulosMFactory, CapituloMCreateFactory, CapituloMFactory, $mdToast, $mdDialog, $location, $filter) {
     
-	$scope.manga = MangaFactory.show({id: $routeParams.id});
+	//$scope.manga = MangaFactory.show({id: $routeParams.id});
 	
 	$scope.titulo = TituloMFactory.show({id: $routeParams.id, idTituloM: $routeParams.idTituloM});
 	
@@ -14,6 +14,10 @@ app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaF
 	$scope.capitulos = CapitulosMFactory.query({id: $routeParams.id, idTituloM: $routeParams.idTituloM, idVolume: $routeParams.idVolume});	
 	
   	$scope.mostrarDialog = mostrarDialog;
+  	
+  	$scope.comeBack = function() {
+  		return $location.path("mangas/" + $scope.titulo.manga + '/' + $scope.titulo.id);
+  	}
   	
   	function simpleToastBase(message, position, delay, action) {
   	    $mdToast.show(
@@ -144,7 +148,6 @@ app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaF
   				//$scope.view.selectedItem.volume = $scope.volume.id;
   	  			CapituloMFactory.delete({id: $scope.titulo.manga, idTituloM: $scope.titulo.id, idVolume: $scope.volume.id, idCapituloM: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   	  				$scope.view.dataTable.pop(item);
-  	  				$mdDialog.hide('');
   	  			}, function() {
   	  				$mdDialog.hide('Ocorreu algum error, ao deleta o capitulo.');
   	  		  	});

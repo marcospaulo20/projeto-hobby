@@ -3,7 +3,6 @@ package ngprojetohobby.manga.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -15,11 +14,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 
 @Entity
 @Table(name = "titulo_m")
@@ -58,7 +55,7 @@ public class TituloM implements Serializable {
 	private Long manga;
 
 	@OneToMany(mappedBy = "tituloM", fetch = FetchType.EAGER)
-	private Set<Volume> volumes;
+	private List<Volume> volumes;
 
 	public TituloM() {
 		super();
@@ -140,11 +137,11 @@ public class TituloM implements Serializable {
 		this.manga = manga;
 	}
 
-	public Set<Volume> getVolumes() {
+	public List<Volume> getVolumes() {
 		return volumes;
 	}
 
-	public void setVolumes(Set<Volume> volumes) {
+	public void setVolumes(List<Volume> volumes) {
 		this.volumes = volumes;
 	}
 

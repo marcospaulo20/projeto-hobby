@@ -1,7 +1,7 @@
 package ngprojetohobby.anime.domain;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "anime")
@@ -26,8 +29,11 @@ public class Anime implements Serializable {
 	private String nome;
 
 	@OneToMany(mappedBy = "anime", fetch = FetchType.EAGER)
-	private Set<TituloA> titulosA;
-
+	@JsonIgnore
+	private List<TituloA> titulosA;
+	@Transient
+	private byte[] Imagem;
+	
 	public Anime() {
 		super();
 	}
@@ -44,12 +50,19 @@ public class Anime implements Serializable {
 		this.nome = nome;
 	}
 
-	public Set<TituloA> getTitulosA() {
+	public List<TituloA> getTitulosA() {
 		return titulosA;
 	}
 
-	public void setTitulosA(Set<TituloA> titulosA) {
+	public void setTitulosA(List<TituloA> titulosA) {
 		this.titulosA = titulosA;
 	}
 
+	public byte[] getImagem() {
+		byte[] image = null;
+		if (!this.getTitulosA().isEmpty() && !this.getTitulosA().get(0).getArcos().isEmpty()) {
+			image = this.getTitulosA().get(0).getArcos().get(0).getImagem();			
+		}
+		return image;
+	}
 }
