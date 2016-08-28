@@ -3,7 +3,6 @@ package ngprojetohobby.serie.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -62,7 +61,7 @@ public class TituloS implements Serializable {
 	private List<String> generos;
 
 	@OneToMany(mappedBy = "tituloS", fetch = FetchType.EAGER)
-	private Set<Temporada> temporadas;
+	private List<Temporada> temporadas;
 
 	@JoinColumn(name = "serie_id", nullable = false)
 	private Long serie;
@@ -139,11 +138,11 @@ public class TituloS implements Serializable {
 		this.generos = generos;
 	}
 
-	public Set<Temporada> getTemporadas() {
+	public List<Temporada> getTemporadas() {
 		return temporadas;
 	}
 
-	public void setTemporadas(Set<Temporada> temporadas) {
+	public void setTemporadas(List<Temporada> temporadas) {
 		this.temporadas = temporadas;
 	}
 

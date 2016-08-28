@@ -5,12 +5,13 @@ var app = angular.module('projetoHobbyApp.tituloS.controllers', []);
 app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFactory', 'TitulosSFactory', 'TituloSFactory','TituloSCreateFactory', 'ComicsFactory', '$mdToast', '$mdDialog', '$location', '$filter', '$timeout',
   	function($scope, $rootScope, $routeParams, SerieFactory, TitulosSFactory, TituloSFactory, TituloSCreateFactory, ComicsFactory, $mdToast, $mdDialog, $location, $filter, $timeout) {
 	
-	
-  	$scope.serie = SerieFactory.show({id: $routeParams.id});
   	$scope.titulos = TitulosSFactory.query({id: $routeParams.id});
   	
-  	$scope.temporadaPage = temporadaPage;
   	$scope.mostrarDialog = mostrarDialog;
+  	
+  	$scope.next = function(element) {
+  		return $location.path("series/" + element.serie + "/" + element.id);
+	}
   	
   	function simpleToastBase(message, position, delay, action) {
   	    $mdToast.show(
@@ -68,10 +69,6 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   			mostrarError(result);
   		});
   	}
-  	
-  	function temporadaPage(element) {
-		return $location.path("series/" + element.serie + "/" + element.id);
-	}
   	
   	// Controller de dialog
   	function DialogController($scope, $mdDialog, operaction, selectedItem, dataTable) {

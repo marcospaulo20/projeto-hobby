@@ -1,78 +1,74 @@
+<md-button class="md-fab md-fab-bottom-right" ng-click="mostrarDialog('C', undefined, $event)">
+	<ng-md-icon icon="add"></ng-md-icon>
+</md-button>
+
 <md-toolbar ng-show="!showSearch">
 	<div class="md-toolbar-tools">
-		<md-button ng-click="toggleSidenav('left')" hide-gt-md>
+		<md-button class="md-icon-button" ng-click="toggleSidenav('left')" hide-gt-md>
 			<ng-md-icon icon="menu"></ng-md-icon>
-		</md-button>		
-		<h3>Sequels and Spin-Offs</h3>
+		</md-button>
+		<h3>Cronologia, Light Novel e Spin-Offs</h3>
 		<span flex></span>
-		<md-button ng-click="showSearch = !showSearch">
-			<ng-md-icon icon="search" fill="none"></ng-md-icon>
+		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="search"></ng-md-icon>
 		</md-button>
 	</div>
 </md-toolbar>
+
 <md-toolbar class="md-hue-1" ng-show="showSearch">
 	<div class="md-toolbar-tools">
-		<md-button ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="arrow_back"></ng-md-icon>
 		</md-button>
 		<md-input-container md-no-float flex>
 			<input ng-model="search.nome" placeholder="Pesquisar">
 		</md-input-container>
-		<md-button arial-label="Search" ng-click="showSearch = !showSearch">
-			<ng-md-icon icon="search" fill="none"></ng-md-icon>
+		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="search"></ng-md-icon>
 		</md-button>				
 	</div>
 </md-toolbar>
-
-<md-button class="md-fab md-fab-bottom-right" ng-click="mostrarDialog('C', undefined, $event)">
-	<ng-md-icon icon="add" fill="none"></ng-md-icon>
-</md-button>
 
 <md-content md-scroll-y layout="column" flex>
 	<div layout-padding flex="noshrink">
 		<div class="doc-content">
 			<md-content class="md-padding" layout-xs="column" layout="row">
 				<div flex-xs layout="row">
-					<md-card ng-repeat="element in titulos | orderBy: 'nome' | filter:search" class="card-titulo">
+					<md-card ng-repeat="element in titulos | orderBy: 'nome' | filter:search" class="card-title">
 						<md-card-title>
 							<md-card-title-text>
-								<span class="md-headline">{{element.nome}} ({{element.status}})</span>
-								<span class="md-subhead subhead">{{element.escritor}} / {{element.arte}}</span>
-								<span class="md-subhead subhead">{{element.pubOriginal | date: dd/MM/yyyy}}, {{element.editora}}</span>
-	            				<span class="md-subhead subhead">{{element.categorias.join(", ")}}</span>
+								<span class="md-headline">{{element.nome}}</span>
+								<span class="card-title-subhead">{{element.categorias.join(", ")}}</span>
+								<span class="card-title-subhead">{{element.escritor}} / {{element.arte}}</span>
+								<span class="card-title-subhead">{{element.editora}}, {{element.pubOriginal | date}}</span>
+	            				<span class="card-title-subhead">Status: {{element.status}}</span>
 							</md-card-title-text>
 						</md-card-title>						
 						<md-card-content layout="row" layout-align="space-between">
-							<div ng-show="{{element.volumes == ''}}">
-								<img data-ng-src="img/image-default.png" class="image-relative"/>								
+							<div ng-show="{{element.volumes == '' || element.volumes[0].imagem == null}}">
+								<img data-ng-src="img/image-default.png" class="image-default"/>
 							</div>
 							<div ng-show="{{element.volumes[0].imagem != null}}">
-								<img data-ng-src="data:image/(png|jpg);base64,{{element.volumes[0].imagem}}" class="image-relative"/>								
+								<img data-ng-src="data:image/(png|jpg);base64,{{element.volumes[0].imagem}}" class="card-title-image"/>	
 							</div>							
 							<md-card-actions layout="column">
 								<div>
-									<img data-ng-src="img/classificacao_indicativa/{{element.classificacao}}.svg" style="width: 35px; margin: 0 6px;">
+									<img data-ng-src="img/classificacao_indicativa/{{element.classificacao}}.svg" class="card-title-image-classificacao" />
 								</div>
 								<md-button class="md-icon-button" ng-click="mostrarDialog('UD', element, $event)">
-	           						<ng-md-icon class="md-secondary md-hue-3" icon="mode_edit" fill="none"></ng-md-icon>
+	           						<ng-md-icon class="md-secondary md-hue-3" icon="mode_edit" size="30"></ng-md-icon>
 	         					</md-button>
 								<md-button class="md-icon-button" ng-click="next(element)" >
-	              					<ng-md-icon class="md-secondary md-hue-3" icon="send" fill="none"></ng-md-icon>
+	              					<ng-md-icon class="md-secondary md-hue-3" icon="send" size="30"></ng-md-icon>
 	            				</md-button>
-	            				<md-button class="md-icon-button">
-	            					<div ng-repeat="v in element.volumes | orderBy: 'ano' | filter: query"></div>
-					
-	            					<div ng-show="(element.volumes | filter : query.statusColecao = false).length === element.volumes.length">
-	              						<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: red" size="30"></ng-md-icon>
-	              					</div>
-	              					<div ng-show="(element.volumes | filter : query.statusColecao = true).length === element.volumes.length">
-	              						<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: green" size="30"></ng-md-icon>
-	              					</div>
-	            				</md-button>
-	            				<div>
+	            				<div ng-repeat="v in element.volumes | filter: query"></div>									
+	              				<md-button class="md-icon-button" ng-show="(element.volumes | filter : query.statusColecao = true).length === element.volumes.length">
+	              					<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: green" size="30"></ng-md-icon>
+	              				</md-button>
+	            				<div class="card-div-title-count">
 	            					<h2>{{(element.volumes | filter : query.statusColecao = true).length}}/{{element.volumes.length}}</h2>
 	            				</div>
-							</md-card-actions>							
+							</md-card-actions>
 						</md-card-content>						
 					</md-card>
 				</div>
@@ -86,91 +82,93 @@
 			<md-toolbar>
 				<div class="md-toolbar-tools">
 					<md-button class="md-icon-button" ng-click="retorno()">
-						<ng-md-icon icon="arrow_back" fill="none"></ng-md-icon>
+						<ng-md-icon icon="arrow_back"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>					
 					<h2>{{view.operaction}}</h2>
-					<span flex></span>					
+					<span flex></span>	
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
-						<ng-md-icon icon="save" fill="none"></ng-md-icon>
+						<ng-md-icon icon="save"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Salvar</md-tooltip>
 					</md-button>
 				</div>
 			</md-toolbar>
 			<md-dialog-content>
-				<div class="md-dialog-content" flex>
-					<md-content layout-padding ng-cloak>							
-						<md-input-container class="md-block">
-							<label>Nome</label>
-							<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
-							<ng-messages for="inputForm.nome.$error">
-								<ng-message when="required">O campo e obrigatorio</ng-message>
-								<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
-                       		</ng-messages>
-						</md-input-container>
-						<md-input-container class="md-block" flex-gt-xs>
-							<label>Classificacao</label>
-        					<md-select ng-model="view.selectedItem.classificacao">
-          						<md-option ng-repeat="classificacao in listClassificacao" value="{{classificacao.category}}">
-            						{{classificacao.name}}
-          						</md-option>
-        					</md-select>
-      					</md-input-container>
-
-							<md-input-container class="md-block">
-        						<label>Editora</label>
-        						<input name="editora" ng-model="view.selectedItem.editora" md-maxlength="60">
-								<ng-messages for="inputForm.editora.$error">
-									<ng-message when="md-maxlength">Use 60 caracteres ou menos para a editora</ng-message>
-                       			</ng-messages>								
-      						</md-input-container>
+				<md-content layout-padding ng-cloak>
+					<div>
+						<div class="md-dialog-content" flex>				
+							<md-input-container class="md-block" flex-gt-sm>
+								<label>Nome</label>
+								<input name="nome" required md-maxlength="255" ng-model="view.selectedItem.nome">
+								<div ng-messages="inputForm.nome.$error">
+          							<div ng-message="required">O campo &#233; obrigatorio.</div>
+          							<div ng-message="md-maxlength">Use 250 caracteres ou menos para o nome.</div>
+        						</div>
+							</md-input-container>
+												
+							<div layout-gt-sm="row">
+								<md-input-container class="md-block input-margin-right" flex-gt-sm>
+        							<label>Escritor(a)</label>
+        							<input name="escritor" ng-model="view.selectedItem.escritor" md-maxlength="100">
+									<ng-messages for="inputForm.autor.$error">
+										<ng-message when="md-maxlength">Use 100 caracteres ou menos para o autor</ng-message>
+                       				</ng-messages>
+      							</md-input-container>
+      							<md-input-container class="md-block" flex-gt-sm>
+	        						<label>Arte</label>
+    	    						<input name="arte" ng-model="view.selectedItem.arte" md-maxlength="100">
+									<ng-messages for="inputForm.arte.$error">
+										<ng-message when="md-maxlength">Use 100 caracteres ou menos para o desenhista</ng-message>
+                	       			</ng-messages>
+      							</md-input-container>
+							</div>
 						
-							<md-input-container class="md-block">
-        						<label>Escritor(a)</label>
-        						<input name="escritor" ng-model="view.selectedItem.escritor" md-maxlength="100">
-								<ng-messages for="inputForm.autor.$error">
-									<ng-message when="md-maxlength">Use 100 caracteres ou menos para o autor</ng-message>
-                       			</ng-messages>
-      						</md-input-container>
-      						<md-input-container class="md-block">
-        						<label>Arte</label>
-        						<input name="arte" ng-model="view.selectedItem.arte" md-maxlength="100">
-								<ng-messages for="inputForm.arte.$error">
-									<ng-message when="md-maxlength">Use 100 caracteres ou menos para o desenhista</ng-message>
-                       			</ng-messages>
-      						</md-input-container>
-						<div>
-							<p>Publica&#231;&#227;o Original</p>
-							<md-datepicker ng-model="view.selectedItem.pubOriginal"></md-datepicker>
+							<div layout-gt-xs="row">
+								<md-input-container class="md-block" flex-gt-xs>
+        							<label>Editora</label>
+        							<input name="editora" ng-model="view.selectedItem.editora" md-maxlength="60">
+									<ng-messages for="inputForm.editora.$error">
+										<ng-message when="md-maxlength">Use 60 caracteres ou menos para a editora</ng-message>
+                       				</ng-messages>			
+      							</md-input-container>
+								<md-datepicker ng-model="view.selectedItem.pubOriginal" md-placeholder="Public. original"></md-datepicker>
+							</div>
+						
+							<div layout-gt-sm="row">
+								<md-input-container class="md-block input-margin-right" flex-gt-xs>
+									<label>Classificacao</label>
+        							<md-select ng-model="view.selectedItem.classificacao">
+          								<md-option ng-repeat="classificacao in listClassificacao" value="{{classificacao.category}}">
+            								{{classificacao.name}}
+          								</md-option>
+        							</md-select>
+      							</md-input-container>			
+								<md-input-container class="md-block input-margin-right" flex-gt-xs>
+        							<label>Status</label>
+        							<md-select ng-model="view.selectedItem.status">
+          								<md-option ng-repeat="status in listStatus" value="{{status.name}}">
+            								{{status.name}}
+          								</md-option>
+        							</md-select>
+      							</md-input-container>
+								<md-input-container class="md-block">
+        							<label>Categoria</label>
+        							<md-select ng-model="view.selectedItem.categorias" multiple>
+          								<md-optgroup label="Categorias">
+											<md-option ng-value="categoria.name" ng-repeat="categoria in listCategorias | filter: {category: 'catg' }">
+            									{{categoria.name}}
+          									</md-option>
+										</md-optgroup>
+										<md-optgroup label="Generos">
+											<md-option ng-value="categoria.name" ng-repeat="categoria in listCategorias | filter: {category: 'genr' }">
+	            								{{categoria.name}}
+    	      								</md-option>
+										</md-optgroup>
+        							</md-select>
+      							</md-input-container>
+							</div>
 						</div>
-						<div layout-gt-sm="row">
-							<md-input-container class="md-block" flex-gt-xs>
-        						<label>Status</label>
-        						<md-select ng-model="view.selectedItem.status">
-          							<md-option ng-repeat="status in listStatus" value="{{status.name}}">
-            							{{status.name}}
-          							</md-option>
-        						</md-select>
-      						</md-input-container>
-						</div>
-
-						<md-input-container class="md-block">
-        					<label>Categoria</label>
-        					<md-select ng-model="view.selectedItem.categorias" multiple>
-          						<md-optgroup label="Categorias">
-									<md-option ng-value="categoria.name" ng-repeat="categoria in listCategorias | filter: {category: 'catg' }">
-            							{{categoria.name}}
-          							</md-option>
-								</md-optgroup>
-								<md-optgroup label="Generos">
-									<md-option ng-value="categoria.name" ng-repeat="categoria in listCategorias | filter: {category: 'genr' }">
-            							{{categoria.name}}
-          							</md-option>
-								</md-optgroup>
-        					</md-select>
-      					</md-input-container>
-					</md-content>
-				</div>
+				</md-content>
 			</md-dialog-content>
 		</form>
 	</md-dialog>

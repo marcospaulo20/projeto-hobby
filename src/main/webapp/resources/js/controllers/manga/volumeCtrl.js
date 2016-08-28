@@ -7,7 +7,14 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
     
 	$scope.titulo = TituloMFactory.show({id: $routeParams.id, idTituloM: $routeParams.idTituloM});
 	
-	$scope.volumes = VolumesFactory.query({id: $routeParams.id , idTituloM: $routeParams.idTituloM});
+	$scope.flag = true;
+	
+	$scope.$on('$viewContentLoaded', function() {
+		VolumesFactory.query({id: $routeParams.id , idTituloM: $routeParams.idTituloM}).$promise.then(function(data) {
+			$scope.volumes = data;
+			$scope.flag = false;
+		});
+	});
 	
   	$scope.mostrarDialog = mostrarDialog;
   	
@@ -29,11 +36,6 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   	    );
   	}
   
-  	$scope.roundedPercentage = function(myValue, totalValue){
-  	   var result = ((myValue/totalValue)*100)
-  	   return Math.round(result, 2);
-  	}
-  	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
      }
@@ -50,10 +52,11 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				tituloM: data.tituloM,
   				nome: data.nome,
   				arco: data.arco,
-  				anoJP: new Date(data.anoJP),
-  				anoBR: new Date(data.anoBR),
+  				anoJP: data.anoJP ? new Date(data.anoJP) : null,
+  				anoBR: data.anoBR ? new Date(data.anoBR) : null,
   				paginas: data.paginas,
   				status: data.status,
+  				primeiroVolume: data.primeiroVolume,
   				statusColecao: data.statusColecao,
   				imagem: data.imagem,
   				capitulosM: data.capitulosM
@@ -75,6 +78,10 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			mostrarError(result);
   		});
   	}
+  	
+  	function formatDate(date) {
+		return date ? moment(date).format('DD/MM/YYYY') : moment(date).format('DD-MM-YYYY');
+	};
   	
   	// Controller de dialog
   	function DialogController($scope, $mdDialog, operaction, selectedItem, dataTable) {
@@ -101,19 +108,17 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				break;
   		}
   		
-  		$scope.statusColecao = false;
-  		
   		// Status
   		$scope.status = '';
   		$scope.listStatus = [
-  		   { name: 'Já li' },
-  		   { name: 'Lendo' },
-  		   { name: 'Não li' },
-  		   { name: 'Relendo' },
-  		   { name: 'Vou ler' },
-  		   { name: 'Desistir' }
+  		   { nomcletura: 'JL', name: 'Já li' },
+  		   { nomcletura: 'L', name: 'Lendo' },
+  		   { nomcletura: 'NL', name: 'Não li' },
+  		   { nomcletura: 'R', name: 'Relendo' },
+  		   { nomcletura: 'VL', name: 'Vou ler' },
+  		   { nomcletura: 'D', name: 'Desistir' }
          ];
-  		
+
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  
   		$scope.salvar = salvar;
@@ -132,7 +137,8 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   		// Permite adicionar um novo elemento
   		function adicionar() {
   			$scope.view.selectedItem.tituloM = $scope.titulo.id;
-  			$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
+  			if($scope.result != null)
+  				$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
   	    	VolumeCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {    		
   	    		$scope.view.dataTable.push(data);
   				$mdDialog.hide('O volume adicionado com sucesso.');
@@ -152,6 +158,7 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				$scope.view.dataTable[indexArr].imagem = $scope.view.selectedItem.imagem;
   				$scope.view.dataTable[indexArr].arco = $scope.view.selectedItem.arco;
   				$scope.view.dataTable[indexArr].status = $scope.view.selectedItem.status;
+  				$scope.view.dataTable[indexArr].anoJP = $scope.view.selectedItem.anoJP;
   				$scope.view.dataTable[indexArr].capitulosM = $scope.view.selectedItem.capitulosM;
   				$mdDialog.hide('O volume alterado com sucesso.');
   			}, function() {

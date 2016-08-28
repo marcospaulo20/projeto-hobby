@@ -1,14 +1,23 @@
 'use strict';
 
 var app = angular.module('projetoHobbyApp.manga.controllers', []);
-
-app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFactory', '$mdToast', '$mdDialog', '$location', '$filter', 
-  	 function($scope, $rootScope, MangasFactory, MangaFactory, $mdToast, $mdDialog, $location, $filter) {    
+app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFactory', '$mdToast', '$mdDialog', '$location', '$filter',
+  	 function($scope, $rootScope, MangasFactory, MangaFactory, $mdToast, $mdDialog, $location, $filter) {
 	
-	$scope.mangas = MangasFactory.query();
+	$scope.flag = true;
 	
-	$scope.tituloPage = tituloPage;
+	$scope.$on('$viewContentLoaded', function() {
+		MangasFactory.query().$promise.then(function(data) {
+			$scope.mangas = data;
+			$scope.flag = false;
+		});
+	});
+	
 	$scope.mostrarDialog = mostrarDialog;	
+	
+	$scope.next = function(element) {
+		return $location.path("mangas/" + element.id);
+	}
 	
 	function simpleToastBase(message, position, delay, action) {
 	    $mdToast.show(
@@ -52,10 +61,6 @@ app.controller('MangaCtrl', ['$scope', '$rootScope', 'MangasFactory', 'MangaFact
 		.then(function(result) {
 			mostrarError(result);
 		});
-	}
-	
-	function tituloPage(element) {
-		return $location.path("mangas/" + element.id);
 	}
 	
 	// Controller de dialog

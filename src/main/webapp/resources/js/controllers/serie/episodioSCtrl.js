@@ -5,8 +5,6 @@ var app = angular.module('projetoHobbyApp.episodioS.controllers', []);
 app.controller('EpisodioSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFactory', 'TituloSFactory', 'TemporadaFactory', 'EpisodiosSFactory', 'EpisodioSCreateFactory', 'EpisodioSFactory', '$mdToast', '$mdDialog', '$location', '$filter',
   	 function($scope, $rootScope, $routeParams, SerieFactory, TituloSFactory, TemporadaFactory, EpisodiosSFactory, EpisodioSCreateFactory, EpisodioSFactory, $mdToast, $mdDialog, $location, $filter) {
     
-	$scope.serie = SerieFactory.show({id: $routeParams.id});
-	
 	$scope.titulo = TituloSFactory.show({id: $routeParams.id, idTituloS: $routeParams.idTituloS});
 	
 	$scope.temporada = TemporadaFactory.show({id: $routeParams.id, idTituloS: $routeParams.idTituloS, idTemporada: $routeParams.idTemporada});
@@ -14,6 +12,10 @@ app.controller('EpisodioSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
 	$scope.episodios = EpisodiosSFactory.query({id: $routeParams.id, idTituloS: $routeParams.idTituloS, idTemporada: $routeParams.idTemporada});	
 	
   	$scope.mostrarDialog = mostrarDialog;
+  	
+  	$scope.comeBack = function() {
+  		return $location.path("series/" + $scope.titulo.serie + '/' + $scope.titulo.id);
+  	}
   	
   	function simpleToastBase(message, position, delay, action) {
   	    $mdToast.show(
@@ -98,9 +100,6 @@ app.controller('EpisodioSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   		  {name: 'Especial'}  		 
   		];
   		
-  		$scope.status = false;
-  		$scope.statusVirtual = false;
-  		
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  
   		$scope.salvar = salvar;
@@ -150,7 +149,6 @@ app.controller('EpisodioSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   			if(item !== undefined) {
   	  			EpisodioSFactory.delete({id: $scope.titulo.serie, idTituloS: $scope.titulo.id, idTemporada: $scope.arco.id, idEpisodioS: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   	  				$scope.view.dataTable.pop(item);
-  	  				$mdDialog.hide('');
   	  			}, function() {
   	  				$mdDialog.hide('Ocorreu algum error, ao deleta o episodio.');
   	  		  	});

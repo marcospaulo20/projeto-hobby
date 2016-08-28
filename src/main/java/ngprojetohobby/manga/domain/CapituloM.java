@@ -21,7 +21,7 @@ public class CapituloM implements Serializable {
 
 	@Column(length = 200, nullable = false)
 	private String nome;
-	@Column(length = 10,nullable = false)
+	@Column(length = 20, nullable = false)
 	private String numero;
 
 	private Boolean status;

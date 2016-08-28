@@ -5,12 +5,17 @@ var app = angular.module('projetoHobbyApp.tituloA.controllers', []);
 app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactory', 'TitulosAFactory', 'TituloAFactory','TituloACreateFactory', 'MangasFactory', '$mdToast', '$mdDialog', '$location', '$filter', '$timeout',
   	function($scope, $rootScope, $routeParams, AnimeFactory, TitulosAFactory, TituloAFactory, TituloACreateFactory, MangasFactory, $mdToast, $mdDialog, $location, $filter, $timeout) {
 	
-	
-  	$scope.anime = AnimeFactory.show({id: $routeParams.id});
   	$scope.titulos = TitulosAFactory.query({id: $routeParams.id});
-  	
-  	$scope.arcoPage = arcoPage;
+  	  	
   	$scope.mostrarDialog = mostrarDialog;
+  	
+  	$scope.next = function(element) {
+		return $location.path("animes/" + element.anime + "/" + element.id);
+	}
+  	
+  	$scope.baseado = function(element) {
+		return $location.path("mangas/" + element.manga.id);
+	}
   	
   	function simpleToastBase(message, position, delay, action) {
   	    $mdToast.show(
@@ -68,10 +73,6 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
   		});
   	}
   	
-  	function arcoPage(element) {
-		return $location.path("animes/" + element.anime + "/" + element.id);
-	}
-  	
   	// Controller de dialog
   	function DialogController($scope, $mdDialog, operaction, selectedItem, dataTable) {
   		$scope.anime = AnimeFactory.show({id: $routeParams.id});
@@ -112,7 +113,12 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
   		// Emissora
   		$scope.emissora = '';
   		$scope.listEmissora = [
-  		  {name: 'Tokyo'}
+  		  {name: 'Fuji TV'},
+  		  {name: 'Nippon Television'},
+  		  {name: 'NHK'},
+  		  {name: 'TV Tokyo'},
+  		  {name: 'TBS'},
+  		  {name: 'Vap'}
   		];  		
   		
   		// Formato
@@ -188,6 +194,8 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
 
   			TituloAFactory.update({id: $scope.anime.id, idTitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
+  				$scope.view.dataTable[indexArr].emissora = $scope.view.selectedItem.emissora;
+  				$scope.view.dataTable[indexArr].formato = $scope.view.selectedItem.formato;
   				$scope.view.dataTable[indexArr].generos = $scope.view.selectedItem.generos;
   				$mdDialog.hide('O titulo alterado com sucesso.');
   			}, function() {
@@ -224,5 +232,6 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
   			 delete $scope.result;
   			 delete $scope.resultBlob;
   		};
-  	}  	 
+  	}
+  	
 }]);

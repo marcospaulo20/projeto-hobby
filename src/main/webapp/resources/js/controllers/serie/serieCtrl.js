@@ -5,10 +5,20 @@ var app = angular.module('projetoHobbyApp.serie.controllers', []);
 app.controller('SerieCtrl', ['$scope', '$rootScope', 'SeriesFactory', 'SerieFactory', '$mdToast', '$mdDialog', '$location', '$filter', 
   	 function($scope, $rootScope, SeriesFactory, SerieFactory, $mdToast, $mdDialog, $location, $filter) {    
 	
-	$scope.series = SeriesFactory.query();
+	$scope.flag = true;
 	
-	$scope.tituloPage = tituloPage;
-	$scope.mostrarDialog = mostrarDialog;	
+	$scope.$on('$viewContentLoaded', function() {
+		SeriesFactory.query().$promise.then(function(data) {
+			$scope.series = data;
+			$scope.flag = false;
+		});
+	});
+	
+	$scope.mostrarDialog = mostrarDialog;
+	
+	$scope.next = function(element) {
+		return $location.path("series/" + element.id);
+	}
 	
 	function simpleToastBase(message, position, delay, action) {
 	    $mdToast.show(
@@ -52,10 +62,6 @@ app.controller('SerieCtrl', ['$scope', '$rootScope', 'SeriesFactory', 'SerieFact
 		.then(function(result) {
 			mostrarError(result);
 		});
-	}
-	
-	function tituloPage(element) {
-		return $location.path("series/" + element.id);
 	}
 	
 	// Controller de dialog

@@ -51,6 +51,9 @@ public class Volume implements Serializable {
 
 	private Boolean statusColecao;
 
+	@Column(name = "primeiro_volume")
+	private Boolean primeiroVolume;
+
 	@Lob
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] imagem;
@@ -68,6 +71,7 @@ public class Volume implements Serializable {
 	public Volume() {
 		super();
 		this.statusColecao = Boolean.FALSE;
+		this.primeiroVolume = Boolean.FALSE;
 	}
 
 	public Long getId() {
@@ -128,6 +132,14 @@ public class Volume implements Serializable {
 
 	public void setStatusColecao(Boolean statusColecao) {
 		this.statusColecao = statusColecao;
+	}
+
+	public Boolean getPrimeiroVolume() {
+		return primeiroVolume;
+	}
+
+	public void setPrimeiroVolume(Boolean primeiroVolume) {
+		this.primeiroVolume = primeiroVolume;
 	}
 
 	public byte[] getImagem() {

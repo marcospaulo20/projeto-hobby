@@ -4,7 +4,7 @@ var services = angular.module('projetoHobbyApp.manga.services', ['ngResource']);
 
 services.factory('MangasFactory', function MangasFactory($resource) {
 	return $resource('rest/mangas', {}, {
-		query: { method: 'GET', isArray: true },
+		query: { method: 'GET', isArray: true, ignoreLoadingBar: true },
 		create: { method: 'POST' }
 	})
 });

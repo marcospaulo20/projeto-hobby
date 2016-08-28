@@ -18,6 +18,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 @Table(name = "titulo_m")
 public class TituloM implements Serializable {
@@ -55,6 +58,7 @@ public class TituloM implements Serializable {
 	private Long manga;
 
 	@OneToMany(mappedBy = "tituloM", fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<Volume> volumes;
 
 	public TituloM() {

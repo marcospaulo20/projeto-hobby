@@ -5,16 +5,27 @@ var app = angular.module('projetoHobbyApp.temporada.controllers', []);
 app.controller('TemporadaCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFactory', 'TituloSFactory', 'TemporadasFactory', 'TemporadaCreateFactory', 'TemporadaFactory', '$mdToast', '$mdDialog', '$location', '$filter',
   	 function($scope, $rootScope, $routeParams, SerieFactory, TituloSFactory, TemporadasFactory, TemporadaCreateFactory, TemporadaFactory, $mdToast, $mdDialog, $location, $filter) {
     
-	$scope.serie = SerieFactory.show({id: $routeParams.id});
-	
 	$scope.titulo = TituloSFactory.show({id: $routeParams.id, idTituloS: $routeParams.idTituloS});
 	
-	$scope.temporadas = TemporadasFactory.query({id: $routeParams.id , idTituloS: $routeParams.idTituloS});
+	$scope.flag = true;
 	
+	$scope.$on('$viewContentLoaded', function() {
+		TemporadasFactory.query({id: $routeParams.id , idTituloS: $routeParams.idTituloS}).$promise.then(function(data) {
+			$scope.temporadas = data;
+			$scope.flag = false;
+		});
+	});
 	
-	$scope.episodioPage = episodioPage;
-  	$scope.mostrarDialog = mostrarDialog;
+	$scope.mostrarDialog = mostrarDialog;
+	
+	$scope.comeBack = function(){
+  		return $location.path("series/" + $scope.titulo.serie);
+  	}
   	
+  	$scope.next = function(element) {
+		return $location.path("series/" + $scope.titulo.serie+ "/" + element.tituloS + "/" + element.id);
+	}
+	
   	function simpleToastBase(message, position, delay, action) {
   	    $mdToast.show(
   	        $mdToast.simple()
@@ -67,10 +78,6 @@ app.controller('TemporadaCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   			mostrarError(result);
   		});
   	}
-  	
-  	function episodioPage(element) {
-		return $location.path("series/" + $scope.serie.id + "/" + $scope.titulo.id + "/" + element.id);
-	}
   	
   	// Controller de dialog
   	function DialogController($scope, $mdDialog, operaction, selectedItem, dataTable) {

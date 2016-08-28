@@ -5,8 +5,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ngprojetohobby.comic.domain.CapituloC;
+import ngprojetohobby.comic.domain.Comic;
 import ngprojetohobby.comic.domain.TituloC;
 import ngprojetohobby.comic.repositories.CapituloCRepository;
+import ngprojetohobby.comic.repositories.ComicRepository;
 import ngprojetohobby.comic.repositories.TituloCRepository;
 
 @javax.enterprise.context.RequestScoped
@@ -18,6 +20,9 @@ public class CapituloCServiceImpl implements CapituloCService {
 	@Inject
 	private TituloCRepository tituloCRepository;
 
+	@Inject
+	private ComicRepository comicRepository;
+	
 	@Override
 	public List<CapituloC> getAllCapitulosC(Long id) {
 		return this.capituloCRepository.findAllByCol(CapituloC.class, "tituloC", id);
@@ -30,6 +35,15 @@ public class CapituloCServiceImpl implements CapituloCService {
 
 	@Override
 	public CapituloC create(CapituloC capituloC) {		
+		if(capituloC.getPrimeiroCapitulo()) {
+			TituloC tituloC = tituloCRepository.getById(capituloC.getTituloC());
+			if(capituloC.getImagem() != null) {
+				Comic comic = comicRepository.getById(tituloC.getComic());
+				comic.setImagem(capituloC.getImagem());
+				comicRepository.update(comic);
+			}
+		}
+		
 		capituloC = this.capituloCRepository.create(capituloC); 
 			
 		TituloC tituloC = tituloCRepository.getById(capituloC.getTituloC());

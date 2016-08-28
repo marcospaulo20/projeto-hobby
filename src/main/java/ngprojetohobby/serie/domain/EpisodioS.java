@@ -41,6 +41,8 @@ public class EpisodioS implements Serializable {
 
 	public EpisodioS() {
 		super();
+		this.status = Boolean.FALSE;
+		this.statusVirtual = Boolean.FALSE;
 	}
 
 	public Long getId() {

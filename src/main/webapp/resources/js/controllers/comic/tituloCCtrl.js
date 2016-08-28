@@ -5,12 +5,13 @@ var app = angular.module('projetoHobbyApp.tituloC.controllers', []);
 app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFactory', 'TitulosCFactory', 'TituloCFactory','TituloCCreateFactory', '$mdToast', '$mdDialog', '$location', '$filter', '$timeout',
   	function($scope, $rootScope, $routeParams, ComicFactory, TitulosCFactory, TituloCFactory, TituloCCreateFactory, $mdToast, $mdDialog, $location, $filter, $timeout) {
 	
-	
-  	$scope.comic = ComicFactory.show({id: $routeParams.id});
   	$scope.titulos = TitulosCFactory.query({id: $routeParams.id});
   	
-  	$scope.capituloPage = capituloPage;
   	$scope.mostrarDialog = mostrarDialog;
+  	
+  	$scope.next = function(element) {
+		return $location.path("comics/" + element.comic + "/" + element.id);
+	}
   	
   	function simpleToastBase(message, position, delay, action) {
   	    $mdToast.show(
@@ -44,6 +45,7 @@ app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFac
   				nome: data.nome,
   				classificacao: data.classificacao,
   				editora: data.editora,
+  				paisOrigem: data.paisOrigem,
   				pubOriginal: new Date(data.pubOriginal),  		
   				status: data.status,
   				generos: data.generos,
@@ -66,10 +68,6 @@ app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFac
   			mostrarError(result);
   		});
   	}
-  	
-  	function capituloPage(element) {
-		return $location.path("comics/" + element.comic + "/" + element.id);
-	}
   	
   	// Controller de dialog
   	function DialogController($scope, $mdDialog, operaction, selectedItem, dataTable) {

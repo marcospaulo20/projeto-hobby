@@ -5,7 +5,14 @@ var app = angular.module('projetoHobbyApp.comic.controllers', []);
 app.controller('ComicCtrl', ['$scope', '$rootScope', 'ComicsFactory', 'ComicFactory', '$mdToast', '$mdDialog', '$location', '$filter', 
   	 function($scope, $rootScope, ComicsFactory, ComicFactory, $mdToast, $mdDialog, $location, $filter) {    
 	
-	$scope.comics = ComicsFactory.query();
+	$scope.flag = true;
+	
+	$scope.$on('$viewContentLoaded', function() {
+		ComicsFactory.query().$promise.then(function(data) {
+			$scope.comics = data;
+			$scope.flag = false;
+		});
+	});
 	
 	$scope.tituloPage = tituloPage;
 	$scope.mostrarDialog = mostrarDialog;	

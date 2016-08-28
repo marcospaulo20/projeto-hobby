@@ -1,54 +1,64 @@
 <md-button class="md-fab md-fab-bottom-right" ng-click="mostrarDialog('C', undefined, $event)">
-	<ng-md-icon icon="add" fill="none"></ng-md-icon>
+	<ng-md-icon icon="add"</ng-md-icon>
 </md-button>
+
 <md-toolbar ng-show="!showSearch">
 	<div class="md-toolbar-tools">
-		<md-button ng-click="toggleSidenav('left')" hide-gt-md>
+		<md-button class="md-icon-button" ng-click="toggleSidenav('left')" hide-gt-md>
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>
 		<h3>
             Series
 		</h3>
 		<span flex></span>
-		<md-button ng-click="showSearch = !showSearch">
-			<ng-md-icon icon="search" fill="none"></ng-md-icon>
+		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="search"></ng-md-icon>
 		</md-button>
 	</div>
 </md-toolbar>
 
 <md-toolbar class="md-hue-1" ng-show="showSearch">
 	<div class="md-toolbar-tools">
-		<md-button ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="arrow_back"></ng-md-icon>
 		</md-button>
 		<md-input-container md-no-float flex>
 			<input ng-model="search.nome" placeholder="Pesquisar">
 		</md-input-container>
-		<md-button ng-click="showSearch = !showSearch">
-			<ng-md-icon icon="search" fill="none"></ng-md-icon>
+		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+			<ng-md-icon icon="search"></ng-md-icon>
 		</md-button>				
 	</div>
 </md-toolbar>
 
+<div layout="row" layout-align="space-around" ng-show="flag">
+	<md-progress-circular ng-disabled="!flag"  md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+</div>
+
+<md-card ng-show="!flag">
+	<md-card-title>
+		<span class="md-headline">Total: {{series.length}}</span>
+	</md-card-title>
+</md-card>
+
 <md-content md-scroll-y layout="column" flex>
-	
 	<md-grid-list
         md-cols-xs="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="6"
         md-row-height-gt-md="1:1" md-row-height="4:3"
         md-gutter="8px" md-gutter-gt-sm="4px" >
-    <md-grid-tile ng-repeat="element in series | orderBy: 'nome' | filter:search"
-        md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
-        <div ng-show="{{element.titulosS == ''}}">
-        	<img data-ng-src="img/image-default.png" class="image-relative" ng-click="tituloPage(element)" />
-        </div>
-        <div ng-show="{{element.titulosS[0].temporadas[0].imagem != null}}">
-        	<img data-ng-src="data:image/(png|jpg);base64,{{element.titulosS[0].temporadas[0].imagem}}" class="image-relative" ng-click="tituloPage(element)" />
-        </div>
-      <md-grid-tile-footer ng-click="mostrarDialog('UD', element, $event)">
-        <h3>{{element.nome}}</h3>        
-      </md-grid-tile-footer>
-    </md-grid-tile>
-	
+    	<md-grid-tile ng-repeat="element in series | orderBy: 'nome' | filter:search"
+        	md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
+        	<div ng-show="{{element.imagem == null}}">
+	        	<img data-ng-src="img/image-default.png" class="image-default" ng-click="next(element)" />
+    	    </div>
+        	<div ng-show="{{element.imagem != null}}">
+        		<img data-ng-src="data:image/(png|jpg);base64,{{element.imagem}}" class="card-title-image" ng-click="next(element)" />
+        	</div>
+      		<md-grid-tile-footer ng-click="mostrarDialog('UD', element, $event)">
+        		<h3>{{element.nome}}</h3>        
+      		</md-grid-tile-footer>
+    	</md-grid-tile>
+	</md-grid-list>
 </md-content>
 
 <script type="text/ng-template" id="editor.html">
@@ -57,27 +67,29 @@
 			<md-toolbar>
 				<div class="md-toolbar-tools">
 					<md-button class="md-icon-button" ng-click="retorno()">
-						<ng-md-icon icon="arrow_back" fill="none"></ng-md-icon>
+						<ng-md-icon icon="arrow_back"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>					
 					<h2>{{view.operaction}}</h2>
 					<span flex></span>					
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
-						<ng-md-icon icon="save" fill="none"></ng-md-icon>
+						<ng-md-icon icon="save"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Salvar</md-tooltip>
 					</md-button>
 				</div>
 			</md-toolbar>
 			<md-dialog-content>
 				<md-content layout-padding ng-cloak>
-					<md-input-container class="md-block">
-						<label>Titulo</label>
-						<input type="text" name="nome" required md-maxlength="255" ng-model="view.selectedItem.nome" />
-						<ng-messages for="inputForm.nome.$error">
-							<ng-message when="required">O campo e obrigatorio</ng-message>
-							<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
-                        </ng-messages>
-					</md-input-container>
+					<div class="md-dialog-content" flex>
+						<md-input-container class="md-block">
+							<label>Titulo</label>
+							<input type="text" name="nome" required md-maxlength="255" ng-model="view.selectedItem.nome" />
+							<ng-messages for="inputForm.nome.$error">
+								<ng-message when="required">O campo e obrigatorio</ng-message>
+								<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
+                        	</ng-messages>
+						</md-input-container>
+					</div>
 				</md-content>
 			</md-dialog-content>			
 		</form>

@@ -28,7 +28,7 @@ public class CapituloC implements Serializable {
 	@Column(length = 200, nullable = false)
 	private String nome;
 
-	@Column(length = 10, nullable = false)
+	@Column(length = 20, nullable = false)
 	private String numero;
 
 	@Column(length = 200)
@@ -47,7 +47,10 @@ public class CapituloC implements Serializable {
 	private Boolean status;
 	private Boolean statusVirtual;
 
-	@Column(name = "titulo_c_id", nullable = false)
+	@Column(name = "primeiro_capitulo")
+	private Boolean primeiroCapitulo;
+
+	@Column(name = "tituloc_id", nullable = false)
 	private Long tituloC;
 
 	@Lob
@@ -58,6 +61,7 @@ public class CapituloC implements Serializable {
 		super();
 		this.status = Boolean.FALSE;
 		this.statusVirtual = Boolean.FALSE;
+		this.primeiroCapitulo = Boolean.FALSE;
 	}
 
 	public Long getId() {
@@ -134,6 +138,14 @@ public class CapituloC implements Serializable {
 
 	public void setStatusVirtual(Boolean statusVirtual) {
 		this.statusVirtual = statusVirtual;
+	}
+
+	public Boolean getPrimeiroCapitulo() {
+		return primeiroCapitulo;
+	}
+
+	public void setPrimeiroCapitulo(Boolean primeiroCapitulo) {
+		this.primeiroCapitulo = primeiroCapitulo;
 	}
 
 	public Long getTituloC() {

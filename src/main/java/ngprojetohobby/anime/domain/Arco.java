@@ -24,7 +24,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name="arco")
+@Table(name = "arco")
 public class Arco implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -39,6 +39,8 @@ public class Arco implements Serializable {
 	@Temporal(value = TemporalType.DATE)
 	private Date ano;
 	private Boolean status;
+	@Column(name = "primeiro_arco")
+	private Boolean primeiroArco;
 
 	@Lob
 	@Type(type = "org.hibernate.type.BinaryType")
@@ -57,6 +59,7 @@ public class Arco implements Serializable {
 	public Arco() {
 		super();
 		this.status = Boolean.FALSE;
+		this.primeiroArco = Boolean.FALSE;
 	}
 
 	public Long getId() {
@@ -85,6 +88,14 @@ public class Arco implements Serializable {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public Boolean getPrimeiroArco() {
+		return primeiroArco;
+	}
+
+	public void setPrimeiroArco(Boolean primeiroArco) {
+		this.primeiroArco = primeiroArco;
 	}
 
 	public byte[] getImagem() {

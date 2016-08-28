@@ -5,8 +5,6 @@ var app = angular.module('projetoHobbyApp.capitulo.controllers', []);
 app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFactory', 'TituloMFactory', 'VolumeFactory', 'CapitulosMFactory', 'CapituloMCreateFactory', 'CapituloMFactory', '$mdToast', '$mdDialog', '$location', '$filter',
   	 function($scope, $rootScope, $routeParams, MangaFactory, TituloMFactory, VolumeFactory, CapitulosMFactory, CapituloMCreateFactory, CapituloMFactory, $mdToast, $mdDialog, $location, $filter) {
     
-	//$scope.manga = MangaFactory.show({id: $routeParams.id});
-	
 	$scope.titulo = TituloMFactory.show({id: $routeParams.id, idTituloM: $routeParams.idTituloM});
 	
 	$scope.volume = VolumeFactory.show({id: $routeParams.id, idTituloM: $routeParams.idTituloM, idVolume: $routeParams.idVolume});
@@ -93,9 +91,6 @@ app.controller('CapituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaF
   				$scope.view.operaction = 'Detalhes';
   				break;
   		}
-  		
-  		$scope.status = false;
-  		$scope.statusVirtual = false;
   		
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  

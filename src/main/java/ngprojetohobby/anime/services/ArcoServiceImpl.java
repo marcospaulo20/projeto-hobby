@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ngprojetohobby.anime.domain.Anime;
 import ngprojetohobby.anime.domain.Arco;
 import ngprojetohobby.anime.domain.EpisodioA;
 import ngprojetohobby.anime.domain.TituloA;
+import ngprojetohobby.anime.repositories.AnimeRepository;
 import ngprojetohobby.anime.repositories.ArcoRepository;
 import ngprojetohobby.anime.repositories.EpisodioARepository;
 import ngprojetohobby.anime.repositories.TituloARepository;
@@ -22,6 +24,9 @@ public class ArcoServiceImpl implements ArcoService {
 	
 	@Inject
 	private EpisodioARepository episodioRepository;
+	
+	@Inject
+	private AnimeRepository animeRepository;
 
 	@Override
 	public List<Arco> getAllArcos(Long id) {
@@ -35,6 +40,14 @@ public class ArcoServiceImpl implements ArcoService {
 
 	@Override
 	public Arco create(Arco arco) {
+		if(arco.getPrimeiroArco()) {
+			TituloA tituloA = tituloRepository.getById(arco.getTituloA()); 
+			if(arco.getImagem() != null) {
+				Anime a = animeRepository.getById(tituloA.getAnime());
+				a.setImagem(arco.getImagem());
+				animeRepository.update(a);
+			}
+		}
 		arco = this.arcoRepository.create(arco);
 
 		TituloA titulo = tituloRepository.getById(arco.getTituloA());
@@ -46,8 +59,7 @@ public class ArcoServiceImpl implements ArcoService {
 
 	@Override
 	public Arco update(Arco arco) {
-		
-		if(arco.getStatus() == true) {
+		if(arco.getStatus()) {
 			for(EpisodioA e : arco.getEpisodios()) {
 				e.setStatus(true);
 				this.episodioRepository.update(e);

@@ -14,7 +14,7 @@ public class EpisodioServiceImpl implements EpisodioService {
 
 	@Inject
 	private EpisodioARepository episodioRepository;
-	
+
 	@Inject
 	private ArcoRepository arcoRepository;
 
@@ -29,13 +29,13 @@ public class EpisodioServiceImpl implements EpisodioService {
 	}
 
 	@Override
-	public EpisodioA create(EpisodioA episodio) {		
-		episodio = this.episodioRepository.create(episodio); 
-			
+	public EpisodioA create(EpisodioA episodio) {
+		episodio = this.episodioRepository.create(episodio);
+
 		Arco arco = arcoRepository.getById(episodio.getArco());
 		arco.getEpisodios().add(episodio);
 		arcoRepository.update(arco);
-		
+
 		return episodio;
 	}
 
@@ -48,15 +48,15 @@ public class EpisodioServiceImpl implements EpisodioService {
 	public void remove(Long id) {
 		EpisodioA episodio = episodioRepository.getById(id);
 		Arco arco = arcoRepository.getById(episodio.getArco());
-		
-		for(int i = 0; i < arco.getEpisodios().size(); i++) {
+
+		for (int i = 0; i < arco.getEpisodios().size(); i++) {
 			EpisodioA e = arco.getEpisodios().get(i);
-			if(e.getId().equals(episodio.getId())) {
+			if (e.getId().equals(episodio.getId())) {
 				arco.getEpisodios().remove(e);
 				arcoRepository.update(arco);
 				break;
 			}
-		}			
+		}
 		episodioRepository.remove(EpisodioA.class, id);
 	}
 

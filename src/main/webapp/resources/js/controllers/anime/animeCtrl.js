@@ -5,10 +5,20 @@ var app = angular.module('projetoHobbyApp.anime.controllers', []);
 app.controller('AnimeCtrl', ['$scope', '$rootScope', 'AnimesFactory', 'AnimeFactory', '$mdToast', '$mdDialog', '$location', '$filter', 
   	 function($scope, $rootScope, AnimesFactory, AnimeFactory, $mdToast, $mdDialog, $location, $filter) {    
 	
-	$scope.animes = AnimesFactory.query();
+	$scope.flag = true;
 	
-	$scope.tituloPage = tituloPage;
+	$scope.$on('$viewContentLoaded', function() {
+		AnimesFactory.query().$promise.then(function(data) {
+			$scope.animes = data;
+			$scope.flag = false;
+		});
+	});
+	
 	$scope.mostrarDialog = mostrarDialog;	
+
+	$scope.next = function(element) {
+		return $location.path("animes/" + element.id);
+	}
 	
 	function simpleToastBase(message, position, delay, action) {
 	    $mdToast.show(
@@ -52,10 +62,6 @@ app.controller('AnimeCtrl', ['$scope', '$rootScope', 'AnimesFactory', 'AnimeFact
 		.then(function(result) {
 			mostrarError(result);
 		});
-	}
-	
-	function tituloPage(element) {
-		return $location.path("animes/" + element.id);
 	}
 	
 	// Controller de dialog

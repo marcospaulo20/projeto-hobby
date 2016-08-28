@@ -5,15 +5,26 @@ var app = angular.module('projetoHobbyApp.arco.controllers', []);
 app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactory', 'TituloAFactory', 'ArcosFactory', 'ArcoCreateFactory', 'ArcoFactory', '$mdToast', '$mdDialog', '$location', '$filter',
   	 function($scope, $rootScope, $routeParams, AnimeFactory, TituloAFactory, ArcosFactory, ArcoCreateFactory, ArcoFactory, $mdToast, $mdDialog, $location, $filter) {
     
-	$scope.anime = AnimeFactory.show({id: $routeParams.id});
-	
 	$scope.titulo = TituloAFactory.show({id: $routeParams.id, idTituloA: $routeParams.idTituloA});
 	
-	$scope.arcos = ArcosFactory.query({id: $routeParams.id , idTituloA: $routeParams.idTituloA});
+	$scope.flag = true;
 	
+	$scope.$on('$viewContentLoaded', function() {
+		ArcosFactory.query({id: $routeParams.id , idTituloA: $routeParams.idTituloA}).$promise.then(function(data) {
+			$scope.arcos = data;
+			$scope.flag = false;
+		});
+	});
 	
-	$scope.episodioPage = episodioPage;
   	$scope.mostrarDialog = mostrarDialog;
+  	
+  	$scope.comeBack = function(){
+  		return $location.path("animes/" + $scope.titulo.anime);
+  	}
+  	
+  	$scope.next = function(element) {
+		return $location.path("animes/" + $scope.titulo.anime + "/" + element.tituloA + "/" + element.id);
+	}
   	
   	function simpleToastBase(message, position, delay, action) {
   	    $mdToast.show(
@@ -46,6 +57,7 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
 				tituloA: data.tituloA,
   				nome: data.nome,
   				status: data.status,
+  				primeiroArco: data.primeiroArco,
   				ano: new Date(data.ano),
   				imagem: data.imagem,
   				episodios: data.episodios
@@ -67,10 +79,6 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
   			mostrarError(result);
   		});
   	}
-  	
-  	function episodioPage(element) {
-		return $location.path("animes/" + $scope.anime.id + "/" + $scope.titulo.id + "/" + element.id);
-	}
   	
   	// Controller de dialog
   	function DialogController($scope, $mdDialog, operaction, selectedItem, dataTable) {
@@ -104,7 +112,6 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
   		   { category: true, name: 'Vi este arco' },
   		   { category: false, name: 'Não vi este arco' }         
          ];
-  		//$scope.listStatus = ('Já li,Estou lendo').split(',').map(function (status) { return { name: status }; });  		
   		
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  

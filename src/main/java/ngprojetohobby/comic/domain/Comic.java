@@ -9,9 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,9 +33,11 @@ public class Comic implements Serializable {
 	@OneToMany(mappedBy = "comic", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private List<TituloC> titulosC;
-	@Transient
+
+	@Lob
+	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] Imagem;
-	
+
 	public Comic() {
 		super();
 	}
@@ -57,13 +61,13 @@ public class Comic implements Serializable {
 	public void setTitulosC(List<TituloC> titulosC) {
 		this.titulosC = titulosC;
 	}
-	
+
 	public byte[] getImagem() {
-		byte[] image = null;
-		if (!this.getTitulosC().isEmpty() && !this.getTitulosC().get(0).getCapitulosC().isEmpty()) {
-			image = this.getTitulosC().get(0).getCapitulosC().get(0).getImagem();			
-		}
-		return image;
+		return Imagem;
+	}
+
+	public void setImagem(byte[] imagem) {
+		Imagem = imagem;
 	}
 
 }

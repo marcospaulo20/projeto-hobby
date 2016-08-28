@@ -1,10 +1,11 @@
 'use strict';
 
-var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ngMdIcons', 'ImageCropper', 'ngFileUpload', 'projetoHobbyApp.directive', 
-                                             'projetoHobbyApp.manga.services', 'projetoHobbyApp.manga.controllers', 'projetoHobbyApp.tituloM.controllers', 'projetoHobbyApp.volume.controllers', 'projetoHobbyApp.capitulo.controllers',
-                                             'projetoHobbyApp.anime.services', 'projetoHobbyApp.anime.controllers', 'projetoHobbyApp.tituloA.controllers', 'projetoHobbyApp.arco.controllers', 'projetoHobbyApp.episodio.controllers',
-                                             'projetoHobbyApp.comic.services', 'projetoHobbyApp.comic.controllers', 'projetoHobbyApp.tituloC.controllers', 'projetoHobbyApp.capituloC.controllers',
-                                             'projetoHobbyApp.serie.services', 'projetoHobbyApp.serie.controllers', 'projetoHobbyApp.tituloS.controllers', 'projetoHobbyApp.temporada.controllers', 'projetoHobbyApp.episodioS.controllers']); 
+var app = angular.module('projetoHobbyApp', 
+		['ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ngMdIcons', 'ImageCropper', 'ngFileUpload', 'projetoHobbyApp.directive', 
+         'projetoHobbyApp.manga.services', 'projetoHobbyApp.manga.controllers', 'projetoHobbyApp.tituloM.controllers', 'projetoHobbyApp.volume.controllers', 'projetoHobbyApp.capitulo.controllers',
+         'projetoHobbyApp.anime.services', 'projetoHobbyApp.anime.controllers', 'projetoHobbyApp.tituloA.controllers', 'projetoHobbyApp.arco.controllers', 'projetoHobbyApp.episodio.controllers',
+         'projetoHobbyApp.comic.services', 'projetoHobbyApp.comic.controllers', 'projetoHobbyApp.tituloC.controllers', 'projetoHobbyApp.capituloC.controllers',
+         'projetoHobbyApp.serie.services', 'projetoHobbyApp.serie.controllers', 'projetoHobbyApp.tituloS.controllers', 'projetoHobbyApp.temporada.controllers', 'projetoHobbyApp.episodioS.controllers']); 
 
 	app.config(['$routeProvider', function($routeProvider) {
 		var version = '?nocache=${project.version}';
@@ -131,7 +132,7 @@ var app = angular.module('projetoHobbyApp', ['ngRoute', 'ngAnimate', 'ngAria', '
 	
 	app.config(function($mdDateLocaleProvider) {
 		$mdDateLocaleProvider.formatDate = function(date) {
-			return moment(date).format('DD/MM/YYYY');
+			return date ? moment(date).format('DD/MM/YYYY') : null;
 		};
 		  
 		$mdDateLocaleProvider.parseDate = function(dateString) {

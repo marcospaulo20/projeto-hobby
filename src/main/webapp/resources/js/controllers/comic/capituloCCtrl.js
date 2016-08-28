@@ -5,13 +5,22 @@ var app = angular.module('projetoHobbyApp.capituloC.controllers', []);
 app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFactory', 'TituloCFactory', 'CapitulosCFactory', 'CapituloCCreateFactory', 'CapituloCFactory', '$mdToast', '$mdDialog', '$location', '$filter',
   	 function($scope, $rootScope, $routeParams, ComicFactory, TituloCFactory, CapitulosCFactory, CapituloCCreateFactory, CapituloCFactory, $mdToast, $mdDialog, $location, $filter) {
     
-	$scope.comic = ComicFactory.show({id: $routeParams.id});
-	
 	$scope.titulo = TituloCFactory.show({id: $routeParams.id, idTituloC: $routeParams.idTituloC});
 	
-	$scope.capitulos = CapitulosCFactory.query({id: $routeParams.id, idTituloC: $routeParams.idTituloC});	
+	$scope.flag = true;
+	
+	$scope.$on('$viewContentLoaded', function() {
+		CapitulosCFactory.query({id: $routeParams.id, idTituloC: $routeParams.idTituloC}).$promise.then(function(data) {
+			$scope.capitulos = data;
+			$scope.flag = false;
+		});
+	});
 	
   	$scope.mostrarDialog = mostrarDialog;
+  	
+  	$scope.comeBack = function() {
+  		return $location.path("comics/" + $scope.titulo.comic);
+  	}
   	
   	function simpleToastBase(message, position, delay, action) {
   	    $mdToast.show(
@@ -46,6 +55,7 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   				ano: new Date(data.ano),
   				status: data.status,
   				statusVirtual: data.statusVirtual,
+  				primeiroCapitulo: data.primeiroCapitulo,
   				imagem: data.imagem
   			};
   		}
@@ -93,9 +103,6 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   				break;
   		}
   		
-  		$scope.status = false;
-  		$scope.statusVirtual = false;
-  		
   		// Metodos do controller de dialog
   		$scope.retorno = retorno;  
   		$scope.salvar = salvar;
@@ -115,7 +122,8 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   		// Permite adicionar um novo elemento
   		function adicionar() {
   			$scope.view.selectedItem.tituloC = $scope.titulo.id;
-  			$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
+  			if($scope.result != null)
+  				$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
   			CapituloCCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {
   	    		$scope.view.dataTable.push(data);
   				$mdDialog.hide('O capitulo adicionado com sucesso.');
@@ -154,7 +162,6 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   			if(item !== undefined) {
   	  			CapituloCFactory.delete({id: $scope.titulo.comic, idTituloC: $scope.titulo.id, idCapituloC: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   	  				$scope.view.dataTable.pop(item);
-  	  				$mdDialog.hide('');
   	  			}, function() {
   	  				$mdDialog.hide('Ocorreu algum error, ao deleta o capitulo.');
   	  		  	});

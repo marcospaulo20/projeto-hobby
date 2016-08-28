@@ -21,7 +21,7 @@ public class EpisodioA implements Serializable {
 
 	@Column(length = 200, nullable = false)
 	private String nome;
-	@Column(nullable = false)
+	@Column(length = 20, nullable = false)
 	private String numero;
 	@Column(name = "tipo", nullable = false)
 	private String tipo;
@@ -36,6 +36,7 @@ public class EpisodioA implements Serializable {
 	public EpisodioA() {
 		super();
 		this.status = Boolean.FALSE;
+		this.statusVirtual = Boolean.FALSE;
 	}
 
 	public Long getId() {

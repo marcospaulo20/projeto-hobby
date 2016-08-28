@@ -5,9 +5,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ngprojetohobby.serie.domain.EpisodioS;
+import ngprojetohobby.serie.domain.Serie;
 import ngprojetohobby.serie.domain.Temporada;
 import ngprojetohobby.serie.domain.TituloS;
 import ngprojetohobby.serie.repositories.EpisodioSRepository;
+import ngprojetohobby.serie.repositories.SerieRepository;
 import ngprojetohobby.serie.repositories.TemporadaRepository;
 import ngprojetohobby.serie.repositories.TituloSRepository;
 
@@ -23,6 +25,9 @@ public class TemporadaServiceImpl implements TemporadaService {
 	@Inject
 	private EpisodioSRepository episodioRepository;
 	
+	@Inject
+	private SerieRepository serieRepository;
+	
 	@Override
 	public List<Temporada> getAllTemporadas(Long id) {
 		return this.temporadaRepository.findAllByCol(Temporada.class, "tituloS", id);
@@ -35,6 +40,14 @@ public class TemporadaServiceImpl implements TemporadaService {
 
 	@Override
 	public Temporada create(Temporada temporada) {
+		if(temporada.getPrimeiraTemporada()) {
+			TituloS tituloS = tituloRepository.getById(temporada.getTituloS()); 
+			if(temporada.getImagem() != null) {
+				Serie s = serieRepository.getById(tituloS.getSerie());
+				s.setImagem(temporada.getImagem());
+				serieRepository.update(s);
+			}
+		}
 		temporada = this.temporadaRepository.create(temporada);
 
 		TituloS titulo = tituloRepository.getById(temporada.getTituloS());
@@ -46,7 +59,7 @@ public class TemporadaServiceImpl implements TemporadaService {
 
 	@Override
 	public Temporada update(Temporada temporada) {
-		if(temporada.getStatus() == true) {
+		if(temporada.getStatus()) {
 			for(EpisodioS e : temporada.getEpisodiosS()) {
 				e.setStatus(true);
 				this.episodioRepository.update(e);
