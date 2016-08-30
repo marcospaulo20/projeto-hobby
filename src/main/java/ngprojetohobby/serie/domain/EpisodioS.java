@@ -1,7 +1,6 @@
 package ngprojetohobby.serie.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "episodio_s")
@@ -27,10 +24,6 @@ public class EpisodioS implements Serializable {
 
 	@Column(length = 10, nullable = false)
 	private String numero;
-
-	@Column(name = "ano")
-	@Temporal(value = TemporalType.DATE)
-	private Date ano;
 
 	private Boolean status;
 
@@ -67,14 +60,6 @@ public class EpisodioS implements Serializable {
 
 	public void setNumero(String numero) {
 		this.numero = numero;
-	}
-
-	public Date getAno() {
-		return ano;
-	}
-
-	public void setAno(Date ano) {
-		this.ano = ano;
 	}
 
 	public Boolean getStatus() {

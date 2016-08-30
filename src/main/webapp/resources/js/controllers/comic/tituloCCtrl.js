@@ -5,8 +5,15 @@ var app = angular.module('projetoHobbyApp.tituloC.controllers', []);
 app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFactory', 'TitulosCFactory', 'TituloCFactory','TituloCCreateFactory', '$mdToast', '$mdDialog', '$location', '$filter', '$timeout',
   	function($scope, $rootScope, $routeParams, ComicFactory, TitulosCFactory, TituloCFactory, TituloCCreateFactory, $mdToast, $mdDialog, $location, $filter, $timeout) {
 	
-  	$scope.titulos = TitulosCFactory.query({id: $routeParams.id});
-  	
+	$scope.flag = true;
+	
+	$scope.$on('$viewContentLoaded', function() {
+		TitulosCFactory.query({id: $routeParams.id}).$promise.then(function(data) {
+			$scope.titulos = data;
+			$scope.flag = false;
+		});
+	});
+	
   	$scope.mostrarDialog = mostrarDialog;
   	
   	$scope.next = function(element) {
@@ -23,14 +30,15 @@ app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFac
   	    );
   	}
   	
-  	$scope.roundedPercentage = function(myValue, totalValue){
-   	   var result = ((myValue/totalValue)*100)
-   	   return Math.round(result, 2);
-   	}
-  	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
-     }
+    }
+  	
+  	function convertToDate(stringDate){
+  		var dateOut = new Date(stringDate);
+  		dateOut.setDate(dateOut.getDate() + 1);
+  		return dateOut;
+  	};
   	
   	// Mostrar um dialogo
   	function mostrarDialog(operaction, data, event) {
@@ -46,10 +54,10 @@ app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFac
   				classificacao: data.classificacao,
   				editora: data.editora,
   				paisOrigem: data.paisOrigem,
-  				pubOriginal: new Date(data.pubOriginal),  		
+  				pubOriginal: convertToDate(data.pubOriginal),  		
   				status: data.status,
   				generos: data.generos,
-  				capitulos: data.capitulos
+  				capitulosC: data.capitulosC
   			};
   		}
   		$mdDialog.show({
@@ -148,16 +156,15 @@ app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFac
          { name: 'Comédia' },
          { name: 'Demônios' },
          { name: 'Drama' },
-         { name: 'Ecchi' },
          { name: 'Escolar' },
          { name: 'Espaço' },
          { name: 'Esportes' },
          { name: 'Fantasia' },
          { name: 'Ficção' },
-         { name: 'Harem' },
          { name: 'Histórico' },
          { name: 'Horror' },
          { name: 'Jogo' },
+         { name: 'Luta' },
          { name: 'Mistério' },
          { name: 'Paródia' },
          { name: 'Policial' },
@@ -165,8 +172,9 @@ app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFac
          { name: 'Romance' },
          { name: 'Samurai' },
          { name: 'Sobrenatural' },
-         { name: 'Slice of Life' },
+         { name: 'Super Herois' },
          { name: 'Thriler' },
+         { name: 'Terror' },
          { name: 'Vampiros' }
         ];  		
   		
@@ -203,11 +211,25 @@ app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFac
 
   			TituloCFactory.update({id: $scope.comic.id, idTitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
+  				$scope.view.dataTable[indexArr].classificacao = $scope.view.selectedItem.classificacao;
+  				$scope.view.dataTable[indexArr].editora = $scope.view.selectedItem.editora;
+  				$scope.view.dataTable[indexArr].paisOrigem = $scope.view.selectedItem.paisOrigem;
+  				$scope.view.dataTable[indexArr].pubOriginal = $scope.view.selectedItem.pubOriginal;  		
+  				$scope.view.dataTable[indexArr].status = $scope.view.selectedItem.status;
   				$scope.view.dataTable[indexArr].generos = $scope.view.selectedItem.generos;
   				$mdDialog.hide('O titulo alterado com sucesso.');
   			}, function() {
   				$mdDialog.hide('Ocorreu algum error, ao alterar o titulo.');
   		  	});
   		}
-  	}  	 
+  	}
+  	
+  	$scope.countComplete = function(element) {
+    	var cnt = 0;
+    	angular.forEach(element, function(item) {
+    		cnt += item.statusVirtual ? 1 : 0;
+    	});
+    	return cnt;
+    }
+  	
 }]);

@@ -22,15 +22,16 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
   	            .action(action)
   	    );
   	}
-  	
-  	$scope.roundedPercentage = function(myValue, totalValue){
-   	   var result = ((myValue/totalValue)*100)
-   	   return Math.round(result, 2);
-   	}
-  	
+  	  	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
-     }
+    }
+  	
+  	function convertToDate(stringDate){
+  		var dateOut = new Date(stringDate);
+  		dateOut.setDate(dateOut.getDate() + 1);
+  		return dateOut;
+  	};
   	
   	// Mostrar um dialogo
   	function mostrarDialog(operaction, data, event) {
@@ -47,7 +48,7 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
   				editora: data.editora,
   				escritor: data.escritor,
   				arte: data.arte,
-  				pubOriginal: new Date(data.pubOriginal),
+  				pubOriginal: convertToDate(data.pubOriginal),
   				status: data.status,
   				categorias: data.categorias,
   				volumes: data.volumes
@@ -121,7 +122,7 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
          { category: 'genr', name: 'Comédia' },
          { category: 'genr', name: 'Crossover' },
          { category: 'genr', name: 'Demônios' },
-         { category: 'genr', name: 'Drama (Tragédia)' },
+         { category: 'genr', name: 'Drama' },
          { category: 'genr', name: 'Ecchi' },
          { category: 'genr', name: 'Escolar' },
          { category: 'genr', name: 'Espaço' },
@@ -208,5 +209,13 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
   				$mdDialog.hide('Ocorreu algum error, ao alterar o titulo.');
   		  	});
   		}
-  	}  	 
+  	}
+  	
+  	$scope.countComplete = function(element) {
+    	var cnt = 0;
+    	angular.forEach(element, function(item) {
+    		cnt += item.statusVirtual ? 1 : 0;
+    	});
+    	return cnt;
+    }
 }]);

@@ -35,15 +35,16 @@ app.controller('TemporadaCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   	            .action(action)
   	    );
   	}
-  
-  	$scope.roundedPercentage = function(myValue, totalValue){
-  	   var result = ((myValue/totalValue)*100)
-  	   return Math.round(result, 2);
-  	}
   	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
-     }
+    }
+  	
+  	function convertToDate(stringDate){
+  		var dateOut = new Date(stringDate);
+  		dateOut.setDate(dateOut.getDate() + 1);
+  		return dateOut;
+  	};
   	
   	// Mostrar um dialogo
   	function mostrarDialog(operaction, data, event) {
@@ -57,7 +58,7 @@ app.controller('TemporadaCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
 				tituloS: data.tituloS,
   				nome: data.nome,
   				status: data.status,
-  				ano: new Date(data.ano),
+  				ano: convertToDate(data.ano),
   				imagem: data.imagem,
   				episodiosS: data.episodiosS
   			};
@@ -149,7 +150,8 @@ app.controller('TemporadaCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   			TemporadaFactory.update({id: $scope.titulo.serie, idTituloS: $scope.titulo.id, idTemporada: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
   				$scope.view.dataTable[indexArr].imagem = $scope.view.selectedItem.imagem;
-  				$scope.view.dataTable[indexArr].episodios = $scope.view.selectedItem.episodios;
+  				$scope.view.dataTable[indexArr].ano = $scope.view.selectedItem.ano;
+  				$scope.view.dataTable[indexArr].episodios = $scope.view.selectedItem.episodios;  				
   				$mdDialog.hide('O arco alterado com sucesso.');
   			}, function() {
   				$mdDialog.hide('Ocorreu algum error, ao alterar o arco.');

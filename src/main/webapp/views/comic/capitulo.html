@@ -53,15 +53,15 @@
 			</div>
        		<div>
        			<span class="card-title-subhead">{{element.ano | date: MM/yyyy}},   {{element.escritor}} / {{element.arte}}</span>
-       		</div>
-       		<div ng-show="element.statusVirtual == true" class="statusVirtualBlocoCapitulos">
-    			<ng-md-icon icon="folder_special" size="20"></ng-md-icon>
-    			<div ng-show="element.status == true" class="statusCapituloBloco">
+	       		<div ng-show="element.statusVirtual == true" class="statusVirtualBlocoCapitulos">
+	    			<ng-md-icon icon="folder_special" size="20"></ng-md-icon>	    		
+	    		</div>
+	    		<div ng-show="element.status == true" class="statusCapituloBloco">
 					<ng-md-icon class="md-secondary md-hue-3" icon="check" style="fill: green" size="20"></ng-md-icon>
 				</div>
     		</div>
       		<md-grid-tile-footer ng-click="mostrarDialog('UD', element, $event)">
-        		<h3>{{element.numero + ' - ' + element.nome}}</h3>        
+        		<h3>{{element.numero}}  {{element.nome.length > 1 ? (' - ' + element.nome) : ''}}</h3>        
       		</md-grid-tile-footer>
     	</md-grid-tile>
     </md-grid-list>	

@@ -22,15 +22,16 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   	            .action(action)
   	    );
   	}
-  	
-  	$scope.roundedPercentage = function(myValue, totalValue){
-   	   var result = ((myValue/totalValue)*100)
-   	   return Math.round(result, 2);
-   	}
-  	
+  	  	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
      }
+  	
+  	function convertToDate(stringDate){
+  	  var dateOut = new Date(stringDate);
+  	  dateOut.setDate(dateOut.getDate() + 1);
+  	  return dateOut;
+  	};
   	
   	// Mostrar um dialogo
   	function mostrarDialog(operaction, data, event) {
@@ -45,7 +46,7 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   				nome: data.nome,
   				classificacao: data.classificacao,
   				emissora: data.emissora,
-  				anoOriginal: new Date(data.anoOriginal),
+  				anoOriginal: convertToDate(data.anoOriginal),
   				paisOrigem: data.paisOrigem,
   				status: data.status,
   				generos: data.generos,
@@ -110,7 +111,14 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   		// Emissora
   		$scope.emissora = '';
   		$scope.listEmissora = [
-  		  {name: 'The CW'}
+  		  {name: 'CBS'},
+  		  {name: 'FX'},  		  
+  		  {name: 'HBO'},
+  		  {name: 'History'},
+  		  {name: 'NBC'},
+  		  {name: 'Netflix'},
+  		  {name: 'Showtime'},
+  		  {name: 'The CW'},
   		];  		  	
   		
   		// Status
@@ -219,6 +227,7 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
   				$scope.view.dataTable[indexArr].emissora = $scope.view.selectedItem.emissora;
   				$scope.view.dataTable[indexArr].anoOriginal = $scope.view.selectedItem.anoOriginal;
+  				$scope.view.dataTable[indexArr].classificacao = $scope.view.selectedItem.classificacao;
   				$scope.view.dataTable[indexArr].generos = $scope.view.selectedItem.generos;
   				$mdDialog.hide('O titulo alterado com sucesso.');
   			}, function() {
@@ -235,5 +244,13 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   				$scope.comics = ComicsFactory.query();
   			}, 650);
   		};  		  	
-  	}  	 
+  	}
+  	
+  	$scope.countComplete = function(element) {
+    	var cnt = 0;
+    	angular.forEach(element, function(item) {
+    		cnt += item.statusVirtual ? 1 : 0;
+    	});
+    	return cnt;
+    }
 }]);

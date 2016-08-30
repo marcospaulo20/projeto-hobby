@@ -63,7 +63,7 @@
 					<div class="card-div-margin-left">
 	          			<div ng-repeat="e in element.episodiosS | orderBy: 'numero'">
 	          				<span class="{{ e.status ? 'subhead-red' : 'subhead' }}">
-	          						{{e.numero +'. '+ e.nome}}
+	          						{{e.numero + '. '+ e.nome}}
 	          				</span>
 	          				<div ng-show="e.statusVirtual == true" class="card-div-status-virtuais">
 	          					<ng-md-icon icon="folder_special" size="15"></ng-md-icon>
@@ -143,10 +143,10 @@
 						</div>	
 					</md-content>
 					
-					<md-content layout-padding>
+					<md-content layout-gt-sm="column" layout-padding>
 						<div>
 							<div class="md-dialog-content" flex-gt-xs>
-								<md-input-container class="md-block" gt->
+								<md-input-container class="md-block" flex-gt-xs>
 									<label>Nome</label>
 									<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
 									<ng-messages for="inputForm.nome.$error">
@@ -173,6 +173,7 @@
 							</div>
 						</div>
 					</md-content>
+				</div>
 			</md-dialog-content>
 		</form>
 	</md-dialog>

@@ -61,12 +61,11 @@
 								<md-button class="md-icon-button" ng-click="next(element)" >
 	              					<ng-md-icon class="md-secondary md-hue-3" icon="send" size="30"></ng-md-icon>
 	            				</md-button>
-	            				<div ng-repeat="v in element.volumes | filter: query"></div>									
-	              				<md-button class="md-icon-button" ng-show="(element.volumes | filter : query.statusColecao = true).length === element.volumes.length">
+	              				<md-button class="md-icon-button" ng-show="countComplete(element.volumes) === element.volumes.length">
 	              					<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: green" size="30"></ng-md-icon>
 	              				</md-button>
 	            				<div class="card-div-title-count">
-	            					<h2>{{(element.volumes | filter : query.statusColecao = true).length}}/{{element.volumes.length}}</h2>
+	            					<h2>{{countComplete(element.volumes)}}/{{element.volumes.length}}</h2>
 	            				</div>
 							</md-card-actions>
 						</md-card-content>						

@@ -43,8 +43,13 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
   	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
-     }
+    }
   	
+  	function convertToDate(stringDate){
+  		var dateOut = new Date(stringDate);
+  		dateOut.setDate(dateOut.getDate() + 1);
+  		return dateOut;
+  	};
   	// Mostrar um dialogo
   	function mostrarDialog(operaction, data, event) {
   		// Guarda os dados a enviar
@@ -58,7 +63,7 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
   				nome: data.nome,
   				status: data.status,
   				primeiroArco: data.primeiroArco,
-  				ano: new Date(data.ano),
+  				ano: convertToDate(data.ano),
   				imagem: data.imagem,
   				episodios: data.episodios
   			};

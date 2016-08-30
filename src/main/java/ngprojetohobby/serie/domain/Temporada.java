@@ -49,7 +49,8 @@ public class Temporada implements Serializable {
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] imagem;
 
-	@JoinColumn(name = "titulo_s_id", nullable = false)
+	@JoinColumn(name = "id", nullable = false)
+	@Column(name = "titulo_s_id")
 	private Long tituloS;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = EpisodioS.class)

@@ -34,7 +34,13 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
-     }
+    }
+  	
+  	function convertToDate(stringDate){
+  		var dateOut = new Date(stringDate);
+  		dateOut.setDate(dateOut.getDate() + 1);
+  		return dateOut;
+  	};
   	
   	// Mostrar um dialogo
   	function mostrarDialog(operaction, data, event) {
@@ -52,7 +58,7 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   				arte: data.arte,
   				colorista: data.colorista,
   				editor: data.editor,
-  				ano: new Date(data.ano),
+  				ano: convertToDate(data.ano),
   				status: data.status,
   				statusVirtual: data.statusVirtual,
   				primeiroCapitulo: data.primeiroCapitulo,

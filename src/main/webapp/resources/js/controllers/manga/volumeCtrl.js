@@ -38,7 +38,13 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
-     }
+    }
+  	
+  	function convertToDate(stringDate){
+  		var dateOut = new Date(stringDate);
+  		dateOut.setDate(dateOut.getDate() + 1);
+  		return dateOut;
+  	};
   	
   	// Mostrar um dialogo
   	function mostrarDialog(operaction, data, event) {
@@ -52,8 +58,8 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				tituloM: data.tituloM,
   				nome: data.nome,
   				arco: data.arco,
-  				anoJP: data.anoJP ? new Date(data.anoJP) : null,
-  				anoBR: data.anoBR ? new Date(data.anoBR) : null,
+  				anoJP: convertToDate(data.anoJP),
+  				anoBR: convertToDate(data.anoBR),
   				paginas: data.paginas,
   				status: data.status,
   				primeiroVolume: data.primeiroVolume,

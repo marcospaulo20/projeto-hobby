@@ -28,12 +28,16 @@
 	</div>
 </md-toolbar>
 
-<md-content md-scroll-y layout="column" flex>
+<div layout="row" layout-align="space-around" ng-show="flag">
+	<md-progress-circular ng-disabled="!flag" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+</div>
+
+<md-content md-scroll-y layout="column" flex ng-show="!flag">
 	<div layout-padding flex="noshrink">
 		<div class="doc-content">
 			<md-content class="md-padding" layout-xs="column" layout="row">
 				<div flex-xs layout="row">
-					<md-card ng-repeat="element in titulos | orderBy: 'nome' | filter:search" class="card-title">
+					<md-card ng-repeat="element in titulos | orderBy: 'pubOriginal' | filter:search" class="card-title">
 						<md-card-title>
 							<md-card-title-text>
 								<span class="md-headline">{{element.nome}}</span>
@@ -61,11 +65,11 @@
 	            				</md-button>
 	            				
 	            				<div ng-repeat="c in element.capitulosC | filter: query"></div>					
-	              				<md-button class="md-icon-button" ng-show="(element.capitulosC | filter : query.statusVirtual = true).length === element.capitulosC.length">
+	              				<md-button class="md-icon-button" ng-show="countComplete(element.capitulosC) === element.capitulosC.length">
 	              					<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: green" size="30"></ng-md-icon>
 	              				</md-button>
 	            				<div class="card-div-title-count">
-	            					<h2>{{(element.capitulosC | filter: query.statusVirtual = true).length}}/{{element.capitulosC.length}}</h2>
+	            					<h2>{{countComplete(element.capitulosC)}}/{{element.capitulosC.length}}</h2>
 	            				</div>
 							</md-card-actions>
 						</md-card-content>				

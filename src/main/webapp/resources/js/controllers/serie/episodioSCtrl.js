@@ -29,7 +29,7 @@ app.controller('EpisodioSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
-     }
+    }
   	
   	// Mostrar um dialogo
   	function mostrarDialog(operaction, data, event) {
@@ -43,7 +43,6 @@ app.controller('EpisodioSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   				temporada: data.temporada,
   				nome: data.nome,
   				numero: data.numero,  				
-  				ano: new Date(data.ano),
   				status: data.status,
   				statusVirtual: data.statusVirtual
   			};

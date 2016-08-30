@@ -27,14 +27,15 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
   	    );
   	}
   	
-  	$scope.roundedPercentage = function(myValue, totalValue){
-   	   var result = ((myValue/totalValue)*100)
-   	   return Math.round(result, 2);
-   	}
-  	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
-     }
+    }
+  	
+  	function convertToDate(stringDate){
+  		var dateOut = new Date(stringDate);
+  		dateOut.setDate(dateOut.getDate() + 1);
+  		return dateOut;
+  	};
   	
   	// Mostrar um dialogo
   	function mostrarDialog(operaction, data, event) {
@@ -49,7 +50,7 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
   				nome: data.nome,
   				classificacao: data.classificacao,
   				emissora: data.emissora,
-  				anoOriginal: new Date(data.anoOriginal),
+  				anoOriginal: convertToDate(data.anoOriginal),
   				formato: data.formato,
   				generos: data.generos,
   				manga: data.manga,
@@ -190,7 +191,6 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			//$scope.view.selectedItem.anime = $scope.anime.id;
 
   			TituloAFactory.update({id: $scope.anime.id, idTitulo: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
@@ -233,5 +233,12 @@ app.controller('TituloACtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFac
   			 delete $scope.resultBlob;
   		};
   	}
-  	
+  
+  	$scope.countComplete = function(element) {
+    	var cnt = 0;
+    	angular.forEach(element, function(item) {
+    		cnt += item.statusVirtual ? 1 : 0;
+    	});
+    	return cnt;
+    }
 }]);

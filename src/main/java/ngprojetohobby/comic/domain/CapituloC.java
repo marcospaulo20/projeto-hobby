@@ -50,7 +50,7 @@ public class CapituloC implements Serializable {
 	@Column(name = "primeiro_capitulo")
 	private Boolean primeiroCapitulo;
 
-	@Column(name = "tituloc_id", nullable = false)
+	@Column(name = "titulo_c_id", nullable = false)
 	private Long tituloC;
 
 	@Lob
