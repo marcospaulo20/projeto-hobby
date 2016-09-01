@@ -39,8 +39,8 @@ public class Arco implements Serializable {
 	@Temporal(value = TemporalType.DATE)
 	private Date ano;
 	private Boolean status;
-	@Column(name = "primeiro_arco")
-	private Boolean primeiroArco;
+	@Column(name = "capa")
+	private Boolean capa;
 
 	@Lob
 	@Type(type = "org.hibernate.type.BinaryType")
@@ -59,7 +59,7 @@ public class Arco implements Serializable {
 	public Arco() {
 		super();
 		this.status = Boolean.FALSE;
-		this.primeiroArco = Boolean.FALSE;
+		this.capa = Boolean.FALSE;
 	}
 
 	public Long getId() {
@@ -90,12 +90,12 @@ public class Arco implements Serializable {
 		this.status = status;
 	}
 
-	public Boolean getPrimeiroArco() {
-		return primeiroArco;
+	public Boolean getCapa() {
+		return capa;
 	}
 
-	public void setPrimeiroArco(Boolean primeiroArco) {
-		this.primeiroArco = primeiroArco;
+	public void setCapa(Boolean capa) {
+		this.capa = capa;
 	}
 
 	public byte[] getImagem() {

@@ -1,20 +1,20 @@
-<md-button class="md-fab md-fab-bottom-right" ng-click="mostrarDialog('C', undefined, $event)">
+<md-button class="md-fab md-fab-bottom-right" aria-label="add" ng-click="mostrarDialog('C', undefined, $event)">
 	<ng-md-icon icon="add"></ng-md-icon>
 </md-button>
 
 <md-toolbar ng-show="!showSearch">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button" ng-click="toggleSidenav('left')" hide-gt-md>
+		<md-button class="md-icon-button" aria-label="menu" ng-click="toggleSidenav('left')" hide-gt-md>
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>		
-		<md-button class="md-icon-button" ng-click="comeBack()">
+		<md-button class="md-icon-button" aria-label="arrowback" ng-click="comeBack()">
 			<ng-md-icon icon="arrow_back" fill="none"></ng-md-icon>
 		</md-button>
 		<h3>
 			Volumes
 		</h3>	
 		<span flex></span>
-		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search"></ng-md-icon>
 		</md-button>
 	</div>
@@ -22,13 +22,13 @@
 
 <md-toolbar class="md-hue-1" ng-show="showSearch">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="arrowback" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="arrow_back"></ng-md-icon>
 		</md-button>
 		<md-input-container md-no-float flex>
 			<input ng-model="search.nome" placeholder="Pesquisar">
 		</md-input-container>
-		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search"></ng-md-icon>
 		</md-button>
 	</div>
@@ -91,7 +91,7 @@
 </md-content>
 
 <script type="text/ng-template" id="editor.html">
-	<md-dialog arial-label="Editar">
+	<md-dialog arial-label="editar">
 		<form name="inputForm" novalidate>
 			<md-toolbar>
 				<div class="md-toolbar-tools">
@@ -194,9 +194,7 @@
 							
 								<div>
 									<md-switch class="md-primary" ng-model="view.selectedItem.statusColecao">Contem na cole&#231;&#227o</md-switch>
-									<div ng-show="view.operaction === 'Adicionar' || view.selectedItem.primeiroVolume == true">
-										<md-switch class="md-primary" ng-model="view.selectedItem.primeiroVolume">Primeiro volume</md-switch>
-									</div>
+									<md-switch class="md-primary" ng-model="view.selectedItem.capa">Capa do manga</md-switch>
 								</div>
 							</div>
 						</div>

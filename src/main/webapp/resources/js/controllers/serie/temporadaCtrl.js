@@ -41,9 +41,13 @@ app.controller('TemporadaCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
     }
   	
   	function convertToDate(stringDate){
-  		var dateOut = new Date(stringDate);
-  		dateOut.setDate(dateOut.getDate() + 1);
-  		return dateOut;
+  		if(stringDate == '30/12/1969' || stringDate == '1970-01-01') {
+  			return null;
+  		} else {
+  			var dateOut = new Date(stringDate);
+  			dateOut.setDate(dateOut.getDate() + 1);
+  			return dateOut;
+  		}
   	};
   	
   	// Mostrar um dialogo
@@ -57,6 +61,7 @@ app.controller('TemporadaCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   				id: data.id,
 				tituloS: data.tituloS,
   				nome: data.nome,
+  				capa: data.capa,
   				status: data.status,
   				ano: convertToDate(data.ano),
   				imagem: data.imagem,
@@ -131,7 +136,8 @@ app.controller('TemporadaCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   		// Permite adicionar um novo elemento
   		function adicionar() {
   			$scope.view.selectedItem.tituloS = $scope.titulo.id;
-  			$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
+  			if($scope.result != null)
+  				$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
   	    	TemporadaCreateFactory.create($scope.view.selectedItem).$promise.then(function(data) {    		
   	    		$scope.view.dataTable.push(data);
   				$mdDialog.hide('O temporada adicionado com sucesso.');
@@ -144,13 +150,13 @@ app.controller('TemporadaCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieF
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			//$scope.view.selectedItem.tituloA = $scope.titulo.id;
   			if($scope.result != null)
   				$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
   			TemporadaFactory.update({id: $scope.titulo.serie, idTituloS: $scope.titulo.id, idTemporada: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
   				$scope.view.dataTable[indexArr].imagem = $scope.view.selectedItem.imagem;
   				$scope.view.dataTable[indexArr].ano = $scope.view.selectedItem.ano;
+  				$scope.view.dataTable[indexArr].capa = $scope.view.selectedItem.capa;
   				$scope.view.dataTable[indexArr].episodios = $scope.view.selectedItem.episodios;  				
   				$mdDialog.hide('O arco alterado com sucesso.');
   			}, function() {

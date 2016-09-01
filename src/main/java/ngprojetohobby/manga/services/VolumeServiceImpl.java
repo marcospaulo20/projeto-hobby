@@ -40,7 +40,7 @@ public class VolumeServiceImpl implements VolumeService {
 
 	@Override
 	public Volume create(Volume volume) {
-		if(volume.getPrimeiroVolume()) {
+		if(volume.getCapa()) {
 			TituloM tituloM = tituloMRepository.getById(volume.getTituloM()); 
 			if(volume.getImagem() != null) {
 				Manga m = mangaRepository.getById(tituloM.getManga());
@@ -58,6 +58,17 @@ public class VolumeServiceImpl implements VolumeService {
 				c.setStatus(true);
 				this.capituloMRepository.update(c);
 			}
+		}
+		if(volume.getCapa()) {
+			List<Volume> volumes = volumeRepository.findAllByCol(Volume.class, "tituloM", volume.getTituloM());
+			for(Volume v : volumes) {
+				v.setCapa(false);
+				volumeRepository.update(v);				
+			}
+			TituloM tituloM = tituloMRepository.getById(volume.getTituloM());
+			Manga manga = mangaRepository.getById(tituloM.getManga());
+			manga.setImagem(volume.getImagem());
+			mangaRepository.update(manga);
 		}
 		return this.volumeRepository.update(volume);
 	}

@@ -42,8 +42,8 @@ public class Temporada implements Serializable {
 
 	private Boolean status;
 
-	@Column(name = "primeira_temporada")
-	private Boolean primeiraTemporada;
+	@Column(name = "capa")
+	private Boolean capa;
 
 	@Lob
 	@Type(type = "org.hibernate.type.BinaryType")
@@ -63,7 +63,7 @@ public class Temporada implements Serializable {
 	public Temporada() {
 		super();
 		this.status = Boolean.FALSE;
-		this.primeiraTemporada = Boolean.FALSE;
+		this.capa = Boolean.FALSE;
 	}
 
 	public Long getId() {
@@ -94,12 +94,12 @@ public class Temporada implements Serializable {
 		this.status = status;
 	}
 
-	public Boolean getPrimeiraTemporada() {
-		return primeiraTemporada;
+	public Boolean getCapa() {
+		return capa;
 	}
 
-	public void setPrimeiraTemporada(Boolean primeiraTemporada) {
-		this.primeiraTemporada = primeiraTemporada;
+	public void setCapa(Boolean capa) {
+		this.capa = capa;
 	}
 
 	public byte[] getImagem() {

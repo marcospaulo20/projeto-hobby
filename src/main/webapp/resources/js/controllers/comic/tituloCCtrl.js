@@ -35,9 +35,13 @@ app.controller('TituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicFac
     }
   	
   	function convertToDate(stringDate){
-  		var dateOut = new Date(stringDate);
-  		dateOut.setDate(dateOut.getDate() + 1);
-  		return dateOut;
+  		if(stringDate == '30/12/1969' || stringDate == '1970-01-01') {s
+  			return null;
+  		} else {
+  			var dateOut = new Date(stringDate);
+  			dateOut.setDate(dateOut.getDate() + 1);
+  			return dateOut;
+  		}
   	};
   	
   	// Mostrar um dialogo

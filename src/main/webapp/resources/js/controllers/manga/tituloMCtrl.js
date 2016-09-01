@@ -5,8 +5,15 @@ var app = angular.module('projetoHobbyApp.tituloM.controllers', []);
 app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFactory', 'TitulosMFactory', 'TituloMFactory','TituloMCreateFactory', '$mdToast', '$mdDialog', '$location', '$filter',
   	function($scope, $rootScope, $routeParams, MangaFactory, TitulosMFactory, TituloMFactory, TituloMCreateFactory, $mdToast, $mdDialog, $location, $filter) {
 	
-  	$scope.titulos = TitulosMFactory.query({id: $routeParams.id});
-  	  	
+  	$scope.flag = true;
+	
+	$scope.$on('$viewContentLoaded', function() {
+		TitulosMFactory.query({id: $routeParams.id}).$promise.then(function(data) {
+			$scope.titulos = data;
+			$scope.flag = false;
+		});
+	});
+  	
   	$scope.mostrarDialog = mostrarDialog;
   
   	$scope.next = function(element) {
@@ -28,9 +35,13 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
     }
   	
   	function convertToDate(stringDate){
-  		var dateOut = new Date(stringDate);
-  		dateOut.setDate(dateOut.getDate() + 1);
-  		return dateOut;
+  		if(stringDate == '30/12/1969' || stringDate == '1970-01-01') {
+  			return null;
+  		} else {
+  			var dateOut = new Date(stringDate);
+  			dateOut.setDate(dateOut.getDate() + 1);
+  			return dateOut;
+  		}
   	};
   	
   	// Mostrar um dialogo
@@ -133,6 +144,7 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
          { category: 'genr', name: 'Ficção Científica' },
          { category: 'genr', name: 'Harem' },
          { category: 'genr', name: 'Histórico' },
+         { category: 'genr', name: 'Horror' },
          { category: 'genr', name: 'Jogo' },
          { category: 'genr', name: 'Luta' },
          { category: 'genr', name: 'Magia' },
@@ -149,6 +161,7 @@ app.controller('TituloMCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFac
          { category: 'genr', name: 'Sobrenatural' },
          { category: 'genr', name: 'Slice of Life' },
          { category: 'genr', name: 'Thriler' },
+         { category: 'genr', name: 'Terror' },
          { category: 'genr', name: 'Terror e Horror' },
          { category: 'genr', name: 'Violência' },
          { category: 'genr', name: 'Vampiros' }

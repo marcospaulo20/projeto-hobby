@@ -1,17 +1,17 @@
-<md-button class="md-fab md-fab-bottom-right" ng-click="mostrarDialog('C', undefined, $event)">
+<md-button class="md-fab md-fab-bottom-right" aria-label="add" ng-click="mostrarDialog('C', undefined, $event)">
 	<ng-md-icon icon="add"></ng-md-icon>
 </md-button>
 
 <md-toolbar ng-show="!showSearch">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button" ng-click="toggleSidenav('left')" hide-gt-md>
+		<md-button class="md-icon-button" aria-label="menu" ng-click="toggleSidenav('left')" hide-gt-md>
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>
 		<h3>
             Animes
 		</h3>
 		<span flex></span>
-		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search"></ng-md-icon>
 		</md-button>
 	</div>
@@ -19,20 +19,20 @@
 
 <md-toolbar class="md-hue-1" ng-show="showSearch">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="arrowback" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="arrow_back"></ng-md-icon>
 		</md-button>
 		<md-input-container md-no-float flex>
 			<input ng-model="search.nome" placeholder="Pesquisar">
 		</md-input-container>
-		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search"></ng-md-icon>
 		</md-button>
 	</div>
 </md-toolbar>
 
 <div layout="row" layout-align="space-around" ng-show="flag">
-	<md-progress-circular ng-disabled="!flag"  md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+	<md-progress-circular ng-disabled="!flag" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
 </div>
 
 <md-card ng-show="!flag">
@@ -43,7 +43,7 @@
 
 <md-content md-scroll-y layout="column" flex>
 	<md-grid-list
-        md-cols-xs="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="6"
+        md-cols="2" md-cols-sm="4" md-cols-md="4" md-cols-gt-md="4"
         md-row-height-gt-md="1:1" md-row-height="4:3"
         md-gutter="8px" md-gutter-gt-sm="4px" >
     	<md-grid-tile ng-repeat="element in animes | orderBy: 'nome' | filter:search"

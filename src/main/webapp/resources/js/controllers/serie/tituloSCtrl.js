@@ -25,12 +25,16 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   	  	
   	function mostrarError(mensage) {
   		simpleToastBase(mensage, 'bottom right', 6000, 'X');
-     }
+    }
   	
   	function convertToDate(stringDate){
-  	  var dateOut = new Date(stringDate);
-  	  dateOut.setDate(dateOut.getDate() + 1);
-  	  return dateOut;
+  		if(stringDate == '30/12/1969' || stringDate == '1970-01-01') {
+  			return null;
+  		} else {
+  			var dateOut = new Date(stringDate);
+  			dateOut.setDate(dateOut.getDate() + 1);
+  			return dateOut;
+  		}
   	};
   	
   	// Mostrar um dialogo

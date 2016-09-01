@@ -1,16 +1,16 @@
-<md-button class="md-fab md-fab-bottom-right" ng-click="mostrarDialog('C', undefined, $event)">
+<md-button class="md-fab md-fab-bottom-right" aria-label="add" ng-click="mostrarDialog('C', undefined, $event)">
 	<ng-md-icon icon="add"></ng-md-icon>
 </md-button>
 <md-toolbar ng-show="!showSearch">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button" ng-click="toggleSidenav('left')" hide-gt-md>
+		<md-button class="md-icon-button" aria-label="menu" ng-click="toggleSidenav('left')" hide-gt-md>
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>
 		<h3>
             Comics
 		</h3>
 		<span flex></span>
-		<md-button class="md-icon-button"  ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search"></ng-md-icon>
 		</md-button>
 	</div>
@@ -18,15 +18,15 @@
 
 <md-toolbar class="md-hue-1" ng-show="showSearch">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button"  ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="arrowback" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="arrow_back"></ng-md-icon>
 		</md-button>
 		<md-input-container md-no-float flex>
 			<input ng-model="search.nome" placeholder="Pesquisar">
 		</md-input-container>
-		<md-button class="md-icon-button"  ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search"></ng-md-icon>
-		</md-button>				
+		</md-button>
 	</div>
 </md-toolbar>
 
@@ -42,16 +42,16 @@
 
 <md-content md-scroll-y layout="column" flex>
 	<md-grid-list
-        md-cols-xs="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="6"
+        md-cols="2" md-cols-sm="4" md-cols-md="4" md-cols-gt-md="4"
         md-row-height-gt-md="1:1" md-row-height="4:3"
-        md-gutter="8px" md-gutter-gt-sm="4px" >
+        md-gutter="8px" md-gutter-gt-sm="4px">
     <md-grid-tile ng-repeat="element in comics | orderBy: 'nome' | filter:search"
-        md-rowspan="2" md-colspan="2" md-colspan-sm="2" md-colspan-xs="1">
+        md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
         <div ng-show="{{element.imagem == null}}">
-        	<img data-ng-src="img/image-default.png" class="image-default" ng-click="tituloPage(element)" />
+        	<img data-ng-src="img/image-default.jpg" class="grid-title-image-default" ng-click="tituloPage(element)" />
         </div>
         <div ng-show="{{element.imagem != null}}">
-        	<img data-ng-src="data:image/(png|jpg);base64,{{element.imagem}}" class="card-title-image" ng-click="tituloPage(element)" />
+        	<img data-ng-src="data:image/(png|jpg);base64,{{element.imagem}}" class="grid-title-image" ng-click="tituloPage(element)" />
         </div>
       <md-grid-tile-footer ng-click="mostrarDialog('UD', element, $event)">
         <h3>{{element.nome}}</h3>

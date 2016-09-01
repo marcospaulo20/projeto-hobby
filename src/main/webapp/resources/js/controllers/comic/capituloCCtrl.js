@@ -37,9 +37,13 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
     }
   	
   	function convertToDate(stringDate){
-  		var dateOut = new Date(stringDate);
-  		dateOut.setDate(dateOut.getDate() + 1);
-  		return dateOut;
+  		if(stringDate == '30/12/1969' || stringDate == '1970-01-01') {
+  			return null;
+  		} else {
+  			var dateOut = new Date(stringDate);
+  			dateOut.setDate(dateOut.getDate() + 1);
+  			return dateOut;
+  		}
   	};
   	
   	// Mostrar um dialogo
@@ -61,7 +65,7 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   				ano: convertToDate(data.ano),
   				status: data.status,
   				statusVirtual: data.statusVirtual,
-  				primeiroCapitulo: data.primeiroCapitulo,
+  				capa: data.capa,
   				imagem: data.imagem
   			};
   		}
@@ -154,6 +158,7 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   				$scope.view.dataTable[indexArr].ano = $scope.view.selectedItem.ano;
   				$scope.view.dataTable[indexArr].status = $scope.view.selectedItem.status;
   				$scope.view.dataTable[indexArr].statusVirtual = $scope.view.selectedItem.statusVirtual;
+  				$scope.view.dataTable[indexArr].capa = $scope.view.selectedItem.capa;
   				$scope.view.dataTable[indexArr].imagem = $scope.view.selectedItem.imagem;
   				$mdDialog.hide('O capitulo alterado com sucesso.');
   			}, function() {

@@ -40,9 +40,9 @@ public class ArcoServiceImpl implements ArcoService {
 
 	@Override
 	public Arco create(Arco arco) {
-		if(arco.getPrimeiroArco()) {
-			TituloA tituloA = tituloRepository.getById(arco.getTituloA()); 
+		if(arco.getCapa()) {			
 			if(arco.getImagem() != null) {
+				TituloA tituloA = tituloRepository.getById(arco.getTituloA());
 				Anime a = animeRepository.getById(tituloA.getAnime());
 				a.setImagem(arco.getImagem());
 				animeRepository.update(a);
@@ -64,6 +64,18 @@ public class ArcoServiceImpl implements ArcoService {
 				e.setStatus(true);
 				this.episodioRepository.update(e);
 			}
+		}
+		
+		if(arco.getCapa()) {
+			List<Arco> arcos = arcoRepository.findAllByCol(Arco.class, "tituloA", arco.getTituloA());
+			for(Arco a : arcos) {
+				a.setCapa(false);
+				arcoRepository.update(a);				
+			}
+			TituloA tituloA = tituloRepository.getById(arco.getTituloA());
+			Anime anime = animeRepository.getById(tituloA.getAnime());
+			anime.setImagem(arco.getImagem());
+			animeRepository.update(anime);
 		}
 		return this.arcoRepository.update(arco);
 	}

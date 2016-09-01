@@ -46,9 +46,13 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
     }
   	
   	function convertToDate(stringDate){
-  		var dateOut = new Date(stringDate);
-  		dateOut.setDate(dateOut.getDate() + 1);
-  		return dateOut;
+  		if(stringDate == '30/12/1969' || stringDate == '1970-01-01') {
+  			return null;
+  		} else {
+  			var dateOut = new Date(stringDate);
+  			dateOut.setDate(dateOut.getDate() + 1);
+  			return dateOut;
+  		}
   	};
   	// Mostrar um dialogo
   	function mostrarDialog(operaction, data, event) {
@@ -62,7 +66,7 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
 				tituloA: data.tituloA,
   				nome: data.nome,
   				status: data.status,
-  				primeiroArco: data.primeiroArco,
+  				capa: data.capa,
   				ano: convertToDate(data.ano),
   				imagem: data.imagem,
   				episodios: data.episodios
@@ -149,12 +153,13 @@ app.controller('ArcoCtrl', ['$scope', '$rootScope', '$routeParams', 'AnimeFactor
   		function modificar() {
   			var indexArr;
   			$scope.view.dataTable.filter(function(elem, index, array){ if(elem.id == $scope.view.selectedItem.id) { indexArr = index; }});
-  			//$scope.view.selectedItem.tituloA = $scope.titulo.id;
   			if($scope.result != null)
   				$scope.view.selectedItem.imagem = $scope.result.substr(22, $scope.result.length);
   			ArcoFactory.update({id: $scope.titulo.anime, idTituloA: $scope.titulo.id, idArco: $scope.view.selectedItem.id}, $scope.view.selectedItem).$promise.then(function(data) {				
   				$scope.view.dataTable[indexArr].nome = $scope.view.selectedItem.nome;
   				$scope.view.dataTable[indexArr].imagem = $scope.view.selectedItem.imagem;
+  				$scope.view.dataTable[indexArr].capa = $scope.view.selectedItem.capa;
+  				$scope.view.dataTable[indexArr].ano = $scope.view.selectedItem.ano;
   				$scope.view.dataTable[indexArr].episodios = $scope.view.selectedItem.episodios;
   				$mdDialog.hide('O arco alterado com sucesso.');
   			}, function() {

@@ -1,17 +1,17 @@
-<md-button class="md-fab md-fab-bottom-right" ng-click="mostrarDialog('C', undefined, $event)">
+<md-button class="md-fab md-fab-bottom-right" aria-label="add" ng-click="mostrarDialog('C', undefined, $event)">
 	<ng-md-icon icon="add"></ng-md-icon>
 </md-button>
 
 <md-toolbar ng-show="!showSearch">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button" ng-click="toggleSidenav('left')" hide-gt-md>
+		<md-button class="md-icon-button" aria-label="menu" ng-click="toggleSidenav('left')" hide-gt-md>
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>		
 		<h3>
 			Cronologia, Ovas, Filmes e Remakes
 		</h3>
 		<span flex></span>
-		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search"></ng-md-icon>
 		</md-button>
 	</div>
@@ -19,63 +19,59 @@
 
 <md-toolbar class="md-hue-1" ng-show="showSearch">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="arrowback" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="arrow_back"></ng-md-icon>
 		</md-button>
 		<md-input-container md-no-float flex>
 			<input ng-model="search.nome" placeholder="Pesquisar">
 		</md-input-container>
-		<md-button class="md-icon-button" ng-click="showSearch = !showSearch">
+		<md-button class="md-icon-button" aria-label="search" ng-click="showSearch = !showSearch">
 			<ng-md-icon icon="search"></ng-md-icon>
-		</md-button>				
+		</md-button>
 	</div>
 </md-toolbar>
 
 <md-content md-scroll-y layout="column" flex>
-	<div layout-padding flex="noshrink">
-		<div class="doc-content">
-			<md-content class="md-padding" layout-xs="column" layout="row">
-				<div flex-xs layout="row">
-					<md-card ng-repeat="element in titulos | orderBy: 'ano' | filter:search" class="card-title">
-						<md-card-title>
-							<md-card-title-text>
-								<span class="md-headline">{{element.nome}}</span>
-								<span class="card-title-subhead">{{element.generos.join(", ")}}</span>								
-	            				<span class="card-title-subhead">{{element.emissora}}, {{element.anoOriginal | date:'mediumDate'}}</span>
-	            				<span class="card-title-subhead">Formato: {{element.formato}}</span>
-	            				<span class="card-title-subhead">Baseado: <a ng-click="baseado(element)">{{element.manga.nome}}</a></span>
-							</md-card-title-text>
-						</md-card-title>
-						<md-card-content layout="row" layout-align="space-between">
-							<div ng-show="{{element.arcos == '' || element.arcos[0].imagem == null}}">
-								<img data-ng-src="img/image-default.png" class="image-default"/>
-							</div>
-							<div ng-show="{{element.arcos[0].imagem != null}}">
-								<img data-ng-src="data:image/(png|jpg);base64,{{element.arcos[0].imagem}}" class="card-title-image"/>
-							</div>							
-							<md-card-actions layout="column">
-								<div>
-									<img data-ng-src="img/classificacao_indicativa/{{element.classificacao}}.svg" class="card-title-image-classificacao">
-								</div>
-								<md-button class="md-icon-button" ng-click="mostrarDialog('UD', element, $event)">
-	           						<ng-md-icon class="md-secondary md-hue-3" icon="mode_edit" size="30"></ng-md-icon>
-	         					</md-button>
-								<md-button class="md-icon-button" ng-click="next(element)">
-	              					<ng-md-icon class="md-secondary md-hue-3" icon="send" size="30"></ng-md-icon>
-	            				</md-button>
-	              				<md-button class="md-icon-button" ng-show="countComplete(element.arcos) === element.arcos.length">
-	              					<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: green" size="30"></ng-md-icon>
-	              				</md-button>
-	            				<div class="card-div-title-count">
-            						<h2>{{countComplete(element.arcos)}}/{{element.arcos.length}}</h2>
-	            				</div>
-							</md-card-actions>
-						</md-card-content>
-					</md-card>
-				</div>
-			</md-content>
+	<md-content class="md-padding" layout-xs="column" layout="row">
+		<div flex-xs layout="row">
+			<md-card ng-repeat="element in titulos | orderBy: 'ano' | filter:search" class="card-title">
+				<md-card-title>
+					<md-card-title-text>
+						<span class="md-headline">{{element.nome}}</span>
+						<span class="card-title-subhead">{{element.generos.join(", ")}}</span>								
+           				<span class="card-title-subhead">{{element.emissora}}, {{element.anoOriginal | date:'mediumDate'}}</span>
+           				<span class="card-title-subhead">Formato: {{element.formato}}</span>
+           				<span class="card-title-subhead">Baseado: <a ng-click="baseado(element)">{{element.manga.nome}}</a></span>
+					</md-card-title-text>
+				</md-card-title>
+				<md-card-content layout="row" layout-align="space-between">
+					<div ng-show="{{element.arcos == '' || element.arcos[0].imagem == null}}">
+						<img data-ng-src="img/image-default.png" class="image-default"/>
+					</div>
+					<div ng-show="{{element.arcos[0].imagem != null}}">
+						<img data-ng-src="data:image/(png|jpg);base64,{{element.arcos[0].imagem}}" class="card-title-image"/>
+					</div>
+					<md-card-actions layout="column">
+						<div>
+							<img data-ng-src="img/classificacao_indicativa/{{element.classificacao}}.svg" class="card-title-image-classificacao">
+						</div>
+						<md-button class="md-icon-button" aria-label="modeedit" ng-click="mostrarDialog('UD', element, $event)">
+          						<ng-md-icon class="md-secondary md-hue-3" icon="mode_edit" size="30"></ng-md-icon>
+        					</md-button>
+						<md-button class="md-icon-button" aria-label="send" ng-click="next(element)">
+             					<ng-md-icon class="md-secondary md-hue-3" icon="send" size="30"></ng-md-icon>
+           				</md-button>
+             				<md-button class="md-icon-button" aria-label="doneall" ng-show="countComplete(element.arcos) === element.arcos.length">
+             					<ng-md-icon class="md-secondary md-hue-3" icon="done_all" style="fill: green" size="30"></ng-md-icon>
+             				</md-button>
+           				<div class="card-div-title-count">
+          						<h2>{{countComplete(element.arcos)}}/{{element.arcos.length}}</h2>
+           				</div>
+					</md-card-actions>
+				</md-card-content>
+			</md-card>
 		</div>
-	</div>
+	</md-content>
 </md-content>
 
 <script type="text/ng-template" id="editor.html">

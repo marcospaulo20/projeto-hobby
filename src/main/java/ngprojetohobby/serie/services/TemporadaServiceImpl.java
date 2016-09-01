@@ -40,7 +40,7 @@ public class TemporadaServiceImpl implements TemporadaService {
 
 	@Override
 	public Temporada create(Temporada temporada) {
-		if(temporada.getPrimeiraTemporada()) {
+		if(temporada.getCapa()) {
 			TituloS tituloS = tituloRepository.getById(temporada.getTituloS()); 
 			if(temporada.getImagem() != null) {
 				Serie s = serieRepository.getById(tituloS.getSerie());
@@ -64,6 +64,17 @@ public class TemporadaServiceImpl implements TemporadaService {
 				e.setStatus(true);
 				this.episodioRepository.update(e);
 			}
+		}
+		if(temporada.getCapa()) {
+			List<Temporada> temporadas = temporadaRepository.findAllByCol(Temporada.class, "tituloS", temporada.getTituloS());
+			for(Temporada v : temporadas) {
+				v.setCapa(false);
+				temporadaRepository.update(v);				
+			}
+			TituloS tituloS = tituloRepository.getById(temporada.getTituloS());
+			Serie serie = serieRepository.getById(tituloS.getSerie());
+			serie.setImagem(temporada.getImagem());
+			serieRepository.update(serie);
 		}
 		return this.temporadaRepository.update(temporada);
 	}

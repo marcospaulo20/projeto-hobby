@@ -35,7 +35,7 @@ public class CapituloCServiceImpl implements CapituloCService {
 
 	@Override
 	public CapituloC create(CapituloC capituloC) {		
-		if(capituloC.getPrimeiroCapitulo()) {
+		if(capituloC.getCapa()) {
 			TituloC tituloC = tituloCRepository.getById(capituloC.getTituloC());
 			if(capituloC.getImagem() != null) {
 				Comic comic = comicRepository.getById(tituloC.getComic());
@@ -54,8 +54,19 @@ public class CapituloCServiceImpl implements CapituloCService {
 	}
 
 	@Override
-	public CapituloC update(CapituloC capituloM) {
-		return this.capituloCRepository.update(capituloM);
+	public CapituloC update(CapituloC capituloC) {
+		if(capituloC.getCapa()) {
+			List<CapituloC> capitulosC = capituloCRepository.findAllByCol(CapituloC.class, "tituloC", capituloC.getTituloC());
+			for(CapituloC c : capitulosC) {
+				c.setCapa(false);
+				capituloCRepository.update(c);
+			}
+			TituloC tituloC = tituloCRepository.getById(capituloC.getTituloC());
+			Comic comic = comicRepository.getById(tituloC.getComic());
+			comic.setImagem(capituloC.getImagem());
+			comicRepository.update(comic);
+		}
+		return this.capituloCRepository.update(capituloC);
 	}
 
 	@Override

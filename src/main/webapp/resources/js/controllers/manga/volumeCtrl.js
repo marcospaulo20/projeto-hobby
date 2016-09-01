@@ -41,9 +41,13 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
     }
   	
   	function convertToDate(stringDate){
-  		var dateOut = new Date(stringDate);
-  		dateOut.setDate(dateOut.getDate() + 1);
-  		return dateOut;
+  		if(stringDate == '30/12/1969' || stringDate == '1970-01-01') {
+  			return null;
+  		} else {
+  			var dateOut = new Date(stringDate);
+  			dateOut.setDate(dateOut.getDate() + 1);
+  			return dateOut;
+  		}
   	};
   	
   	// Mostrar um dialogo
@@ -62,7 +66,7 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				anoBR: convertToDate(data.anoBR),
   				paginas: data.paginas,
   				status: data.status,
-  				primeiroVolume: data.primeiroVolume,
+  				capa: data.capa,
   				statusColecao: data.statusColecao,
   				imagem: data.imagem,
   				capitulosM: data.capitulosM
@@ -84,10 +88,6 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   			mostrarError(result);
   		});
   	}
-  	
-  	function formatDate(date) {
-		return date ? moment(date).format('DD/MM/YYYY') : moment(date).format('DD-MM-YYYY');
-	};
   	
   	// Controller de dialog
   	function DialogController($scope, $mdDialog, operaction, selectedItem, dataTable) {
@@ -165,7 +165,8 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				$scope.view.dataTable[indexArr].arco = $scope.view.selectedItem.arco;
   				$scope.view.dataTable[indexArr].status = $scope.view.selectedItem.status;
   				$scope.view.dataTable[indexArr].anoJP = $scope.view.selectedItem.anoJP;
-  				$scope.view.dataTable[indexArr].capitulosM = $scope.view.selectedItem.capitulosM;
+  				$scope.view.dataTable[indexArr].capa = $scope.view.selectedItem.capa;
+  				$scope.view.dataTable[indexArr].capitulosM = $scope.view.selectedItem.capitulosM;  				
   				$mdDialog.hide('O volume alterado com sucesso.');
   			}, function() {
   				$mdDialog.hide('Ocorreu algum error, ao alterar o volume.');
