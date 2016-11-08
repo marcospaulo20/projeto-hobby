@@ -8,6 +8,9 @@
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>		
 		<md-button class="md-icon-button" aria-label="arrowback" ng-click="comeBack()">
+			<md-tooltip md-direction="bottom">
+          		Voltar
+        	</md-tooltip>
 			<ng-md-icon icon="arrow_back" size="25"></ng-md-icon>
 		</md-button>
 		<h3>{{arco.nome}}</h3>
@@ -56,7 +59,7 @@
 						<ng-md-icon icon="arrow_back" fill="none" arial-label="Retorno"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>					
-					<h2>{{view.operaction}}</h2>
+					<h2>{{view.operaction}} episodio</h2>
 					<span flex></span>
 					<md-button class="md-icon-button" ng-click="showExcluir()" ng-show="view.operaction === 'Modificar'">
 						<ng-md-icon icon="delete" fill="none" arial-label="Excluir"></ng-md-icon>

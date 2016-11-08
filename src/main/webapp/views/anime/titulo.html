@@ -41,7 +41,7 @@
 						<span class="card-title-subhead">{{element.generos.join(", ")}}</span>								
            				<span class="card-title-subhead">{{element.emissora}}, {{element.anoOriginal | date:'mediumDate'}}</span>
            				<span class="card-title-subhead">Formato: {{element.formato}}</span>
-           				<span class="card-title-subhead">Baseado: <a ng-click="baseado(element)">{{element.manga.nome}}</a></span>
+           				<span class="card-title-subhead">Baseado:</span> <a ng-click="baseado(element)">{{element.manga.nome}}</a>
 					</md-card-title-text>
 				</md-card-title>
 				<md-card-content layout="row" layout-align="space-between">
@@ -83,7 +83,7 @@
 						<ng-md-icon icon="arrow_back"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>
-					<h2>{{view.operaction}}</h2>
+					<h2>{{view.operaction}} titulo</h2>
 					<span flex></span>	
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
 						<ng-md-icon icon="save"></ng-md-icon>
@@ -99,7 +99,7 @@
 								<label>Nome</label>
 								<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
 								<ng-messages for="inputForm.nome.$error">
-									<ng-message when="required">O campo e obrigatorio</ng-message>
+									<ng-message when="required">O campo &#233; obrigatorio</ng-message>
 									<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
                      			</ng-messages>
 							</md-input-container>									
@@ -141,7 +141,7 @@
     	      							</md-option>
         							</md-select>
 									<div class="errors" ng-messages="inputForm.formato.$error" ng-if="inputForm.$dirty">
-        								<div ng-message="required">Required</div>
+        								<div ng-message="required">O campo &#233; obrigatorio.</div>
       								</div>
       							</md-input-container>
 
@@ -157,7 +157,7 @@
           								</md-option>
         							</md-select>
 									<div class="errors" ng-messages="inputForm.classificacao.$error" ng-if="inputForm.$dirty">
-        								<div ng-message="required">Required</div>
+        								<div ng-message="required">O campo &#233; obrigatorio.</div>
       								</div>
       							</md-input-container>
 								<md-input-container class="md-block">

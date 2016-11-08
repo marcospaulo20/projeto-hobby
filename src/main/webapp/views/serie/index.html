@@ -1,5 +1,5 @@
 <md-button class="md-fab md-fab-bottom-right" aria-label="add" ng-click="mostrarDialog('C', undefined, $event)">
-	<ng-md-icon icon="add"</ng-md-icon>
+	<ng-md-icon icon="add"></ng-md-icon>
 </md-button>
 
 <md-toolbar ng-show="!showSearch">
@@ -62,7 +62,7 @@
 </md-content>
 
 <script type="text/ng-template" id="editor.html">
-	<md-dialog arial-label="Editar" class="dialog-95">
+	<md-dialog arial-label="editar" class="dialog-95">
 		<form name="inputForm" novalidate>
 			<md-toolbar>
 				<div class="md-toolbar-tools">
@@ -70,7 +70,7 @@
 						<ng-md-icon icon="arrow_back"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>					
-					<h2>{{view.operaction}}</h2>
+					<h2>{{view.operaction}} serie</h2>
 					<span flex></span>					
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
 						<ng-md-icon icon="save"></ng-md-icon>
@@ -85,7 +85,7 @@
 							<label>Titulo</label>
 							<input type="text" name="nome" required md-maxlength="255" ng-model="view.selectedItem.nome" />
 							<ng-messages for="inputForm.nome.$error">
-								<ng-message when="required">O campo e obrigatorio</ng-message>
+								<ng-message when="required">O campo &#233; obrigatorio</ng-message>
 								<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
                         	</ng-messages>
 						</md-input-container>

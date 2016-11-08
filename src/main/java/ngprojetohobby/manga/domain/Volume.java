@@ -41,9 +41,6 @@ public class Volume implements Serializable {
 	@Column(name = "ano_JP")
 	@Temporal(value = TemporalType.DATE)
 	private Date anoJP;
-	@Column(name = "ano_BR")
-	@Temporal(value = TemporalType.DATE)
-	private Date anoBR;
 
 	private Integer paginas;
 
@@ -99,14 +96,6 @@ public class Volume implements Serializable {
 
 	public void setAnoJP(Date anoJP) {
 		this.anoJP = anoJP;
-	}
-
-	public Date getAnoBR() {
-		return anoBR;
-	}
-
-	public void setAnoBR(Date anoBR) {
-		this.anoBR = anoBR;
 	}
 
 	public Integer getPaginas() {

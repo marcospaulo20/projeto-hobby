@@ -80,7 +80,7 @@
 						<ng-md-icon icon="arrow_back"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>
-					<h2>{{view.operaction}}</h2>
+					<h2>{{view.operaction}} titulo</h2>
 					<span flex></span>					
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
 						<ng-md-icon icon="save"></ng-md-icon>
@@ -96,30 +96,11 @@
 								<label>Nome</label>
 								<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
 								<ng-messages for="inputForm.nome.$error">
-									<ng-message when="required">O campo e obrigatorio</ng-message>
+									<ng-message when="required">O campo &#233; obrigatorio</ng-message>
 									<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
                      			</ng-messages>
 							</md-input-container>									
 						
-							<div layout="column">
-								<div ng-show="view.operaction === 'Adicionar'">
-									<md-input-container class="md-block">
-										<label>Comic</label>
-										<md-select name="comic" ng-model="view.selectedItem.comic" md-on-open="loadComics()" style="min-width: 200px;">
-											<md-option ng-value="comic" ng-repeat="comic in comics">
-												{{comic.nome}}
-											</md-option>
-										</md-select>
-									</md-input-container>							
-								</div>
-								<div ng-show="view.operaction === 'Modificar'">
-									<md-input-container class="md-block">
-										<label>Comic</label>
-										<input type="text" name="comic" ng-model="view.selectedItem.comic.nome" ng-disabled="true" />
-									</md-input-container>
-								</div>
-							</div>
-
 							<div layout-gt-sm="row">
 								<md-input-container class="md-block input-margin-right" flex-gt-sm>
 									<label>Emissora</label>
@@ -144,20 +125,23 @@
             								{{classificacao.name}}
           								</md-option>
         							</md-select>
-									<div class="errors" ng-messages="inputForm.classificacao.$error" ng-if="inputForm.$dirty">
-        								<div ng-message="required">O campo e obrigatorio</div>
-      								</div>
+									<ng-messages for="inputForm.classificacao.$error">
+										<ng-message when="required">O campo &#233; obrigatorio</ng-message>
+                     				</ng-messages>
       							</md-input-container>
 							</div>
 							
 							<div layout-gt-sm="row">
 								<md-input-container class="md-block" flex-gt-xs>
         							<label>Status</label>
-        							<md-select ng-model="view.selectedItem.status">
+        							<md-select name="status" ng-model="view.selectedItem.status" required>
           								<md-option ng-repeat="status in listStatus" value="{{status.name}}">
             								{{status.name}}
           								</md-option>
         							</md-select>
+									<ng-messages for="inputForm.status.$error">
+										<ng-message when="required">O campo &#233; obrigatorio</ng-message>
+                     				</ng-messages>
       							</md-input-container>
 								<md-datepicker ng-model="view.selectedItem.anoOriginal" md-placeholder="Ano original"></md-datepicker>
 							</div>

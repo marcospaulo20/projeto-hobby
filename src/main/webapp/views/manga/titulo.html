@@ -41,7 +41,7 @@
 					<md-card-title-text>
 						<span class="md-headline">{{element.nome}}</span>
 						<span class="card-title-subhead">{{element.categorias.join(", ")}}</span>
-						<span class="card-title-subhead">{{element.escritor}} / {{element.arte}}</span>
+						<span class="card-title-subhead">{{element.escritor}} &#8226; {{element.arte}}</span>
 						<span class="card-title-subhead">{{element.editora}}, {{element.pubOriginal | date}}</span>
            				<span class="card-title-subhead">Status: {{element.status}}</span>
 					</md-card-title-text>
@@ -84,7 +84,7 @@
 						<ng-md-icon icon="arrow_back"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>					
-					<h2>{{view.operaction}}</h2>
+					<h2>{{view.operaction}} titulo</h2>
 					<span flex></span>	
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
 						<ng-md-icon icon="save"></ng-md-icon>
@@ -98,11 +98,11 @@
 						<div class="md-dialog-content" flex>				
 							<md-input-container class="md-block" flex-gt-sm>
 								<label>Nome</label>
-								<input name="nome" required md-maxlength="255" ng-model="view.selectedItem.nome">
-								<div ng-messages="inputForm.nome.$error">
-          							<div ng-message="required">O campo &#233; obrigatorio.</div>
-          							<div ng-message="md-maxlength">Use 250 caracteres ou menos para o nome.</div>
-        						</div>
+								<input name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome">
+								<ng-messages for="inputForm.nome.$error">
+									<ng-message when="required">O campo &#233; obrigatorio.</ng-message>
+									<ng-message when="md-maxlength">Use 200 caracteres ou menos para o nome</ng-message>
+                       			</ng-messages>								
 							</md-input-container>
 												
 							<div layout-gt-sm="row">
@@ -136,19 +136,25 @@
 							<div layout-gt-sm="row">
 								<md-input-container class="md-block input-margin-right" flex-gt-xs>
 									<label>Classificacao</label>
-        							<md-select ng-model="view.selectedItem.classificacao">
+        							<md-select name="classificacao" ng-model="view.selectedItem.classificacao" required>
           								<md-option ng-repeat="classificacao in listClassificacao" value="{{classificacao.category}}">
             								{{classificacao.name}}
           								</md-option>
         							</md-select>
+									<ng-messages for="inputForm.classificacao.$error">
+										<ng-message when="required">O campo &#233; obrigatorio</ng-message>
+                     				</ng-messages>
       							</md-input-container>			
 								<md-input-container class="md-block input-margin-right" flex-gt-xs>
         							<label>Status</label>
-        							<md-select ng-model="view.selectedItem.status">
+        							<md-select name="status" ng-model="view.selectedItem.status" required>
           								<md-option ng-repeat="status in listStatus" value="{{status.name}}">
             								{{status.name}}
           								</md-option>
         							</md-select>
+									<ng-messages for="inputForm.status.$error">
+										<ng-message when="required">O campo &#233; obrigatorio</ng-message>
+                     				</ng-messages>
       							</md-input-container>
 								<md-input-container class="md-block">
         							<label>Categoria</label>
@@ -167,6 +173,7 @@
       							</md-input-container>
 							</div>
 						</div>
+					</div>
 				</md-content>
 			</md-dialog-content>
 		</form>

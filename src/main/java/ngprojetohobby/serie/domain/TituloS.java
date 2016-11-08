@@ -13,14 +13,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import ngprojetohobby.comic.domain.Comic;
 
 @Entity
 @Table(name = "titulo_s")
@@ -48,12 +44,6 @@ public class TituloS implements Serializable {
 	private String paisOrigem;
 
 	private String status;
-
-	@OneToOne(fetch = FetchType.EAGER, targetEntity = Comic.class)
-	@JoinTable(name = "serie_comic", joinColumns = {
-			@JoinColumn(name = "serie_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "comic_id", referencedColumnName = "id") })
-	private Comic comic;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "generos_s", joinColumns = @JoinColumn(name = "id"))
@@ -120,14 +110,6 @@ public class TituloS implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public Comic getComic() {
-		return comic;
-	}
-
-	public void setComic(Comic comic) {
-		this.comic = comic;
 	}
 
 	public List<String> getGeneros() {

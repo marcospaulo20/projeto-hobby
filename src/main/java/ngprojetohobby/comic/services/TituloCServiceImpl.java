@@ -26,12 +26,14 @@ public class TituloCServiceImpl implements TituloCService {
 
 	@Override
 	public TituloC create(TituloC titulo) {
-		List<String> generos = new ArrayList<String>();
-		for (String g : titulo.getGeneros()) {
-			generos.add(g);
+		if(!titulo.getGeneros().isEmpty()) {
+			List<String> generos = new ArrayList<String>();
+			for (String g : titulo.getGeneros()) {
+				generos.add(g);
+			}
+	
+			titulo.setGeneros(generos);
 		}
-
-		titulo.setGeneros(generos);
 		titulo = this.tituloCRepository.create(titulo);
 		
 		return titulo;

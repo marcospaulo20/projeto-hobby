@@ -31,12 +31,14 @@ public class TituloAServiceImpl implements TituloAService {
 
 	@Override
 	public TituloA create(TituloA titulo) {
-		List<String> generos = new ArrayList<String>();
-		for(String g : titulo.getGeneros()) {
-			generos.add(g);
+		if(!titulo.getGeneros().isEmpty()) {
+			List<String> generos = new ArrayList<String>();
+			for(String g : titulo.getGeneros()) {
+				generos.add(g);
+			}
+			
+			titulo.setGeneros(generos);
 		}
-		
-		titulo.setGeneros(generos);
 		titulo = this.tituloRepository.create(titulo);
 	
 		Anime anime = animeRepository.getById(titulo.getAnime());

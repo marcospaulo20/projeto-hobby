@@ -60,8 +60,6 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   				numero: data.numero,
   				escritor: data.escritor,
   				arte: data.arte,
-  				colorista: data.colorista,
-  				editor: data.editor,
   				ano: convertToDate(data.ano),
   				status: data.status,
   				statusVirtual: data.statusVirtual,
@@ -153,8 +151,6 @@ app.controller('CapituloCCtrl', ['$scope', '$rootScope', '$routeParams', 'ComicF
   				$scope.view.dataTable[indexArr].numero = $scope.view.selectedItem.numero;
   				$scope.view.dataTable[indexArr].escritor = $scope.view.selectedItem.escritor;
   				$scope.view.dataTable[indexArr].arte = $scope.view.selectedItem.arte;
-  				$scope.view.dataTable[indexArr].colorista = $scope.view.selectedItem.colorista;
-  				$scope.view.dataTable[indexArr].editor = $scope.view.selectedItem.editor;
   				$scope.view.dataTable[indexArr].ano = $scope.view.selectedItem.ano;
   				$scope.view.dataTable[indexArr].status = $scope.view.selectedItem.status;
   				$scope.view.dataTable[indexArr].statusVirtual = $scope.view.selectedItem.statusVirtual;

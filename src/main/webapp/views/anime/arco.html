@@ -87,7 +87,7 @@
 </md-content>
 
 <script type="text/ng-template" id="editor.html">
-	<md-dialog arial-label="Editar">
+	<md-dialog arial-label="editar" class="dialog-95">
 		<form name="inputForm" novalidate>
 			<md-toolbar>
 				<div class="md-toolbar-tools">
@@ -95,7 +95,7 @@
 						<ng-md-icon icon="arrow_back"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>					
-					<h2>{{view.operaction}}</h2>
+					<h2>{{view.operaction}} arco</h2>
 					<span flex></span>
 					<md-button class="md-icon-button" ng-click="salvar()" ng-show="view.operaction === 'Adicionar' || view.operaction === 'Modificar'" ng-disabled="inputForm.$invalid">
 						<ng-md-icon icon="save"></ng-md-icon>
@@ -104,73 +104,69 @@
 				</div>
 			</md-toolbar>
 			<md-dialog-content>
-				<div layout="row" layout-xs="column" ng-cloak class="md-inline-form">
-					<md-content layout-gt-sm="column" layout-padding>						
-							<div class="md-dialog-content">
-								<div>
-								<div ng-show="imageCropStep == 1">
-									<div ngf-drop ngf-select ng-model="files" class="drop-box" 
-       									ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
-       									accept="image/*" ngf-pattern="'image/*'">Largue as imagens aqui ou clique para fazer upload
-       									<span ng-show="dropAvailable"> ou soltar de arquivo</span>
-       								</div>
-									<div class="preview">
-										<img ngf-src="!files[0].$error && files[0]">
-				        			</div>
-								</div>
-								<div ng-show="imageCropStep == 2">
-									<image-crop			 
-										data-height="380"
-										data-width="290"
-						 				data-shape="square"
-						 				data-step="imageCropStep"
-						 				src="imgSrc"
-						 				data-result="result"
-						 				data-result-blob="resultBlob"
-						 				crop="initCrop"
-						 				padding="20"
-						 				max-size="800">
-									</image-crop>
-									<div layout="row" layout-align="center center" layout-wrap>									
-										<md-button class="md-primary" ng-click="clear()">Cancelar</md-button>
-										<md-button class="md-primary" ng-click="initCrop = true">OK</md-button>
-									</div>
-								</div>
-								<div ng-show="imageCropStep == 3">
-					 				<img ng-src="{{result}}" class="img-responsive img-rounded"></img>
-				  				</div>
-							</div>												
+				<md-content layout-gt-sm="row" layout-padding>						
+					<div>
+						<div ng-show="imageCropStep == 1">
+							<div ngf-drop ngf-select ng-model="files" class="drop-box" 
+   								ngf-drag-over-class="'dragover'" ngf-multiple="false" ngf-allow-dir="true"
+    							accept="image/*" ngf-pattern="'image/*'">Largue as imagens aqui ou clique para fazer upload
+       							<span ng-show="dropAvailable"> ou soltar de arquivo</span>
+       						</div>
+							<div class="preview">
+								<img ngf-src="!files[0].$error && files[0]">
+				        	</div>
 						</div>
-					</md-content>
-
-					<md-content layout-padding>
-						<div>
-							<div class="md-dialog-content">
-									<md-input-container class="md-block" layout-gt-xs>
-										<label>Nome</label>
-										<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
-										<ng-messages for="inputForm.nome.$error">
-											<ng-message when="required">O campo e obrigatorio</ng-message>
-											<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
-                     					</ng-messages>
-									</md-input-container>
-
-								<div layout-gt-xs="row">
-									<md-input-container class="md-block" flex-gt-xs>
-        								<label>Status</label>
-        								<md-select ng-model="view.selectedItem.status">
-          									<md-option ng-repeat="status in listStatus" value="{{status.category}}">
-	            								{{status.name}}
-          									</md-option>
-        								</md-select>
-      								</md-input-container>
-									<md-datepicker ng-model="view.selectedItem.ano" md-placeholder="Ano"></md-datepicker>
-								</div>
-								<md-switch class="md-primary" ng-model="view.selectedItem.capa">Capa do anime</md-switch>
+						<div ng-show="imageCropStep == 2">
+							<image-crop			 
+								data-height="400"
+								data-width="280"
+								data-shape="square"
+								data-step="imageCropStep"
+								src="imgSrc"
+								data-result="result"
+								data-result-blob="resultBlob"
+								crop="initCrop"
+								padding="30"
+								max-size="400">
+							</image-crop>
+							<div layout="row" layout-align="center center" layout-wrap>									
+								<md-button class="md-primary" ng-click="clear()">Cancelar</md-button>
+								<md-button class="md-primary" ng-click="initCrop = true">OK</md-button>
 							</div>
-						</div>							
-					</md-content>
-				</div>
+						</div>
+						<div ng-show="imageCropStep == 3">
+					 		<img ng-src="{{result}}" class="img-responsive img-rounded"></img>
+				  		</div>
+					</div>												
+					<div>
+						<div class="md-dialog-content">
+							<md-input-container class="md-block" layout-gt-xs>
+								<label>Nome</label>
+								<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
+								<ng-messages for="inputForm.nome.$error">
+									<ng-message when="required">O campo &#233; obrigatorio</ng-message>
+									<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
+                    			</ng-messages>
+							</md-input-container>
+
+							<div layout-gt-xs="row">
+								<md-input-container class="md-block" flex-gt-xs>
+        							<label>Status</label>
+        							<md-select name="status" ng-model="view.selectedItem.status" required>
+          								<md-option ng-repeat="status in listStatus" value="{{status.category}}">
+	            							{{status.name}}
+          								</md-option>
+        							</md-select>
+									<ng-messages for="inputForm.status.$error">
+										<ng-message when="required">O campo &#233; obrigatorio</ng-message>
+	                    			</ng-messages>
+      							</md-input-container>
+								<md-datepicker ng-model="view.selectedItem.ano" md-placeholder="Ano lan&#231;amento"></md-datepicker>
+							</div>
+							<md-switch class="md-primary" ng-model="view.selectedItem.capa">Capa do anime</md-switch>
+						</div>
+					</div>							
+				</md-content>
 			</md-dialog-content>
 		</form>
 	</md-dialog>

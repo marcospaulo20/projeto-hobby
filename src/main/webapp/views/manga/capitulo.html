@@ -8,6 +8,9 @@
 			<ng-md-icon icon="menu"></ng-md-icon>
 		</md-button>			
 		<md-button class="md-icon-button" aria-label="arrowback" ng-click="comeBack()">
+			<md-tooltip md-direction="bottom">
+          		Voltar
+        	</md-tooltip>
 			<ng-md-icon icon="arrow_back" size="25"></ng-md-icon>
 		</md-button>
 		<h3>
@@ -59,7 +62,7 @@
 						<ng-md-icon icon="arrow_back"></ng-md-icon>
 						<md-tooltip md-delay="1500" md-autohide="true">Retorno</md-tooltip>					
 					</md-button>
-					<h2>{{view.operaction}}</h2>
+					<h2>{{view.operaction}} capitulo</h2>
 					<span flex></span>
 					<md-button class="md-icon-button" ng-click="showExcluir()" ng-show="view.operaction === 'Modificar'">
 						<ng-md-icon icon="delete"></ng-md-icon>
@@ -72,33 +75,28 @@
 				</div>
 			</md-toolbar>
 			<md-dialog-content>
-				<div class="md-dialog-content" flex>
-					<md-content layout-padding ng-cloak>							
-						<div layout-gt-sm="row">
-							<md-input-container class="md-block input-number-margin-right" flex-gt-sm>
-        						<label>N&#250;mero</label>
-        						<input type="text" name="numero" required md-maxlength="20" ng-model="view.selectedItem.numero">
-								<ng-messages for="inputForm.numero.$error">
-									<ng-message when="required">O campo e obrigatorio</ng-message>
-									<ng-message when="md-maxlength">Use 20 caracteres ou menos para o n&#250;mero</ng-message>
-                       			</ng-messages>
-      						</md-input-container>
-							<md-input-container class="md-block" flex-gt-sm>
-								<label>Nome</label>
-								<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
-								<ng-messages for="inputForm.nome.$error">
-									<ng-message when="required">O campo e obrigatorio</ng-message>
-									<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
-                       			</ng-messages>
-							</md-input-container>
-						</div>
-						<div>
-							<md-switch class="md-primary" ng-model="view.selectedItem.status">J&#225; li</md-switch>
-	
-							<md-switch class="md-primary" ng-model="view.selectedItem.statusVirtual">Contem na cole&#231;&#227o virtual</md-switch>
-						</div>					
-					</md-content>
-				</div>								
+				<md-content layout-padding ng-cloak>							
+					<div layout-gt-sm="row">
+						<md-input-container class="md-block input-number-margin-right" flex-gt-sm>
+       						<label>N&#250;mero</label>
+       						<input type="text" name="numero" required md-maxlength="20" ng-model="view.selectedItem.numero">
+							<ng-messages for="inputForm.numero.$error">
+								<ng-message when="required">O campo &#233; obrigatorio</ng-message>
+								<ng-message when="md-maxlength">Use 20 caracteres ou menos para o n&#250;mero</ng-message>
+                   			</ng-messages>
+   						</md-input-container>
+						<md-input-container class="md-block" flex-gt-sm>
+							<label>Nome</label>
+							<input type="text" name="nome" required md-maxlength="200" ng-model="view.selectedItem.nome" />
+							<ng-messages for="inputForm.nome.$error">
+								<ng-message when="required">O campo &#233; obrigatorio</ng-message>
+								<ng-message when="md-maxlength">Use 255 caracteres ou menos para o nome</ng-message>
+                   			</ng-messages>
+						</md-input-container>
+					</div>
+					<md-switch class="md-primary" ng-model="view.selectedItem.status">J&#225; li</md-switch>
+					<md-switch class="md-primary" ng-model="view.selectedItem.statusVirtual">Contem na cole&#231;&#227o virtual</md-switch>
+				</md-content>
 			</md-dialog-content>
 		</form>
 	</md-dialog>

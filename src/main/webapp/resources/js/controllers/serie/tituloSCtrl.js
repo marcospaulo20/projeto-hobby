@@ -2,8 +2,8 @@
 
 var app = angular.module('projetoHobbyApp.tituloS.controllers', []);
 
-app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFactory', 'TitulosSFactory', 'TituloSFactory','TituloSCreateFactory', 'ComicsFactory', '$mdToast', '$mdDialog', '$location', '$filter', '$timeout',
-  	function($scope, $rootScope, $routeParams, SerieFactory, TitulosSFactory, TituloSFactory, TituloSCreateFactory, ComicsFactory, $mdToast, $mdDialog, $location, $filter, $timeout) {
+app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFactory', 'TitulosSFactory', 'TituloSFactory','TituloSCreateFactory', '$mdToast', '$mdDialog', '$location', '$filter', '$timeout',
+  	function($scope, $rootScope, $routeParams, SerieFactory, TitulosSFactory, TituloSFactory, TituloSCreateFactory, $mdToast, $mdDialog, $location, $filter, $timeout) {
 	
   	$scope.titulos = TitulosSFactory.query({id: $routeParams.id});
   	
@@ -28,7 +28,7 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
     }
   	
   	function convertToDate(stringDate){
-  		if(stringDate == '30/12/1969' || stringDate == '1970-01-01') {
+  		if(stringDate == '30/12/1969' || stringDate == '01/01/1970'|| stringDate == '1969-12-30' || stringDate == '1970-01-01') {
   			return null;
   		} else {
   			var dateOut = new Date(stringDate);
@@ -54,7 +54,6 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   				paisOrigem: data.paisOrigem,
   				status: data.status,
   				generos: data.generos,
-  				comic: data.comic,
   				temporadas: data.temporadas
   			};
   		}
@@ -115,14 +114,20 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
   		// Emissora
   		$scope.emissora = '';
   		$scope.listEmissora = [
+	      {name: 'AMC'},
+  		  {name: 'BBC One'},
   		  {name: 'CBS'},
-  		  {name: 'FX'},  		  
+  		  {name: 'FOX'},
+  		  {name: 'FX'},
   		  {name: 'HBO'},
   		  {name: 'History'},
   		  {name: 'NBC'},
   		  {name: 'Netflix'},
+  		  {name: 'Starz'},
   		  {name: 'Showtime'},
+  		  {name: 'Syndication'},
   		  {name: 'The CW'},
+  		  {name: 'TV Tokyo'},
   		];  		  	
   		
   		// Status
@@ -170,10 +175,12 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
          { name: 'Demônios' },
          { name: 'Desenho' },
          { name: 'Drama' },
+         { name: 'Documentário' },
          { name: 'Infantil' },
          { name: 'Investigação' },
          { name: 'Escolar' },
          { name: 'Espaço' },
+         { name: 'Espionagem' },
          { name: 'Esportes' },
          { name: 'Fantasia' },
          { name: 'Ficção Científica' },
@@ -193,6 +200,7 @@ app.controller('TituloSCtrl', ['$scope', '$rootScope', '$routeParams', 'SerieFac
          { name: 'Suspense' },
          { name: 'Thriler' },
          { name: 'Terror' },
+         { name: 'Tokusatsu' },
          { name: 'Vampiros' }
         ];  		
   		

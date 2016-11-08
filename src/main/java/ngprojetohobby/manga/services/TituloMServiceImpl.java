@@ -26,12 +26,14 @@ public class TituloMServiceImpl implements TituloMService {
 
 	@Override
 	public TituloM create(TituloM titulo) {
-		List<String> categorias = new ArrayList<String>();
-		for (String c : titulo.getCategorias()) {
-			categorias.add(c);
+		if(!titulo.getCategorias().isEmpty()) {
+			List<String> categorias = new ArrayList<String>();
+			for (String c : titulo.getCategorias()) {
+				categorias.add(c);
+			}
+			titulo.setCategorias(categorias);
 		}
-
-		titulo.setCategorias(categorias);
+		
 		titulo = this.tituloMRepository.create(titulo);
 		
 		return titulo;

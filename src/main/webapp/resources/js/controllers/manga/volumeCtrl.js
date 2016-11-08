@@ -41,7 +41,7 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
     }
   	
   	function convertToDate(stringDate){
-  		if(stringDate == '30/12/1969' || stringDate == '1970-01-01') {
+  		if(stringDate == '30/12/1969' || stringDate == '01/01/1970'|| stringDate == '1969-12-30' || stringDate == '1970-01-01') {
   			return null;
   		} else {
   			var dateOut = new Date(stringDate);
@@ -63,7 +63,6 @@ app.controller('VolumeCtrl', ['$scope', '$rootScope', '$routeParams', 'MangaFact
   				nome: data.nome,
   				arco: data.arco,
   				anoJP: convertToDate(data.anoJP),
-  				anoBR: convertToDate(data.anoBR),
   				paginas: data.paginas,
   				status: data.status,
   				capa: data.capa,
